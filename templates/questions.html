@@ -8,8 +8,11 @@
 <h1> Question number: {{ question['id'] }}</h1>
 <h2> Question title: {{ question['title'] }} </h2>
 <h3> Question message: {{ question['message'] }}</h3>
-<h3> Answer message: {{ answer['message'] }} </h3>
-<h2> <a href="/question/{{ question['id']}}/new-answer">Add a new answer! </a>
-
+{% for answer in answers %}
+<h3> Answer message {{ loop.index }}: {{ answer['message']}} </h3>
+    <h3> <a href="/answer/{{ answer['id']}}/delete"> Delete this answer! </a> </h3>
+{% endfor %}
+<h2> <a href="/question/{{ question['id']}}/new-answer">Add a new answer! </a> </h2>
+<h3> <a href="/question/{{ question['id']}}/delete">Delete this question! </a> </h3>
 </body>
 </html>
