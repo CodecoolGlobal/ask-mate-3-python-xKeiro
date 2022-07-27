@@ -46,7 +46,7 @@ def add_question():
 
 
 @app.route('/question/<question_id>/new-answer', methods=["GET", "POST"])
-def post_answer():
+def post_answer(question_id):
     answer_time_stamp = util.get_timestamp()
     answer_id = util.generate_new_id_answer()
     if request.method == "POST":
@@ -55,7 +55,7 @@ def post_answer():
         new_answer['submission_time'] = answer_time_stamp
         write_answer('sample_data/answer.csv', new_answer)
         return redirect('/question/<question_id>')
-    return render_template('new-answer.html', answer={})
+    return render_template('new-answer.html', id=question_id, answer={})
 
 
 if __name__ == "__main__":
