@@ -1,7 +1,9 @@
-from flask import Flask, request, render_template, redirect
-from connection import write_question, write_answer, get_questions, del_question, del_answer
+from flask import Flask, request, render_template, redirect, url_for
+from connection import write_question, write_answer, get_questions
 import util
-from data_manager import sort_questions, get_question_by_id, get_answers_by_question_id
+from data_manager import sort_questions, get_question_by_id, get_answer_by_id, get_questions, get_answers, \
+    update_answer_vote_number, update_question_vote_number, get_questions_vote, get_answers_vote
+
 
 app = Flask(__name__)
 QUESTIONS_PATH = "./sample_data/question.csv"
@@ -71,6 +73,9 @@ def post_answer(question_id):
     return render_template('new-answer.html', id=question_id, answer={})
 
 
+
+
+
 @app.route('/question/<question_id>/delete')
 def delete_question(question_id):
     question_id = int(question_id)
@@ -83,6 +88,84 @@ def delete_answers(answer_id):
     answer_id = int(answer_id)
     del_answer(ANSWERS_PATH, answer_id)
     return redirect('/question')
+
+
+@app.route('/question/<question_id>/vote-up')
+def question_vote_up(question_id):
+    data = get_questions_vote()
+
+    voted_dict = {}
+    for dict in data:
+        if dict["id"] == question_id:
+            voted_dict = {"id": question_id,
+                          "submission_time": dict["submission_time"],
+                          "view_number": dict["view_number"],
+                          "vote_number": int(dict["vote_number"]) + 1,
+                          "title": dict["title"],
+                          "message": dict["message"],
+                          "image": dict["image"]
+                          }
+    update_question_vote_number(voted_dict)
+
+    return redirect("/list")
+
+
+@app.route('/question/<question_id>/vote-down')
+def question_vote_down(question_id):
+    data = get_questions_vote()
+
+    voted_dict = {}
+    for dict in data:
+        if dict["id"] == question_id:
+            voted_dict = {"id": question_id,
+                          "submission_time": dict["submission_time"],
+                          "view_number": dict["view_number"],
+                          "vote_number": int(dict["vote_number"]) - 1,
+                          "title": dict["title"],
+                          "message": dict["message"],
+                          "image": dict["image"]
+                          }
+    update_question_vote_number(voted_dict)
+
+    return redirect("/list")
+
+
+@app.route('/answer/<answer_id>/vote-down')
+def answer_vote_down(answer_id):
+    question_id = request.args.get("question_id")
+
+    data = get_answers_vote()
+    voted_dict = {}
+    for dict in data:
+        if dict["id"] == answer_id:
+            voted_dict = {"id": answer_id,
+                          "submission_time": dict["submission_time"],
+                          "vote_number": int(dict["vote_number"]) - 1,
+                          "question_id": question_id,
+                          "message": dict["message"],
+                          "image": dict["image"]
+                          }
+    update_answer_vote_number(voted_dict)
+    return redirect(f"/question/{question_id}")
+
+
+@app.route('/answer/<answer_id>/vote-up')
+def answer_vote_up(answer_id):
+    question_id = request.args.get("question_id")
+
+    data = get_answers_vote()
+    voted_dict = {}
+    for dict in data:
+        if dict["id"] == answer_id:
+            voted_dict = {"id": answer_id,
+                          "submission_time": dict["submission_time"],
+                          "vote_number": int(dict["vote_number"]) + 1,
+                          "question_id": dict["question_id"],
+                          "message": dict["message"],
+                          "image": dict["image"]
+                          }
+    update_answer_vote_number(voted_dict)
+    return redirect(f"/question/{question_id}")
 
 
 if __name__ == "__main__":
