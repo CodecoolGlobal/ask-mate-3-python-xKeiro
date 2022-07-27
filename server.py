@@ -30,6 +30,8 @@ def question_page():
 def get_qu(question_id):
     question_id = int(question_id)
     question = get_question_by_id(question_id)
+    question["view_number"] += 1
+    write_question('./sample_data/question.csv', question)
     answers = get_answers_by_question_id(question_id)
     return render_template("questions.html", question=question, answers=answers)
 
