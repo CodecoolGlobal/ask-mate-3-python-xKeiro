@@ -53,7 +53,7 @@ def add_question():
         new_question['id'] = str(question_id)
         new_question['submission_time'] = question_time_stamp
         write_question('./sample_data/question.csv', new_question)
-        return redirect('/question/<question_id>')
+        return redirect(f'/question/{question_id}')
     return render_template('add-question.html', question={})
 
 
@@ -65,8 +65,9 @@ def post_answer(question_id):
         new_answer = request.form.to_dict()
         new_answer['id'] = str(answer_id)
         new_answer['submission_time'] = answer_time_stamp
+        new_answer['question_id'] = question_id
         write_answer('sample_data/answer.csv', new_answer)
-        return redirect('/question/<question_id>')
+        return redirect(f'/question/{question_id}')
     return render_template('new-answer.html', id=question_id, answer={})
 
 
