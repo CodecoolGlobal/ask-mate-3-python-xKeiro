@@ -26,11 +26,16 @@ def get_answers(filename):
         reader = csv.DictReader(csvfile)
         for row in reader:
             answers.append(row)
+    for i, answer in enumerate(answers):
+        answers[i]['id'] = int(answer['id'])
+        answers[i]['submission_time'] = float(answer['submission_time'])
+        answers[i]['question_id'] = int(answer['question_id'])
+        answers[i]['vote_number'] = int(answer['vote_number'])
     return answers
 
 
 def write_question(file_path, question_to_write):
-    questions = get_questions()
+    questions = get_questions("./sample_data/question.csv")
     index_of_question_to_replace = None
     for i, question in enumerate(questions):
         if question['id'] == question_to_write['id']:
@@ -45,11 +50,17 @@ def write_question(file_path, question_to_write):
         writer.writerows(questions)
 
 
-def write_answer(filename, mylist):
-    count = len(get_answers(filename))
-    mylist.insert(0, count + 1)
-    with open(filename, 'a', newline='') as csvfile:
-        fieldnames = ANSWER_HEADER
-        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-        to_write = dict(zip(ANSWER_HEADER, mylist))
-        writer.writerow(to_write)
+def write_answer(filename, answer_to_write):
+    answers = get_answers('./sample_data/answer.csv')
+    index_of_answer_to_replace = None
+    for i, answer in enumerate(answers):
+        if answer['id'] == answer_to_write['id']:
+            index_of_answer_to_replace = i
+    if index_of_answer_to_replace is None:
+        answers.append(answer_to_write)
+    else:
+        answers[index_of_answer_to_replace] = answer_to_write
+    with open(filename, mode="w", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=ANSWER_HEADER)
+        writer.writeheader()
+        writer.writerows(answers)
