@@ -7,22 +7,27 @@
 <body>
 <h1>Add question</h1>
 <form action="/add-question" method ="POST" enctype="multipart/form-data">
+
+    <input type="hidden" id="id" name="id" value="{{ question.setdefault('id','') }}"/>
+    <input type="hidden" id="submission_time" name="submission_time" value="{{ question.setdefault('submission_time','') }}"/>
+    <input type="hidden" id="view_number" name="view_number" value="{{ question.setdefault('view_number','0') }}"/>
+    <input type="hidden" id="vote_number" name="vote_number" value="{{ question.setdefault('vote_number','0') }}"/>
     <div>
-        <label for="question_title">Question Title:</label>
+        <label for="title">Question Title:</label>
         <br>
-        <input type="text" name ="question_title" id ="question_title" required>
+        <input type="text" name ="title" id ="title" required>
     </div>
     <br>
     <div>
-        <label for="question_message">Question message:</label>
+        <label for="message">Question message:</label>
         <br>
-        <textarea name ="question_message" id ="question_message" required></textarea>
+        <textarea name ="message" id ="message" required></textarea>
     </div>
     <br>
     <div>
-        <label for="question_image">Upload image:</label>
+        <label for="image">Upload image:</label>
         <br>
-        <input type="file" name="question-image" id="question_image">
+        <input type="file" name="image" id="image">
     </div>
     <br>
     <div>
