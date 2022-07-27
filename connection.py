@@ -29,13 +29,17 @@ def get_answers(filename):
     for i, answer in enumerate(answers):
         answers[i]['id'] = int(answer['id'])
         answers[i]['submission_time'] = float(answer['submission_time'])
-        answers[i]['vote_number'] = int(answer['vote_number'])
+
         answers[i]['question_id'] = int(answer['question_id'])
+        answers[i]['vote_number'] = int(answer['vote_number'])
+
     return answers
 
 
 def write_question(file_path, question_to_write):
+
     questions = get_questions('./sample_data/question.csv')
+
     index_of_question_to_replace = None
     for i, question in enumerate(questions):
         if question['id'] == question_to_write['id']:
@@ -65,11 +69,3 @@ def write_answer(filename, answer_to_write):
         writer.writeheader()
         writer.writerows(answers)
 
-# def write_answer(filename, mylist):
-#     count = len(get_answers(filename))
-#     mylist.insert(0, count + 1)
-#     with open(filename, 'a', newline='') as csvfile:
-#         fieldnames = ANSWER_HEADER
-#         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-#         to_write = dict(zip(ANSWER_HEADER, mylist))
-#         writer.writerow(to_write)
