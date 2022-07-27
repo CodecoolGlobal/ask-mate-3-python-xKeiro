@@ -116,7 +116,7 @@ def del_question(filename, question_to_delete):
             writer = csv.DictWriter(f, fieldnames=QUESTION_HEADER)
             writer.writeheader()
             writer.writerows(questions)
-        answers = get_answers(filename)
+        answers = get_answers(ANSWER_PATH)
         for answer in answers:
             if answer["question_id"] == id_to_delete:
                 del_answer(filename, answer)
