@@ -16,5 +16,12 @@ def sort_questions(order_by: str, order_direction: str) -> None:
 def get_question_by_id(question_id: int) -> dict:
     questions = get_questions("./sample_data/question.csv")
     for i, question in enumerate(questions):
-        if question[id] == question_id:
+        if question["id"] == question_id:
             return question
+
+
+def get_answer_by_id(answer_id: int) -> dict:
+    answers = get_answers("./sample_data/answer.csv")
+    for i, answer in enumerate(answers):
+        if answer["id"] == answer_id:
+            return answer
