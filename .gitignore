@@ -173,3 +173,12 @@ fabric.properties
 **/.DS_Store
 node_modules
 ./data.csv
+
+#
+.idea/.gitignore
+.idea/.gitignore
+.idea/ask-mate-1-python-xKeiro.iml
+.idea/inspectionProfiles/Project_Default.xml
+.idea/inspectionProfiles/profiles_settings.xml
+.idea/modules.xml
+.idea/vcs.xml

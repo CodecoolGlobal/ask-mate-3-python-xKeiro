@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>New answer</title>
+</head>
+<body>
+<h1>New answer</h1>
+<form action="/question/<question_id>/new-answer" method ="POST" enctype="multipart/form-data">
+      <div>
+        <label for="answer_message">Post answer message:</label>
+        <br>
+        <textarea name ="answer_message" id ="answer_message" required></textarea>
+    </div>
+    <br>
+    <div>
+        <label for="answer_image">Upload image:</label>
+        <br>
+        <input type="file" name="answer_image" id="answer_image">
+    </div>
+    <br>
+    <div>
+        <button type="submit">Add New Answer</button>
+    </div>
+</form>
+
+</body>
+</html>
