@@ -41,7 +41,7 @@ def edit_question(question_id):
         redirect(f"/question/{question_id}")
     else:
         question = get_question_by_id(question_id)
-        return render_template('add_question.html', question=question)
+        return render_template('add-question.html', question=question)
 
 
 @app.route('/add-question', methods=["GET", "POST"])
