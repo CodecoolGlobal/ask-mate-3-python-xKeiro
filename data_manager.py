@@ -24,11 +24,13 @@ def get_question_by_id(question_id: int) -> dict:
             return question
 
 
-def get_answer_by_id(answer_id: int) -> dict:
+def get_answers_by_question_id(question_id: int) -> list[dict]:
+    answers_list = []
     answers = get_answers("./sample_data/answer.csv")
     for i, answer in enumerate(answers):
-        if answer["id"] == answer_id:
-            return answer
+        if answer["question_id"] == question_id:
+            answers_list.append(answer)
+    return answers_list
 
 
 def get_answers_vote():

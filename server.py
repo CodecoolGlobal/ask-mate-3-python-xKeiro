@@ -4,6 +4,7 @@ import util
 from data_manager import sort_questions, get_question_by_id, get_answer_by_id, get_questions, get_answers, \
     update_answer_vote_number, update_question_vote_number, get_questions_vote, get_answers_vote
 
+
 app = Flask(__name__)
 QUESTIONS_PATH = "./sample_data/question.csv"
 ANSWERS_PATH = "./sample_data/answer.csv"
@@ -30,8 +31,8 @@ def question_page():
 def get_qu(question_id):
     question_id = int(question_id)
     question = get_question_by_id(question_id)
-    answer = get_answer_by_id(question_id)
-    return render_template("questions.html", question=question, answer=answer)
+    answers = get_answers_by_question_id(question_id)
+    return render_template("questions.html", question=question, answers=answers)
 
 
 @app.route('/question/<question_id>/edit', methods=['GET', 'POST'])
@@ -70,6 +71,23 @@ def post_answer(question_id):
         write_answer('sample_data/answer.csv', new_answer)
         return redirect(f'/question/{question_id}')
     return render_template('new-answer.html', id=question_id, answer={})
+
+
+
+
+
+@app.route('/question/<question_id>/delete')
+def delete_question(question_id):
+    question_id = int(question_id)
+    del_question(QUESTIONS_PATH, question_id)
+    return redirect('/question')
+
+
+@app.route('/answer/<answer_id>/delete')
+def delete_answers(answer_id):
+    answer_id = int(answer_id)
+    del_answer(ANSWERS_PATH, answer_id)
+    return redirect('/question')
 
 
 @app.route('/question/<question_id>/vote-up')
