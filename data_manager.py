@@ -49,4 +49,3 @@ def update_question_vote_number(dictionary):
 
 def update_answer_vote_number(dictionary):
     update_question_vote(dictionary, ANSWERS_PATH, ANSWER_HEADER)
-

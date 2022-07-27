@@ -1,9 +1,8 @@
-from flask import Flask, request, render_template, redirect, url_for
-from connection import write_question, write_answer, get_questions
+from flask import Flask, request, render_template, redirect
+from connection import write_question, write_answer, del_answer, del_question
 import util
-from data_manager import sort_questions, get_question_by_id, get_answer_by_id, get_questions, get_answers, \
+from data_manager import sort_questions, get_question_by_id, get_answers_by_question_id, get_questions,\
     update_answer_vote_number, update_question_vote_number, get_questions_vote, get_answers_vote
-
 
 app = Flask(__name__)
 QUESTIONS_PATH = "./sample_data/question.csv"
@@ -71,9 +70,6 @@ def post_answer(question_id):
         write_answer('sample_data/answer.csv', new_answer)
         return redirect(f'/question/{question_id}')
     return render_template('new-answer.html', id=question_id, answer={})
-
-
-
 
 
 @app.route('/question/<question_id>/delete')

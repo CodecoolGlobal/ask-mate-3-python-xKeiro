@@ -9,7 +9,7 @@
 <h2> Question title: {{ question['title'] }} </h2>
 <h3> Question message: {{ question['message'] }}</h3>
 {% for answer in answers %}
-<h3> Answer message: {{ answer['message'] }}
+<h3> Answer message {{ loop.index }}: {{ answer['message'] }}
     <a href="{{ url_for("answer_vote_up", answer_id=answer["id"], question_id=answer["question_id"]) }}"><img src="/static/like.png" width="30" height="30" alt="Like"></a>
     <a href="{{ url_for("answer_vote_down", answer_id=answer["id"], question_id=answer["question_id"]) }}"><img src="/static/dislike.png" width="30" height="30" alt="Dislike"></a></h3>
 <h3> <a href="/answer/{{ answer['id']}}/delete"> Delete this answer! </a> </h3>
