@@ -1,7 +1,6 @@
-from flask import Flask, render_template, redirect, request
-
-import connection
-import util
+from flask import Flask, request, render_template, redirect
+from data_manager import sort_questions, get_question_by_id
+from connection import write_question
 
 app = Flask(__name__)
 
@@ -11,31 +10,26 @@ def hello():
     return "Hello World!"
 
 
-@app.route('/add-question', methods=["GET", "POST"])
-def add_question():
-    # new_question_id = int(len(connection.get_questions('sample_data/question.csv'))+1)
-    question_time_stamp = util.get_timestamp()
-    if request.method == "POST":
-        new_question = [question_time_stamp, 0, 0, request.form.get('question_title'),
-                        request.form.get('question_message'), request.form.get('question_image')]
-        connection.write_question('sample_data/question.csv', new_question)
-        return redirect('/question/<question_id>')
-    return render_template('add-question.html')
+@app.route('/list', methods=['GET'])
+def list():
+    args = request.args
+    order_by = args.get('order_by')
+    order_direction = args.get('order_direction')
+    if None not in (order_by, order_direction):
+        sort_questions(order_by, order_direction)
+    return render_template('list.html')
 
 
-@app.route('/question/<question_id>/new-answer', methods=["GET", "POST"])
-def post_answer():
-    answer_time_stamp = util.get_timestamp()
-    if request.method == "POST":
-        new_answer = [answer_time_stamp, 0, 0, 'question ID', request.form.get('answer_message'),
-                      request.form.get('answer_image')]
-        connection.write_answer('sample_data/answer.csv', new_answer)
-        return redirect('/question/<question_id>')
-    return render_template('new-answer.html')
+@app.route('/question/<question_id>/edit', methods=['GET', 'POST'])
+def edit_question(question_id):
+    if request.method == 'POST':
+        question = request.form.to_dict()
+        write_question("/sample_data/answer.csv", question)
+        redirect(f"/question/{question_id}")
+    else:
+        question = get_question_by_id(question_id)
+        return render_template('add_question.html', question=question)
 
 
 if __name__ == "__main__":
-    app.run(
-        debug=True,
-        port=5000
-    )
+    app.run()
