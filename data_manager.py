@@ -1,4 +1,8 @@
-from connection import get_questions, get_answers, write_question, write_answer
+from connection import get_questions, get_answers, write_question, write_answer, get_data_from_file, QUESTION_HEADER, \
+    ANSWER_HEADER, update_question_vote
+
+QUESTIONS_PATH = "./sample_data/question.csv"
+ANSWERS_PATH = "./sample_data/answer.csv"
 
 
 def sort_questions(order_by: str, order_direction: str) -> None:
@@ -25,3 +29,22 @@ def get_answer_by_id(answer_id: int) -> dict:
     for i, answer in enumerate(answers):
         if answer["id"] == answer_id:
             return answer
+
+
+def get_answers_vote():
+    data = get_data_from_file(ANSWERS_PATH)
+    return data
+
+
+def get_questions_vote():
+    data = get_data_from_file(QUESTIONS_PATH)
+    return data
+
+
+def update_question_vote_number(dictionary):
+    update_question_vote(dictionary, QUESTIONS_PATH, QUESTION_HEADER)
+
+
+def update_answer_vote_number(dictionary):
+    update_question_vote(dictionary, ANSWERS_PATH, ANSWER_HEADER)
+

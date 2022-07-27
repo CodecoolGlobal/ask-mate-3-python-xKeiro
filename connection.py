@@ -1,6 +1,7 @@
 import csv
 import os
 
+
 DATA_FILE_PATH = os.getenv('DATA_FILE_PATH') if 'DATA_FILE_PATH' in os.environ else 'data.csv'
 ANSWER_HEADER = ['id', 'submission_time', 'vote_number', 'question_id', 'message', 'image']
 QUESTION_HEADER = ['id', 'submission_time', 'view_number', 'vote_number', 'title', 'message', 'image']
@@ -69,3 +70,35 @@ def write_answer(filename, answer_to_write):
         writer.writeheader()
         writer.writerows(answers)
 
+
+def get_data_from_file(filename):
+    data = []
+
+    with open(filename) as file:
+        reader = csv.DictReader(file)
+        for row in reader:
+            data.append(dict(row))
+    return data
+
+
+def write_data_to_file(dictionary, filename, fieldnames):
+    data = get_data_from_file(filename)
+
+    with open(filename, "w") as file:
+        writer = csv.DictWriter(file, fieldnames=fieldnames)
+        writer.writeheader()
+        for row in data:
+            writer.writerow(row)
+        writer.writerow(dictionary)
+
+
+def update_question_vote(dictionary, filename, fieldnames):
+    data = get_data_from_file(filename)
+
+    with open(filename, "w") as file:
+        writer = csv.DictWriter(file, fieldnames=fieldnames)
+        writer.writeheader()
+        for row in data:
+            if row["id"] == dictionary["id"]:
+                row = dictionary
+            writer.writerow(row)

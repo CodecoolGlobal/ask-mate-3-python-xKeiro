@@ -20,6 +20,7 @@ table, th, td {
         <th>Title</th>
         <th>Message</th>
         <th>Image</th>
+        <th>Vote</th>
     </tr>
     </thead>
     <tbody>
@@ -32,6 +33,9 @@ table, th, td {
             <td>{{ line.title}} </td>
             <td>{{ line.message}}</td>
             <td>{{ line.image}}</td>
+            <td><a href="{{ url_for("question_vote_up", question_id=line["id"]) }}"><img src="/static/like.png" width="30" height="30" alt="Like"></a>
+            <a href="{{ url_for("question_vote_down", question_id=line["id"]) }}"><img src="/static/dislike.png" width="30" height="30" alt="Dislike"></a>
+            </td>
         </tr>
     {% endfor %}
     </tbody>
