@@ -14,7 +14,7 @@ def get_questions(filename):
             questions.append(row)
     for i, question in enumerate(questions):
         questions[i]['id'] = int(question['id'])
-        questions[i]['submission_time'] = int(question['submission_time'])
+        questions[i]['submission_time'] = float(question['submission_time'])
         questions[i]['view_number'] = int(question['view_number'])
         questions[i]['vote_number'] = int(question['vote_number'])
     return questions
@@ -29,13 +29,17 @@ def get_answers(filename):
     for i, answer in enumerate(answers):
         answers[i]['id'] = int(answer['id'])
         answers[i]['submission_time'] = float(answer['submission_time'])
+
         answers[i]['question_id'] = int(answer['question_id'])
         answers[i]['vote_number'] = int(answer['vote_number'])
+
     return answers
 
 
 def write_question(file_path, question_to_write):
-    questions = get_questions("./sample_data/question.csv")
+
+    questions = get_questions('./sample_data/question.csv')
+
     index_of_question_to_replace = None
     for i, question in enumerate(questions):
         if question['id'] == question_to_write['id']:
@@ -64,3 +68,4 @@ def write_answer(filename, answer_to_write):
         writer = csv.DictWriter(f, fieldnames=ANSWER_HEADER)
         writer.writeheader()
         writer.writerows(answers)
+
