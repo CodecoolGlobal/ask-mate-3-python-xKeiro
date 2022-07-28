@@ -8,8 +8,9 @@
 </head>
 <body>
 	<div class="container text-center">
-		<h1 class="mt-5">{{ "Add question" if question == {} else "Edit question" }}</h1>
-		<form action="/add-question" method="POST" enctype="multipart/form-data">
+		<h1 class="mt-5">{{ "Add question" if request.path == "/add-question" else "Edit question" }}</h1>
+		<form action="{{ "/add-question" if request.path == "/add-question" else "/question/"+question["id"]|string+"/edit" }}"
+		      method="POST" enctype="multipart/form-data">
 
 			<input type="hidden" id="id" name="id" value="{{ question.setdefault('id','') }}"/>
 			<input type="hidden" id="submission_time" name="submission_time"
@@ -33,12 +34,13 @@
 			<div>
 				<label for="image">Upload image:</label>
 				<br>
-				<input class= "btn btn-warning" type="file" name="image" id="image">
+				<input class="btn btn-warning" type="file" name="image" id="image">
 			</div>
 			<br>
 			<div>
-				<button class="btn btn-primary" type="submit">Add New Question</button>
-                <h2><a class="btn btn-success" href='/list'> Back </a></h2>
+				<button class="btn btn-primary"
+				        type="submit">{{ "Add new question" if request.path == "/add-question" else "Edit question" }}</button>
+				<h2><a class="btn btn-success" href='/list'> Back </a></h2>
 			</div>
 	</div>
 	</form>

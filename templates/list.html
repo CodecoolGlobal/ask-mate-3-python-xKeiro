@@ -14,7 +14,22 @@
 <body>
 	<div class="container">
 		<h1 class="text-center mt-5 mb-4"> Questions </h1>
-		<table class="table table-striped">
+		<form action="/list" method="POST">
+			<select name="order_by" id="order_by" required>
+				<option {{ 'selected="selected"' if order_by=="id" }} value="id">ID</option>
+				<option {{ 'selected="selected"' if order_by=="submission_time" }} value="submission_time">Submission time</option>
+				<option {{ 'selected="selected"' if order_by=="view_number" }} value="view_number">View number</option>
+				<option {{ 'selected="selected"' if order_by=="vote_number" }} value="vote_number">Vote number</option>
+				<option {{ 'selected="selected"' if order_by=="title" }} value="title">Title</option>
+				<option {{ 'selected="selected"' if order_by=="message" }} value="message">Message</option>
+			</select>
+			<select name="order_direction" id="order_direction" required>
+				<option {{ 'selected="selected"' if order_direction=="asc" }} value="asc">Ascending</option>
+				<option {{ 'selected="selected"' if order_direction=="desc" }} value="desc">Descending</option>
+			</select>
+			<button class="btn btn-outline-secondary" type="submit">Sort</button>
+		</form>
+		<table class="table table-striped mt-3">
 			<thead>
 				<tr>
 					<th>Id</th>

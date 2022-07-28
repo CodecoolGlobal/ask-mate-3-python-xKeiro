@@ -43,7 +43,7 @@ def write_question(file_path, question_to_write):
 
     index_of_question_to_replace = None
     for i, question in enumerate(questions):
-        if question['id'] == question_to_write['id']:
+        if int(question['id']) == int(question_to_write['id']):
             index_of_question_to_replace = i
     if index_of_question_to_replace is None:
         questions.append(question_to_write)
@@ -53,6 +53,13 @@ def write_question(file_path, question_to_write):
         writer = csv.DictWriter(f, fieldnames=QUESTION_HEADER)
         writer.writeheader()
         writer.writerows(questions)
+
+
+def write_questions(file_path, questions_to_write):
+    with open(file_path, mode="w", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=QUESTION_HEADER)
+        writer.writeheader()
+        writer.writerows(questions_to_write)
 
 
 def write_answer(filename, answer_to_write):

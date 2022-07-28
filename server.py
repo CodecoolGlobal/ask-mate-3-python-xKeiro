@@ -26,16 +26,22 @@ def starting_page():
     return redirect('/list')
 
 
-@app.route('/list', methods=['GET'])
+@app.route('/list', methods=['GET', 'POST'])
 def list():
-    questions = get_questions(QUESTIONS_PATH)
-    converted_questions = util.convert_timestamp_to_date(questions)
-    args = request.args
-    order_by = args.get('order_by')
-    order_direction = args.get('order_direction')
-    if None not in (order_by, order_direction):
-        sort_questions(order_by, order_direction)
-    return render_template('list.html', questions=converted_questions)
+    if request.method == 'POST':
+        order_by = request.form.get("order_by")
+        order_direction = request.form.get("order_direction")
+        return redirect(f"/list?order_by={order_by}&order_direction={order_direction}")
+    else:
+        args = request.args
+        order_by = args.get('order_by')
+        order_direction = args.get('order_direction')
+        if None not in (order_by, order_direction):
+            sort_questions(order_by, order_direction)
+        questions = get_questions(QUESTIONS_PATH)
+        converted_questions = util.convert_timestamp_to_date(questions)
+        return render_template('list.html', questions=converted_questions, order_by=order_by,
+                               order_direction=order_direction)
 
 
 @app.route('/question/<question_id>')
@@ -52,8 +58,8 @@ def get_qu(question_id):
 def edit_question(question_id):
     if request.method == 'POST':
         question = request.form.to_dict()
-        write_question(ANSWERS_PATH, question)
-        redirect(f"/question/{question_id}")
+        write_question(QUESTIONS_PATH, question)
+        return redirect(f"/question/{question_id}")
     else:
         question = get_question_by_id(int(question_id))
         return render_template('add-question.html', question=question)
