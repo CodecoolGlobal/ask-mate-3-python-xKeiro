@@ -92,6 +92,20 @@ def post_answer(question_id):
     answer_id = util.generate_new_id_answer()
     if request.method == "POST":
         new_answer = request.form.to_dict()
+        # check if the post request has the file part
+        if 'image' not in request.files:
+            flash('No file part')
+            return redirect(request.url)
+        file = request.files['image']
+        # if user does not select file, browser also
+        # submit a empty part without filename
+        if file.filename == '':
+            flash('No selected file')
+            return redirect(request.url)
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            new_answer["image"] = str(os.path.join(app.config['UPLOAD_FOLDER'], filename))[1:]
         new_answer['id'] = str(answer_id)
         new_answer['submission_time'] = answer_time_stamp
         new_answer['question_id'] = question_id

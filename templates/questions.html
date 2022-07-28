@@ -12,12 +12,13 @@
 	<div class="container bg-white">
 		<h2 class="pt-5"> {{ question['title'] }} </h2>
 		<small class ="text-secondary"> Question id: {{ question['id'] }}</small>
-        <img src="{{ question["image"] }}" class="img-fluid">
+        <img src="{{ question["image"] if question["image"] }}" class="img-fluid">
 		<p class="bg-warning py-2 px-3"> {{ question['message'] }}</p>
 		{% for answer in answers %}
 			<div class="text-dark bg-light py-2 px-3 my-5">
 				<p><strong> Answer {{ loop.index }}:</strong></p>
 				<p>{{ answer['message'] }}</p>
+				<img src="{{ answer["image"] if answer["image"] }}" class="img-fluid">
                 <p>Vote number: {{ answer.vote_number }}</p>
 					<a href="{{ url_for("answer_vote_up", answer_id=answer["id"], question_id=answer["question_id"]) }}"><img
 							src="/static/like.png" width="30" height="30" alt="Like"></a>
