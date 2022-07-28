@@ -1,12 +1,15 @@
 from flask import Flask, request, render_template, redirect
 from connection import write_question, write_answer, del_answer, del_question
 import util
-from data_manager import sort_questions, get_question_by_id, get_answers_by_question_id, get_questions,\
+from data_manager import sort_questions, get_question_by_id, get_answers_by_question_id, get_questions, \
     update_answer_vote_number, update_question_vote_number, get_questions_vote, get_answers_vote
 
 app = Flask(__name__)
 QUESTIONS_PATH = "./sample_data/question.csv"
 ANSWERS_PATH = "./sample_data/answer.csv"
+
+# def date_display():
+#     return util.from_timestamp_to_date()
 
 
 @app.route('/list', methods=['GET'])
@@ -30,6 +33,9 @@ def question_page():
 def get_qu(question_id):
     question_id = int(question_id)
     question = get_question_by_id(question_id)
+    if question_id > 0:
+        question['view_number']+=1
+        write_question(QUESTIONS_PATH, question)
     answers = get_answers_by_question_id(question_id)
     return render_template("questions.html", question=question, answers=answers)
 
