@@ -9,6 +9,10 @@ QUESTIONS_PATH = "./sample_data/question.csv"
 ANSWERS_PATH = "./sample_data/answer.csv"
 
 
+@app.route('/')
+def starting_page():
+    return redirect('/list')
+
 @app.route('/list', methods=['GET'])
 def list():
     questions = get_questions(QUESTIONS_PATH)
