@@ -30,7 +30,7 @@ table, th, td {
             <td>{{ line.submission_time }}</td>
             <td>{{ line.view_number}}</td>
             <td>{{ line.vote_number}} point</td>
-            <td>{{ line.title}} </td>
+            <td> <a href="/question/{{ line["id"] }}"> {{line["title"]}} </a> </p> </td>
             <td>{{ line.message}}</td>
             <td>{{ line.image}}</td>
             <td><a href="{{ url_for("question_vote_up", question_id=line["id"]) }}"><img src="/static/like.png" width="30" height="30" alt="Like"></a>
@@ -40,7 +40,6 @@ table, th, td {
     {% endfor %}
     </tbody>
 </table>
-<h2> <a href=/question>Jump to Questions! </a> </h2>
 <h2> <a href='/add-question'> Add New Questions! </a> </h2>
 </body>
 </html>
