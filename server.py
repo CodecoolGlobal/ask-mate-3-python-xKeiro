@@ -30,12 +30,13 @@ def starting_page():
 @app.route('/list', methods=['GET'])
 def list():
     questions = get_questions(QUESTIONS_PATH)
+    converted_questions = util.convert_timestamp_to_date(questions)
     args = request.args
     order_by = args.get('order_by')
     order_direction = args.get('order_direction')
     if None not in (order_by, order_direction):
         sort_questions(order_by, order_direction)
-    return render_template('list.html', questions=questions)
+    return render_template('list.html', questions=converted_questions)
 
 
 @app.route('/question/<question_id>')
