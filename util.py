@@ -23,6 +23,6 @@ def convert_timestamp_to_date(data):
 
     for row in data:
         time = int(row["submission_time"])
-        row["submission_time"] = datetime.utcfromtimestamp(time)
+        row["submission_time"] = datetime.fromtimestamp(time)
 
     return data
