@@ -55,7 +55,7 @@ def edit_question(question_id):
         write_question(ANSWERS_PATH, question)
         redirect(f"/question/{question_id}")
     else:
-        question = get_question_by_id(question_id)
+        question = get_question_by_id(int(question_id))
         return render_template('add-question.html', question=question)
 
 

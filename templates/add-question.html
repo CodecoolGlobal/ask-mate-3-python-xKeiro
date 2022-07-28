@@ -8,7 +8,7 @@
 </head>
 <body>
 	<div class="container text-center">
-		<h1 class="mt-5">Add question</h1>
+		<h1 class="mt-5">{{ "Add question" if question == {} else "Edit question" }}</h1>
 		<form action="/add-question" method="POST" enctype="multipart/form-data">
 
 			<input type="hidden" id="id" name="id" value="{{ question.setdefault('id','') }}"/>
@@ -21,13 +21,13 @@
 			<div>
 				<label for="title">Question Title:</label>
 				<br>
-				<input type="text" name="title" id="title" required>
+				<input type="text" name="title" id="title" value="{{ question.setdefault('title','') }}" required>
 			</div>
 			<br>
 			<div>
 				<label for="message">Question message:</label>
 				<br>
-				<textarea name="message" id="message" required></textarea>
+				<textarea name="message" id="message" required>{{ question.setdefault('message','') }}</textarea>
 			</div>
 			<br>
 			<div>
