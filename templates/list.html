@@ -13,7 +13,7 @@
 </head>
 <body>
 	<div class="container">
-		<h1 class="text-center"> Questions </h1>
+		<h1 class="text-center mt-5 mb-4"> Questions </h1>
 		<table class="table table-striped">
 			<thead>
 				<tr>
@@ -23,7 +23,6 @@
 					<th>Vote number</th>
 					<th>Title</th>
 					<th>Message</th>
-					<th>Image</th>
 					<th>Vote</th>
 				</tr>
 			</thead>
@@ -36,7 +35,6 @@
 						<td>{{ question.vote_number }} point</td>
 						<td><a href="/question/{{ question["id"] }}"> {{question["title"]}} </a> </td>
 						<td>{{ question.message }}</td>
-						<td>{{ question.image }}</td>
 						<td><a href="{{ url_for("question_vote_up", question_id=question["id"]) }}"><img
 								src="/static/like.png" width="30" height="30" alt="Like"></a>
 							<a href="{{ url_for("question_vote_down", question_id=question["id"]) }}"><img

@@ -3,10 +3,23 @@ from connection import write_question, write_answer, del_answer, del_question
 import util
 from data_manager import sort_questions, get_question_by_id, get_answers_by_question_id, get_questions, \
     update_answer_vote_number, update_question_vote_number, get_questions_vote, get_answers_vote
+import os
+from flask import Flask, flash, request, redirect, url_for
+from werkzeug.utils import secure_filename
 
-app = Flask(__name__)
 QUESTIONS_PATH = "./sample_data/question.csv"
 ANSWERS_PATH = "./sample_data/answer.csv"
+UPLOAD_FOLDER = './static/upload'
+ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
+
+app = Flask(__name__)
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['SECRET_KEY'] = "Valami"
+
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
 @app.route('/')
@@ -52,6 +65,20 @@ def add_question():
     question_id = util.generate_new_id()
     if request.method == "POST":
         new_question = request.form.to_dict()
+        # check if the post request has the file part
+        if 'image' not in request.files:
+            flash('No file part')
+            return redirect(request.url)
+        file = request.files['image']
+        # if user does not select file, browser also
+        # submit a empty part without filename
+        if file.filename == '':
+            flash('No selected file')
+            return redirect(request.url)
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            new_question["image"] = str(os.path.join(app.config['UPLOAD_FOLDER'], filename))[1:]
         new_question['id'] = str(question_id)
         new_question['submission_time'] = question_time_stamp
         write_question('./sample_data/question.csv', new_question)
