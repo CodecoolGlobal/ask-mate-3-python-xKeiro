@@ -12,6 +12,7 @@
 	<div class="container bg-white">
 		<h2 class="pt-5"> {{ question['title'] }} </h2>
 		<small class ="text-secondary"> Question id: {{ question['id'] }}</small>
+		<br>
         <img src="{{ question["image"] if question["image"] }}" class="img-fluid">
 		<p class="bg-warning py-2 px-3"> {{ question['message'] }}</p>
     <h2><a class="btn btn-info" href="/question/{{ question['id'] }}/edit">Edit question</a></h2>

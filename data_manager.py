@@ -1,5 +1,5 @@
 from connection import get_questions, get_answers, write_question, write_answer, get_data_from_file, QUESTION_HEADER, \
-    ANSWER_HEADER, update_question_vote
+    ANSWER_HEADER, update_question_vote, write_questions
 
 QUESTIONS_PATH = "./sample_data/question.csv"
 ANSWERS_PATH = "./sample_data/answer.csv"
@@ -14,7 +14,7 @@ def sort_questions(order_by: str, order_direction: str) -> None:
             and order_direction in ['asc', 'desc']:
         questions = get_questions("./sample_data/question.csv")
         sorted_questions = sorted(questions, key=lambda question: question[order_by], reverse=order_direction == "desc")
-        write_question("./sample_data/question.csv", sorted_questions)
+        write_questions("./sample_data/question.csv", sorted_questions)
 
 
 def get_question_by_id(question_id: int) -> dict:
