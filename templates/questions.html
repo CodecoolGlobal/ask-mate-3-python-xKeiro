@@ -1,20 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <style>
+table, th, td {
+  border: 1px solid black;
+}
+</style>
     <meta charset="UTF-8">
     <title>Questions</title>
 </head>
 <body>
-<h1> Question number: {{ question['id'] }}</h1>
-<h2> Question title: {{ question['title'] }} </h2>
-<h3> Question message: {{ question['message'] }}</h3>
+<h2> Question number: {{ question['id'] }}</h2>
+<hr>
+<table>
+<tr>
+    <td><h3> Question title: {{ question['title'] }} </h3></td>
+</tr>
+    <tr>
+        <td><h3> Question message: {{ question['message'] }}</h3></td>
+    </tr>
 {% for answer in answers %}
-<h3> Answer message {{ loop.index }}: {{ answer['message'] }}
+    <tr>
+<td><h3> Answer message {{ loop.index }}: {{ answer['message'] }}
     <a href="{{ url_for("answer_vote_up", answer_id=answer["id"], question_id=answer["question_id"]) }}"><img src="/static/like.png" width="30" height="30" alt="Like"></a>
     <a href="{{ url_for("answer_vote_down", answer_id=answer["id"], question_id=answer["question_id"]) }}"><img src="/static/dislike.png" width="30" height="30" alt="Dislike"></a></h3>
-<h3> <a href="/answer/{{ answer['id']}}/delete"> Delete this answer! </a> </h3>
+    <h3> <a href="/answer/{{ answer['id']}}/delete"> Delete this answer! </a> </h3> </td>
+    </tr>
 {% endfor %}
-<h2> <a href="/question/{{ question['id']}}/new-answer">Add a new answer! </a> </h2>
+<h3> <a href="/question/{{ question['id']}}/new-answer">Add a new answer! </a> </h3>
 <h3> <a href="/question/{{ question['id']}}/delete">Delete this question! </a> </h3>
+</tr>
+</table>
 </body>
 </html>

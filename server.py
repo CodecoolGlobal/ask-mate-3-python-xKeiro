@@ -1,7 +1,7 @@
 from flask import Flask, request, render_template, redirect
 from connection import write_question, write_answer, del_answer, del_question
 import util
-from data_manager import sort_questions, get_question_by_id, get_answers_by_question_id, get_questions,\
+from data_manager import sort_questions, get_question_by_id, get_answers_by_question_id, get_questions, \
     update_answer_vote_number, update_question_vote_number, get_questions_vote, get_answers_vote
 
 app = Flask(__name__)
@@ -13,6 +13,7 @@ ANSWERS_PATH = "./sample_data/answer.csv"
 def starting_page():
     return redirect('/list')
 
+
 @app.route('/list', methods=['GET'])
 def list():
     questions = get_questions(QUESTIONS_PATH)
@@ -22,12 +23,6 @@ def list():
     if None not in (order_by, order_direction):
         sort_questions(order_by, order_direction)
     return render_template('list.html', questions=questions)
-
-
-@app.route('/question/')
-def question_page():
-    question = get_questions(QUESTIONS_PATH)
-    return render_template("questionmain.html", question=question)
 
 
 @app.route('/question/<question_id>')
@@ -82,14 +77,14 @@ def post_answer(question_id):
 def delete_question(question_id):
     question_id = int(question_id)
     del_question(QUESTIONS_PATH, question_id)
-    return redirect('/question')
+    return redirect('/list')
 
 
 @app.route('/answer/<answer_id>/delete')
 def delete_answers(answer_id):
     answer_id = int(answer_id)
     del_answer(ANSWERS_PATH, answer_id)
-    return redirect('/question')
+    return redirect('/list')
 
 
 @app.route('/question/<question_id>/vote-up')
