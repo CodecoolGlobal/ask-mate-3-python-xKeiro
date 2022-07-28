@@ -1,45 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <style>
-table, th, td {
-  border: 1px solid black;
-}
-</style>
-    <meta charset="UTF-8">
-    <title> List </title>
+	<style>
+        table, th, td {
+            border: 1px solid black;
+        }
+	</style>
+	<meta charset="UTF-8">
+	<title> List </title>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet"
+	      integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
 </head>
 <body>
-<h1> Questions </h1>
-<table>
-    <thead>
-    <tr><th>Id</th>
-        <th>Submission time</th>
-        <th>View number</th>
-        <th>Vote number</th>
-        <th>Title</th>
-        <th>Message</th>
-        <th>Image</th>
-        <th>Vote</th>
-    </tr>
-    </thead>
-    <tbody>
-    {% for line in questions %}
-        <tr>
-            <td>{{ line.id }}</td>
-            <td>{{ line.submission_time }}</td>
-            <td>{{ line.view_number}}</td>
-            <td>{{ line.vote_number}} point</td>
-            <td> <a href="/question/{{ line["id"] }}"> {{line["title"]}} </a> </p> </td>
-            <td>{{ line.message}}</td>
-            <td>{{ line.image}}</td>
-            <td><a href="{{ url_for("question_vote_up", question_id=line["id"]) }}"><img src="/static/like.png" width="30" height="30" alt="Like"></a>
-            <a href="{{ url_for("question_vote_down", question_id=line["id"]) }}"><img src="/static/dislike.png" width="30" height="30" alt="Dislike"></a>
-            </td>
-        </tr>
-    {% endfor %}
-    </tbody>
-</table>
-<h2> <a href='/add-question'> Add New Questions! </a> </h2>
+	<div class="container">
+		<h1 class="text-center"> Questions </h1>
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Id</th>
+					<th>Submission time</th>
+					<th>View number</th>
+					<th>Vote number</th>
+					<th>Title</th>
+					<th>Message</th>
+					<th>Image</th>
+					<th>Vote</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for question in questions %}
+					<tr>
+						<td>{{ question.id }}</td>
+						<td>{{ question.submission_time }}</td>
+						<td>{{ question.view_number }}</td>
+						<td>{{ question.vote_number }} point</td>
+						<td><a href="/question/{{ question["id"] }}"> {{question["title"]}} </a> </td>
+						<td>{{ question.message }}</td>
+						<td>{{ question.image }}</td>
+						<td><a href="{{ url_for("question_vote_up", question_id=question["id"]) }}"><img
+								src="/static/like.png" width="30" height="30" alt="Like"></a>
+							<a href="{{ url_for("question_vote_down", question_id=question["id"]) }}"><img
+									src="/static/dislike.png" width="30" height="30" alt="Dislike"></a>
+						</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+		<h2><a class="btn btn-warning" href='/add-question'> Add New Questions! </a></h2>
+	</div>
 </body>
 </html>
