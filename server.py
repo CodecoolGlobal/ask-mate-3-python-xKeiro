@@ -4,7 +4,6 @@ import util
 from data_manager import sort_questions, get_question_by_id, get_answers_by_question_id, get_questions, \
     update_answer_vote_number, update_question_vote_number, get_questions_vote, get_answers_vote
 import os
-from flask import Flask, flash, request, redirect, url_for
 from werkzeug.utils import secure_filename
 
 QUESTIONS_PATH = "./sample_data/question.csv"
