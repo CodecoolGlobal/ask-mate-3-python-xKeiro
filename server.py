@@ -43,7 +43,7 @@ def get_qu(question_id):
     question_id = int(question_id)
     question = get_question_by_id(question_id)
     question["view_number"] += 1
-    write_question('./sample_data/question.csv', question)
+    write_question(QUESTIONS_PATH, question)
     answers = get_answers_by_question_id(question_id)
     return render_template("questions.html", question=question, answers=answers)
 
@@ -81,7 +81,7 @@ def add_question():
             new_question["image"] = str(os.path.join(app.config['UPLOAD_FOLDER'], filename))[1:]
         new_question['id'] = str(question_id)
         new_question['submission_time'] = question_time_stamp
-        write_question('./sample_data/question.csv', new_question)
+        write_question(QUESTIONS_PATH, new_question)
         return redirect(f'/question/{question_id}')
     return render_template('add-question.html', question={})
 
