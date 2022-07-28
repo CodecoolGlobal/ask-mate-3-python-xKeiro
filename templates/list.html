@@ -35,7 +35,8 @@
 						<td>{{ question.vote_number }} point</td>
 						<td><a href="/question/{{ question["id"] }}"> {{question["title"]}} </a> </td>
 						<td>{{ question.message }}</td>
-						<td><a href="{{ url_for("question_vote_up", question_id=question["id"]) }}"><img
+						<td>
+                            <a href="{{ url_for("question_vote_up", question_id=question["id"]) }}"><img
 								src="/static/like.png" width="30" height="30" alt="Like"></a>
 							<a href="{{ url_for("question_vote_down", question_id=question["id"]) }}"><img
 									src="/static/dislike.png" width="30" height="30" alt="Dislike"></a>
