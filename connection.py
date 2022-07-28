@@ -104,28 +104,25 @@ def update_question_vote(dictionary, filename, fieldnames):
             writer.writerow(row)
 
 
-def del_question(filename, question_to_delete):
-    id_to_delete = None
+def del_question_by_id(filename, question_id_to_delete):
     questions = get_questions(filename)
     for i, question in enumerate(questions):
-        if question['id'] == question_to_delete:
+        if question['id'] == question_id_to_delete:
             questions.pop(i)
-            id_to_delete = i
-    if id_to_delete is not None:
         with open(filename, mode="w", newline="") as f:
             writer = csv.DictWriter(f, fieldnames=QUESTION_HEADER)
             writer.writeheader()
             writer.writerows(questions)
         answers = get_answers(ANSWER_PATH)
         for answer in answers:
-            if answer["question_id"] == id_to_delete:
-                del_answer(filename, answer)
+            if answer["question_id"] == question_id_to_delete:
+                del_answer_by_id(ANSWER_PATH, answer['id'])
 
 
-def del_answer(filename, answer_to_delete):
+def del_answer_by_id(filename, answer_id_to_delete):
     answers = get_answers(filename)
     for i, answer in enumerate(answers):
-        if answer['id'] == answer_to_delete:
+        if answer['id'] == answer_id_to_delete:
             answers.pop(i)
     with open(filename, mode="w", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=ANSWER_HEADER)

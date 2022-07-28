@@ -1,5 +1,5 @@
 from flask import Flask, request, render_template, redirect
-from connection import write_question, write_answer, del_answer, del_question
+from connection import write_question, write_answer, del_answer_by_id, del_question_by_id
 import util
 from data_manager import sort_questions, get_question_by_id, get_answers_by_question_id, get_questions, \
     update_answer_vote_number, update_question_vote_number, get_questions_vote, get_answers_vote
@@ -116,16 +116,16 @@ def post_answer(question_id):
 
 
 @app.route('/question/<question_id>/delete')
-def delete_question(question_id):
+def delete_question_id(question_id):
     question_id = int(question_id)
-    del_question(QUESTIONS_PATH, question_id)
+    del_question_by_id(QUESTIONS_PATH, question_id)
     return redirect('/list')
 
 
 @app.route('/answer/<answer_id>/delete')
 def delete_answers(answer_id):
     answer_id = int(answer_id)
-    del_answer(ANSWERS_PATH, answer_id)
+    del_answer_by_id(ANSWERS_PATH, answer_id)
     return redirect('/list')
 
 
