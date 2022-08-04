@@ -25,7 +25,7 @@ CREATE TABLE answer
 CREATE TABLE question_answer
 (
     question_id INTEGER NOT NULL,
-    answer_id   INTEGER NOT NULL,
+    answer_id   INTEGER,
     PRIMARY KEY (question_id, answer_id),
     FOREIGN KEY (question_id) REFERENCES question (id),
     FOREIGN KEY (answer_id) REFERENCES answer (id)
