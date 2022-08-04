@@ -1,6 +1,5 @@
 DROP TABLE IF EXISTS question;
 DROP TABLE IF EXISTS answer;
-DROP TABLE IF EXISTS question_answer;
 
 CREATE TABLE question
 (
@@ -18,18 +17,12 @@ CREATE TABLE answer
     id              SERIAL PRIMARY KEY,
     submission_time FLOAT   NOT NULL,
     vote_number     INTEGER NOT NULL,
+    question_id     INTEGER NOT NULL,
     message         TEXT    NOT NULL,
-    image           VARCHAR(255)
+    image           VARCHAR(255),
+    FOREIGN KEY (question_id) REFERENCES question(id) ON DELETE CASCADE
 );
 
-CREATE TABLE question_answer
-(
-    question_id INTEGER NOT NULL,
-    answer_id   INTEGER,
-    PRIMARY KEY (question_id, answer_id),
-    FOREIGN KEY (question_id) REFERENCES question (id),
-    FOREIGN KEY (answer_id) REFERENCES answer (id)
-);
 
 INSERT INTO question
 VALUES (1, 1659038514.0, 1, 0, 'Test question', 'Am I doing this right?', NULL),
@@ -48,19 +41,12 @@ app.js (bundled file with webpack, including jquery)', NULL),
        (4, 1659038414.753183, 9, -3, 'Am I doing this right?', 'Am I doing this right?', NULL);
 
 INSERT INTO answer
-VALUES (1, 1493398154.0, 4, 'You need to use brackets: my_list = []', NULL),
+VALUES (1, 1493398154.0, 4, 3, 'You need to use brackets: my_list = []', NULL),
 
-       (2, 1493088154.0, 35, 'Look it up in the Python docs', NULL),
+       (2, 1493088154.0, 35, 3, 'Look it up in the Python docs', NULL),
 
-       (3, 1658935457.113151, -7, 'You need to do something', NULL),
+       (3, 1658935457.113151, -7, 2, 'You need to do something', NULL),
 
-       (4, 1659038513.407616, 3,
+       (4, 1659038513.407616, 3, 4,
         'You forgot to provide example code and context!,/static/upload\76-765183_cute-cat-stickers-series-cute-angry-cat-cartoon.png',
         NULL);
-
-
-INSERT INTO question_answer
-VALUES (3, 1),
-       (3, 2),
-       (2, 3),
-       (4, 4);
