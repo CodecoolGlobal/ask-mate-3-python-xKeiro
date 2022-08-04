@@ -23,7 +23,7 @@ def allowed_file(filename):
 
 @app.route('/')
 def starting_page():
-    return redirect('/list')
+    return list()
 
 
 @app.route('/list', methods=['GET', 'POST'])
