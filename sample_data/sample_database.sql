@@ -1,5 +1,8 @@
 DROP TABLE IF EXISTS question;
 DROP TABLE IF EXISTS answer;
+DROP TABLE IF EXISTS comment;
+DROP TABLE IF EXISTS tag;
+DROP TABLE IF EXISTS question_tag;
 
 CREATE TABLE question
 (
@@ -9,7 +12,8 @@ CREATE TABLE question
     vote_number     INTEGER      NOT NULL,
     title           VARCHAR(150) NOT NULL,
     message         TEXT         NOT NULL,
-    image           VARCHAR(255)
+    image           VARCHAR(255),
+    edit_count      INTEGER      NOT NULL DEFAULT 0
 );
 
 CREATE TABLE answer
@@ -20,8 +24,35 @@ CREATE TABLE answer
     question_id     INTEGER NOT NULL,
     message         TEXT    NOT NULL,
     image           VARCHAR(255),
-    FOREIGN KEY (question_id) REFERENCES question(id) ON DELETE CASCADE
+    edit_count      INTEGER NOT NULL DEFAULT 0,
+    FOREIGN KEY (question_id) REFERENCES question (id) ON DELETE CASCADE
 );
+
+CREATE TABLE comment
+(
+    id                SERIAL PRIMARY KEY,
+    parent_comment_id INTEGER,
+    answer_id         INTEGER,
+    message           TEXT    NOT NULL,
+    submission_time   FLOAT   NOT NULL,
+    edit_count        INTEGER NOT NULL DEFAULT 0,
+    FOREIGN KEY (answer_id) REFERENCES answer (id) ON DELETE CASCADE
+);
+
+CREATE TABLE tag
+(
+    id   SERIAL PRIMARY KEY,
+    name VARCHAR(25)
+);
+
+CREATE TABLE question_tag
+(
+    question_id INTEGER,
+    tag_id      INTEGER,
+    FOREIGN KEY (question_id) REFERENCES question (id) ON DELETE CASCADE,
+    FOREIGN KEY (tag_id) REFERENCES tag (id) ON DELETE CASCADE
+);
+
 
 
 INSERT INTO question
@@ -50,3 +81,17 @@ VALUES (1, 1493398154.0, 4, 3, 'You need to use brackets: my_list = []', NULL),
        (4, 1659038513.407616, 3, 4,
         'You forgot to provide example code and context!,/static/upload\76-765183_cute-cat-stickers-series-cute-angry-cat-cartoon.png',
         NULL);
+
+INSERT INTO comment
+VALUES (1, NULL, 1, 'This is a comment', 1893088154.0),
+       (2, 1, NULL, 'This is a comment to a comment', 1993088154.0);
+
+INSERT INTO tag
+VALUES (1, 'Code'),
+       (2, 'Cooking'),
+       (3, 'Newbie');
+
+INSERT INTO question_tag
+VALUES  (1,1),
+        (1,2),
+        (3,3);
