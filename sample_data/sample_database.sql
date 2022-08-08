@@ -56,8 +56,8 @@ CREATE TABLE question_tag
 
 
 INSERT INTO question
-VALUES (1, 1659038514.0, 1, 0, 'Test question', 'Am I doing this right?', NULL),
-       (2, 1493068124.0, 56, 9, 'Wordpress loading multiple jQuery Versions',
+VALUES (1, '2017-04-28 08:29:00', 1, 0, 'Test question', 'Am I doing this right?', NULL),
+       (2, '2017-04-28 08:29:00', 56, 9, 'Wordpress loading multiple jQuery Versions',
         'I developed a plugin that uses the jquery booklet plugin (http://builtbywill.com/booklet/#/) this plugin binds a function to $ so I cann call $(''.myBook '').booklet();
 
 I could easy managing the loading order with wp_enqueue_script so first I load jquery then I load booklet so everything is fine.
