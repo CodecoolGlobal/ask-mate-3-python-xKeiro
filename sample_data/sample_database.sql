@@ -7,7 +7,7 @@ DROP TABLE IF EXISTS question_tag;
 CREATE TABLE question
 (
     id              SERIAL PRIMARY KEY,
-    submission_time FLOAT        NOT NULL,
+    submission_time TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     view_number     INTEGER      NOT NULL,
     vote_number     INTEGER      NOT NULL,
     title           VARCHAR(150) NOT NULL,
@@ -19,7 +19,7 @@ CREATE TABLE question
 CREATE TABLE answer
 (
     id              SERIAL PRIMARY KEY,
-    submission_time FLOAT   NOT NULL,
+    submission_time TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     vote_number     INTEGER NOT NULL,
     question_id     INTEGER NOT NULL,
     message         TEXT    NOT NULL,
@@ -34,7 +34,7 @@ CREATE TABLE comment
     parent_comment_id INTEGER,
     answer_id         INTEGER,
     message           TEXT    NOT NULL,
-    submission_time   FLOAT   NOT NULL,
+    submission_time   TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     edit_count        INTEGER NOT NULL DEFAULT 0,
     FOREIGN KEY (answer_id) REFERENCES answer (id) ON DELETE CASCADE
 );
@@ -67,24 +67,24 @@ BUT in my theme i also using jquery via webpack so the loading order is now foll
 jquery
 booklet
 app.js (bundled file with webpack, including jquery)', NULL),
-       (3, 1659036107.082323, 71, 7, 'How to make lists in Python?', 'I am totally new to this, any hints?',
+       (3, '2017-04-28 08:29:00', 71, 7, 'How to make lists in Python?', 'I am totally new to this, any hints?',
         '/static/upload\1_pqJe7r067R7ZX569OloQew.jpg'),
-       (4, 1659038414.753183, 9, -3, 'Am I doing this right?', 'Am I doing this right?', NULL);
+       (4, '2017-04-28 08:29:00', 9, -3, 'Am I doing this right?', 'Am I doing this right?', NULL);
 
 INSERT INTO answer
-VALUES (1, 1493398154.0, 4, 3, 'You need to use brackets: my_list = []', NULL),
+VALUES (1, '2017-04-28 08:29:00', 4, 3, 'You need to use brackets: my_list = []', NULL),
 
-       (2, 1493088154.0, 35, 3, 'Look it up in the Python docs', NULL),
+       (2, '2017-04-28 08:29:00', 35, 3, 'Look it up in the Python docs', NULL),
 
-       (3, 1658935457.113151, -7, 2, 'You need to do something', NULL),
+       (3, '2017-04-28 08:29:00', -7, 2, 'You need to do something', NULL),
 
-       (4, 1659038513.407616, 3, 4,
+       (4, '2017-04-28 08:29:00', 3, 4,
         'You forgot to provide example code and context!,/static/upload\76-765183_cute-cat-stickers-series-cute-angry-cat-cartoon.png',
         NULL);
 
 INSERT INTO comment
-VALUES (1, NULL, 1, 'This is a comment', 1893088154.0),
-       (2, 1, NULL, 'This is a comment to a comment', 1993088154.0);
+VALUES (1, NULL, 1, 'This is a comment', '2017-04-28 08:29:00'),
+       (2, 1, NULL, 'This is a comment to a comment', '2017-04-28 08:29:00');
 
 INSERT INTO tag
 VALUES (1, 'Code'),
