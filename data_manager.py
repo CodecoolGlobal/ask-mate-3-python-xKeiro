@@ -1,8 +1,5 @@
 import database_common
 
-QUESTIONS_PATH = "./sample_data/question.csv"
-ANSWERS_PATH = "./sample_data/answer.csv"
-
 
 @database_common.connection_handler
 def get_questions(cursor):

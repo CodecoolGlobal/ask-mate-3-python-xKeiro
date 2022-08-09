@@ -1,5 +1,5 @@
 from flask import Flask, request, render_template, redirect
-from connection import write_question, write_answer, del_answer_by_id, del_question_by_id, update_question_by_id, \
+from connection import write_question_and_return_new_id, write_answer, del_answer_by_id, del_question_by_id, update_question_by_id, \
     update_answer_by_id
 import util
 from data_manager import get_sorted_questions, get_question_by_id, get_answers_by_question_id, get_answer_by_id, \
@@ -81,8 +81,8 @@ def add_question():
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             new_question["image"] = str(os.path.join(app.config['UPLOAD_FOLDER'], filename))[1:]
-        write_question(new_question)
-        return redirect(f'/question/')  # !!!! NEEED TO BE UPDATED TO HAVE QUESTION ID !!!!
+        question_id = write_question_and_return_new_id(new_question)
+        return redirect(f'/question/{question_id}')  # !!!! NEEED TO BE UPDATED TO HAVE QUESTION ID !!!!
     return render_template('add-question.html', question={})
 
 
