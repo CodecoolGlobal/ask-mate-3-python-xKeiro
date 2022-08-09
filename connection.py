@@ -129,3 +129,10 @@ def del_answer_by_id(cursor, id):
         """
     val = (id,)
     cursor.execute(query, val)
+
+@database_common.connection_handler
+def write_comment_by_answer_id(cursor, answer_id, new_comment):
+    cursor.execute(""" 
+    INSERT INTO comment (answer_id, message) 
+    VALUES (%(a_s)s, %(n_c)s);
+    """, {'a_s': int(answer_id), 'n_c': new_comment})

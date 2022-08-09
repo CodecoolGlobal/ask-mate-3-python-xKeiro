@@ -1,8 +1,9 @@
 from flask import Flask, request, render_template, redirect
+
 from connection import write_question, write_answer, del_answer_by_id, del_question_by_id, update_question_by_id, \
-    update_answer_by_id
+    update_answer_by_id, write_comment_by_answer_id
 import util
-from data_manager import get_sorted_questions, get_question_by_id, get_answers_by_question_id, get_answer_by_id, \
+from data_manager import get_sorted_questions, get_question_by_id, get_answers_by_question_id, get_answer_by_id, get_comments, \
     get_questions
 import os
 from werkzeug.utils import secure_filename
@@ -47,9 +48,10 @@ def get_question(question_id):
     question_id = int(question_id)
     question = get_question_by_id(question_id)
     question["view_count"] += 1
-    update_question_by_id(question_id,question)
+    update_question_by_id(question_id, question)
     answers = get_answers_by_question_id(question_id)
-    return render_template("questions.html", question=question, answers=answers)
+    comments = get_comments()
+    return render_template("questions.html", question=question, answers=answers, comments=comments)
 
 
 @app.route('/question/<question_id>/edit', methods=['GET', 'POST'])
@@ -109,6 +111,17 @@ def post_answer(question_id):
         return redirect(f'/question/{question_id}')
     return render_template('new-answer.html', id=question_id, answer={})
 
+@app.route('/answer/<answer_id>/new-comment', methods=['POST','GET'])
+def add_a_comment_to_answer(answer_id):
+    if request.method == 'GET':
+        return render_template('add-comment.html')
+    elif request.method == 'POST':
+        new_comment = request.form["add-comment"]
+        write_comment_by_answer_id(answer_id,new_comment)
+        return redirect("/list")
+
+
+
 
 @app.route('/question/<question_id>/delete')
 def delete_question_id(question_id):
@@ -147,7 +160,6 @@ def answer_vote_up(answer_id):
     answer = get_answer_by_id(answer_id)
     answer["vote_count"] += 1
     update_answer_by_id(answer_id, answer)
-    return redirect("/list")
     return redirect(f"/question/{question_id}")
 
 
@@ -158,7 +170,6 @@ def answer_vote_down(answer_id):
     answer = get_answer_by_id(answer_id)
     answer["vote_count"] -= 1
     update_answer_by_id(answer_id, answer)
-    return redirect("/list")
     return redirect(f"/question/{question_id}")
 
 

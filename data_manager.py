@@ -13,6 +13,7 @@ def get_questions(cursor):
     cursor.execute(query)
     return cursor.fetchall()
 
+
 @database_common.connection_handler
 def get_answers(cursor):
     query = """
@@ -21,7 +22,14 @@ def get_answers(cursor):
         """
     cursor.execute(query)
     return cursor.fetchall()
-
+@database_common.connection_handler
+def get_comments(cursor):
+    query = """
+    SELECT * 
+    FROM comment 
+    """
+    cursor.execute(query)
+    return cursor.fetchall()
 @database_common.connection_handler
 def get_sorted_questions(cursor, order_by: str, order_direction: str):
     '''
@@ -49,9 +57,10 @@ def get_question_by_id(cursor, id: int):
         FROM question
         WHERE id = %s
         """
-    val=(id,)
+    val = (id,)
     cursor.execute(query, val)
     return cursor.fetchall()[0]
+
 
 @database_common.connection_handler
 def get_answer_by_id(cursor, id: int):
@@ -60,9 +69,10 @@ def get_answer_by_id(cursor, id: int):
         FROM answer
         WHERE id = %s
         """
-    val=(id,)
+    val = (id,)
     cursor.execute(query, val)
     return cursor.fetchall()[0]
+
 
 @database_common.connection_handler
 def get_answers_by_question_id(cursor, question_id: int):
@@ -71,6 +81,16 @@ def get_answers_by_question_id(cursor, question_id: int):
         FROM answer
         WHERE question_id = %s
         """
-    val=(question_id,)
-    cursor.execute(query,val)
+    val = (question_id,)
+    cursor.execute(query, val)
+    return cursor.fetchall()
+
+@database_common.connection_handler
+def get_comment_by_answer_id(cursor,answer_id: int):
+    query = """
+    SELECT * FROM comment
+    WHERE answer_id = %s
+    """
+    val = (answer_id, )
+    cursor.execute(query, val)
     return cursor.fetchall()
