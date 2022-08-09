@@ -1,11 +1,12 @@
 import database_common
-
+from psycopg2 import sql
 
 @database_common.connection_handler
 def get_questions(cursor):
     query = """
         SELECT *
         FROM question
+        ORDER BY id
         """
     cursor.execute(query)
     return cursor.fetchall()
@@ -27,13 +28,12 @@ def get_sorted_questions(cursor, order_by: str, order_direction: str):
     '''
     if order_by in ['id', 'title', 'submission_time', 'message', 'view_count', 'vote_count'] \
             and order_direction in ['asc', 'desc']:
-        query = """
+        query = f"""
             SELECT *
             FROM question
-            ORDER BY %s %s
+            ORDER BY {order_by} {order_direction.upper()}
         """
-        val = (order_by, order_direction.upper())
-        cursor.execute(query, val)
+        cursor.execute(sql.SQL(query))
         return cursor.fetchall()
     else:
         return get_questions()
