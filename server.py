@@ -1,9 +1,10 @@
 from flask import Flask, request, render_template, redirect
-from connection import write_question_and_return_new_id, write_answer, del_answer_by_id, del_question_by_id, update_question_by_id, \
+from connection import write_question_and_return_new_id, write_answer, del_answer_by_id, del_question_by_id, \
+    update_question_by_id, \
     update_answer_by_id
 import util
 from data_manager import get_sorted_questions, get_question_by_id, get_answers_by_question_id, get_answer_by_id, \
-    get_questions
+    get_questions, get_question_id_by_answer_id
 import os
 from werkzeug.utils import secure_filename
 
@@ -47,7 +48,7 @@ def get_question(question_id):
     question_id = int(question_id)
     question = get_question_by_id(question_id)
     question["view_count"] += 1
-    update_question_by_id(question_id,question)
+    update_question_by_id(question_id, question)
     answers = get_answers_by_question_id(question_id)
     return render_template("questions.html", question=question, answers=answers)
 
@@ -160,6 +161,20 @@ def answer_vote_down(answer_id):
     update_answer_by_id(answer_id, answer)
     return redirect("/list")
     return redirect(f"/question/{question_id}")
+
+
+# edit answer:
+@app.route('/answer/<answer_id>/edit', methods=['GET', 'POST'])
+def edit_answer(answer_id):
+    if request.method == 'POST':
+        answer = request.form.to_dict()
+        update_answer_by_id(answer_id, answer)
+        question_id= get_question_id_by_answer_id(answer_id)
+        return redirect(f"/question/{question_id}")
+    else:
+        answer = get_answer_by_id(int(answer_id))
+        question_id = get_question_id_by_answer_id(answer_id)
+        return render_template('new-answer.html', answer=answer, answer_id=answer_id, question_id=question_id)
 
 
 if __name__ == "__main__":

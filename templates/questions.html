@@ -28,6 +28,8 @@
 							src="/static/dislike.png" width="30" height="30" alt="Dislike"></a>
 				<br>
 				<a class= "text-success" href="/answer/{{ answer['id'] }}/delete"> Delete this answer! </a>
+                <br>
+                <a class= "text-success" href="/answer/{{ answer['id'] }}/edit"> Edit this answer! </a>
 			</div>
 		{% endfor %}
 		<h2><a class="btn btn-primary" href="/question/{{ question['id'] }}/new-answer">Add a new answer! </a></h2>

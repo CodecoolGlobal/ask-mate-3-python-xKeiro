@@ -1,6 +1,7 @@
 import database_common
 from psycopg2 import sql
 
+
 @database_common.connection_handler
 def get_questions(cursor):
     query = """
@@ -11,6 +12,7 @@ def get_questions(cursor):
     cursor.execute(query)
     return cursor.fetchall()
 
+
 @database_common.connection_handler
 def get_answers(cursor):
     query = """
@@ -19,6 +21,7 @@ def get_answers(cursor):
         """
     cursor.execute(query)
     return cursor.fetchall()
+
 
 @database_common.connection_handler
 def get_sorted_questions(cursor, order_by: str, order_direction: str):
@@ -46,9 +49,10 @@ def get_question_by_id(cursor, id: int):
         FROM question
         WHERE id = %s
         """
-    val=(id,)
+    val = (id,)
     cursor.execute(query, val)
     return cursor.fetchall()[0]
+
 
 @database_common.connection_handler
 def get_answer_by_id(cursor, id: int):
@@ -57,9 +61,10 @@ def get_answer_by_id(cursor, id: int):
         FROM answer
         WHERE id = %s
         """
-    val=(id,)
+    val = (id,)
     cursor.execute(query, val)
     return cursor.fetchall()[0]
+
 
 @database_common.connection_handler
 def get_answers_by_question_id(cursor, question_id: int):
@@ -68,6 +73,15 @@ def get_answers_by_question_id(cursor, question_id: int):
         FROM answer
         WHERE question_id = %s
         """
-    val=(question_id,)
-    cursor.execute(query,val)
+    val = (question_id,)
+    cursor.execute(query, val)
     return cursor.fetchall()
+
+
+@database_common.connection_handler
+def get_question_id_by_answer_id(cursor, answer_id: int):
+    cursor.execute("""
+        SELECT question_id FROM answer
+        WHERE id = %(answer_id)s""",
+        {'answer_id': answer_id})
+    return cursor.fetchall()[0]['question_id']

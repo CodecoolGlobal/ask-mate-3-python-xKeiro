@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,12 +9,12 @@
 </head>
 <body>
 	<div class="container text-center">
-		<h1 class="mt-5">New answer</h1>
-		<form action="/question/{{ id }}/new-answer" method="POST" enctype="multipart/form-data">
+		<h1 class="mt-5">{{ "New answer" if request.path == "/question/" + id|string +"/new-answer" else "Edit answer" }}</h1>
+		<form action= "{{ "/question/" +id|string +"/new-answer" if request.path == "/question/" +id|string +"/new-answer" else "/answer/"+answer_id|string +"/edit"}}" method="POST" enctype="multipart/form-data">
 			<div>
-				<label for="message">Post answer message:</label>
+				<label for="message">{{ "Post answer message" if request.path == "/question/" + id|string +"/new-answer" else "Edit answer message" }}</label>
 				<br>
-				<textarea name="message" id="message" required></textarea>
+				<textarea name="message" id="message" required>{{ answer.setdefault('message','') }}</textarea>
 			</div>
 			<br>
 			<div>
@@ -23,7 +24,7 @@
 			</div>
 			<br>
 			<div>
-				<button class="btn btn-primary" type="submit">Add New Answer</button>
+				<button class="btn btn-primary" type="submit">{{ "Add new answer" if request.path == "/question/" + id|string +"/new-answer" else "Edit answer" }}</button>
 			</div>
 		</form>
 	</div>
