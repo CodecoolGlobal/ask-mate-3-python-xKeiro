@@ -8,23 +8,23 @@ CREATE TABLE question
 (
     id              SERIAL PRIMARY KEY,
     submission_time TIMESTAMP WITHOUT TIME ZONE NOT NULL,
-    view_number     INTEGER      NOT NULL,
-    vote_number     INTEGER      NOT NULL,
-    title           VARCHAR(150) NOT NULL,
-    message         TEXT         NOT NULL,
+    view_count     INTEGER                     NOT NULL,
+    vote_count     INTEGER                     NOT NULL,
+    title           VARCHAR(150)                NOT NULL,
+    message         TEXT                        NOT NULL,
     image           VARCHAR(255),
-    edit_count      INTEGER      NOT NULL DEFAULT 0
+    edit_count      INTEGER                     NOT NULL DEFAULT 0
 );
 
 CREATE TABLE answer
 (
     id              SERIAL PRIMARY KEY,
     submission_time TIMESTAMP WITHOUT TIME ZONE NOT NULL,
-    vote_number     INTEGER NOT NULL,
-    question_id     INTEGER NOT NULL,
-    message         TEXT    NOT NULL,
+    vote_count     INTEGER                     NOT NULL,
+    question_id     INTEGER                     NOT NULL,
+    message         TEXT                        NOT NULL,
     image           VARCHAR(255),
-    edit_count      INTEGER NOT NULL DEFAULT 0,
+    edit_count      INTEGER                     NOT NULL DEFAULT 0,
     FOREIGN KEY (question_id) REFERENCES question (id) ON DELETE CASCADE
 );
 
@@ -33,9 +33,9 @@ CREATE TABLE comment
     id                SERIAL PRIMARY KEY,
     parent_comment_id INTEGER,
     answer_id         INTEGER,
-    message           TEXT    NOT NULL,
+    message           TEXT                        NOT NULL,
     submission_time   TIMESTAMP WITHOUT TIME ZONE NOT NULL,
-    edit_count        INTEGER NOT NULL DEFAULT 0,
+    edit_count        INTEGER                     NOT NULL DEFAULT 0,
     FOREIGN KEY (answer_id) REFERENCES answer (id) ON DELETE CASCADE
 );
 
@@ -92,6 +92,6 @@ VALUES (1, 'Code'),
        (3, 'Newbie');
 
 INSERT INTO question_tag
-VALUES  (1,1),
-        (1,2),
-        (3,3);
+VALUES (1, 1),
+       (1, 2),
+       (3, 3);
