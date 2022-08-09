@@ -7,11 +7,8 @@ import database_common
 
 
 @database_common.connection_handler
-def write_question_and_return_new_id(cursor, fields):
-    query = "INSERT INTO question("
-    for key in fields.keys():
-        query += f"{key}, "
-    query = query[:-2] + f") VALUES ("
+def write_question_and_return_new_id(cursor, fields: dict) -> int:
+    query = "INSERT INTO question(" + ", ".join(fields.keys()) + ") VALUES ("
     for value in fields.values():
         query += "%s, "
     query = query[:-2] + ") RETURNING id"
@@ -23,11 +20,8 @@ def write_question_and_return_new_id(cursor, fields):
 
 
 @database_common.connection_handler
-def write_answer(cursor, fields):
-    query = "INSERT INTO answer("
-    for key in fields.keys():
-        query += f"{key}, "
-    query = query[:-2] + f") VALUES ("
+def write_answer(cursor, fields: dict) -> int:
+    query = "INSERT INTO answer(" + ", ".join(fields.keys()) + ") VALUES ("
     for value in fields.values():
         query += "%s, "
     query = query[:-2] + ")"
@@ -37,7 +31,7 @@ def write_answer(cursor, fields):
 
 
 @database_common.connection_handler
-def update_question_by_id(cursor, id, fields):
+def update_question_by_id(cursor, id: int, fields: dict) -> None:
     query = "UPDATE question SET "
     for key, value in fields.items():
         query += f"{key} = %s, "
@@ -47,7 +41,7 @@ def update_question_by_id(cursor, id, fields):
 
 
 @database_common.connection_handler
-def update_answer_by_id(cursor, id, fields):
+def update_answer_by_id(cursor, id: int, fields: dict) -> None:
     query = "UPDATE answer SET "
     for key, value in fields.items():
         query += f"{key} = %s, "
@@ -57,7 +51,7 @@ def update_answer_by_id(cursor, id, fields):
 
 
 @database_common.connection_handler
-def update_question_vote(cursor, id, vote_count):
+def update_question_vote(cursor, id: int, vote_count: int) -> None:
     query = """
         UPDATE question
         SET vote_count = %s
@@ -68,7 +62,7 @@ def update_question_vote(cursor, id, vote_count):
 
 
 @database_common.connection_handler
-def del_question_by_id(cursor, id):
+def del_question_by_id(cursor, id: int) -> None:
     query = """
         DELETE FROM question
         WHERE id = %s;
@@ -78,10 +72,30 @@ def del_question_by_id(cursor, id):
 
 
 @database_common.connection_handler
-def del_answer_by_id(cursor, id):
+def del_answer_by_id(cursor, id: int) -> None:
     query = """
         DELETE FROM answer
         WHERE id = %s;
         """
     val = (id,)
+    cursor.execute(query, val)
+
+@database_common.connection_handler
+def attach_tags(cursor, tags: list[dict]) -> int:
+    del_tag_by_question_id(tags[0]["question_id"])
+    for fields in tags:
+        query = "INSERT INTO question_tag(" + ", ".join(fields.keys()) + ") VALUES ("
+        for value in fields.values():
+            query += "%s, "
+        query = query[:-2] + ")"
+        val = tuple([field for field in fields.values()])
+        cursor.execute(sql.SQL(query), val)
+
+@database_common.connection_handler
+def del_tag_by_question_id(cursor, question_id: int) -> None:
+    query = """
+        DELETE FROM question_tag
+        WHERE question_id = %s;
+        """
+    val = (question_id,)
     cursor.execute(query, val)

@@ -32,7 +32,7 @@ CREATE TABLE comment
 (
     id                SERIAL PRIMARY KEY,
     parent_comment_id INTEGER,
-    answer_id         INTEGER,
+    answer_id         INTEGER NOT NULL,
     message           TEXT                        NOT NULL,
     submission_time   TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT LOCALTIMESTAMP(0),
     edit_count        INTEGER                     NOT NULL DEFAULT 0,
@@ -42,15 +42,16 @@ CREATE TABLE comment
 CREATE TABLE tag
 (
     id   SERIAL PRIMARY KEY,
-    name VARCHAR(25)
+    name VARCHAR(25) NOT NULL
 );
 
 CREATE TABLE question_tag
 (
-    question_id INTEGER,
-    tag_id      INTEGER,
+    question_id INTEGER NOT NULL,
+    tag_id      INTEGER NOT NULL,
     FOREIGN KEY (question_id) REFERENCES question (id) ON DELETE CASCADE,
-    FOREIGN KEY (tag_id) REFERENCES tag (id) ON DELETE CASCADE
+    FOREIGN KEY (tag_id) REFERENCES tag (id) ON DELETE CASCADE,
+    PRIMARY KEY (question_id, tag_id)
 );
 
 
@@ -84,7 +85,7 @@ VALUES ('2017-04-28 08:29:00', 4, 3, 'You need to use brackets: my_list = []', N
 
 INSERT INTO comment(parent_comment_id, answer_id, message, submission_time)
 VALUES ( NULL, 1, 'This is a comment', '2017-04-28 08:29:00'),
-       ( 1, NULL, 'This is a comment to a comment', '2017-04-28 08:29:00');
+       ( 1, 1, 'This is a comment to a comment', '2017-04-28 08:29:00');
 
 INSERT INTO tag(name)
 VALUES ('Code'),
