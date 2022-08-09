@@ -10,14 +10,6 @@
 	<div class="container text-center">
 		<h1 class="mt-5">New answer</h1>
 		<form action="/question/{{ id }}/new-answer" method="POST" enctype="multipart/form-data">
-
-			<input type="hidden" id="id" name="id" value="{{ answer.setdefault('id','') }}"/>
-			<input type="hidden" id="submission_time" name="submission_time"
-			       value="{{ answer.setdefault('submission_time','') }}"/>
-			<input type="hidden" id="vote_number" name="vote_number"
-			       value="{{ answer.setdefault('vote_number','0') }}"/>
-			<input type="hidden" id="question_id" name="question_id"
-			       value="{{ answer.setdefault('question_id','0') }}"/>
 			<div>
 				<label for="message">Post answer message:</label>
 				<br>

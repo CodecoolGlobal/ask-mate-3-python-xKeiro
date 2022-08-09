@@ -11,14 +11,6 @@
 		<h1 class="mt-5">{{ "Add question" if request.path == "/add-question" else "Edit question" }}</h1>
 		<form action="{{ "/add-question" if request.path == "/add-question" else "/question/"+question["id"]|string+"/edit" }}"
 		      method="POST" enctype="multipart/form-data">
-
-			<input type="hidden" id="id" name="id" value="{{ question.setdefault('id','') }}"/>
-			<input type="hidden" id="submission_time" name="submission_time"
-			       value="{{ question.setdefault('submission_time','') }}"/>
-			<input type="hidden" id="view_number" name="view_number"
-			       value="{{ question.setdefault('view_number','0') }}"/>
-			<input type="hidden" id="vote_number" name="vote_number"
-			       value="{{ question.setdefault('vote_number','0') }}"/>
 			<div>
 				<label for="title">Question Title:</label>
 				<br>

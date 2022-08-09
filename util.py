@@ -1,5 +1,4 @@
 from datetime import datetime
-from connection import get_questions, get_answers
 
 
 def get_timestamp():

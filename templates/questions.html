@@ -21,7 +21,7 @@
 				<p><strong> Answer {{ loop.index }}:</strong></p>
 				<p>{{ answer['message'] }}</p>
 				<img src="{{ answer["image"] if answer["image"] }}" class="img-fluid">
-                <p>Vote number: {{ answer.vote_number }}</p>
+                <p>Vote number: {{ answer.vote_count }}</p>
 					<a href="{{ url_for("answer_vote_up", answer_id=answer["id"], question_id=answer["question_id"]) }}"><img
 							src="/static/like.png" width="30" height="30" alt="Like"></a>
 					<a href="{{ url_for("answer_vote_down", answer_id=answer["id"], question_id=answer["question_id"]) }}"><img
