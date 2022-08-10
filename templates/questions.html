@@ -33,13 +33,19 @@
 				<a class= "text-success" href="/answer/{{ answer['id'] }}/delete"> Delete this answer! </a> <br>
                 <div class="comment">
                     {% for comment in comments %}
-                        {% if comment.parent_comment_id == None %}
-                        {% if comment.answer_id == answer['id'] %}
+                        {% if comment.parent_comment_id == None and comment.answer_id == answer['id'] %}
                             Message: {{ comment.message }} <br>
                             Submission time: {{ comment.submission_time }} <br>
                             Edited: {{ comment.edit_count }} times <br>
+                            <a class="text-success" href="/answer/{{answer['id']}}/{{answer['id']}}"> Comment to comment!</a>
                             <hr>
-                        {% endif %}
+                            {%elif comment.parent_comment_id != None and comment.answer_id == answer['id'] %}
+                            Comment-To-Comment Message: {{ comment.message }} <br>
+                            Submission time: {{ comment.submission_time }} <br>
+                            Edited: {{ comment.edit_count }} times <br>
+                            <a class="text-success" href="/answer/{{answer['id']}}/{{comment.parent_comment_id}}"> Comment to comment!</a>
+                            <hr>
+
                         {% endif %}
                         {% endfor %}
 
