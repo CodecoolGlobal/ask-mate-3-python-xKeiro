@@ -142,3 +142,20 @@ def get_question_id_by_answer_id(cursor, answer_id: int):
         WHERE id = %(answer_id)s""",
         {'answer_id': answer_id})
     return cursor.fetchall()[0]['question_id']
+
+@database_common.connection_handler
+def get_search_question(cursor,search_phrase):
+    cursor.execute("""
+    SELECT * FROM question
+    WHERE title ILIKE %(m)s
+    OR message ILIKE %(m)s; 
+    """, {'m': "%" + search_phrase + '%'})
+    return cursor.fetchall()
+
+@database_common.connection_handler
+def get_search_answer(cursor,search_phrase):
+    cursor.execute(""" 
+    SELECT * FROM answer
+    WHERE message ILIKE %(m)s;
+    """,{'m': "%" + search_phrase + '%'})
+    return cursor.fetchall()

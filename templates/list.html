@@ -29,6 +29,13 @@
 			</select>
 			<button class="btn btn-outline-secondary" type="submit">Sort</button>
 		</form>
+    <div class="search-questions">
+        <form action="/search" method="POST">
+            <label for="search-question"> Search Question</label>
+            <input type="search" id="search-question" name="search-question" value="Test Question">
+            <button type="submit"> Submit </button>
+        </form>
+</div>
 		<table class="table table-striped mt-3">
 			<thead>
 				<tr>
@@ -58,8 +65,31 @@
 						</td>
 					</tr>
 				{% endfor %}
-			</tbody>
-		</table>
+                <table class="table table-striped mt-3">
+                {% if searched_answers %}
+                    <h1 class="text-center mt-5 mb-4"> Answers </h1>
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Submission time</th>
+                            <th>Message</th>
+                            <th>Image</th>
+                            <th>Edit count</th>
+                        </tr>
+                    </thead>
+                                    {% for answer in searched_answers %}
+                            <tr>
+                                <td>{{ answer.id }}</td>
+                                <td>{{ answer.submission_time }}</td>
+                                <td>{{ answer.message }}</td>
+                                <td>{{ answer.image }}
+                                <td>{{ answer.edit_count }} </td>
+                                </td>
+                            </tr>
+                    </tbody>
+                </table>
+                {% endfor %}
+                {% endif %}
 		<h2><a class="btn btn-warning" href='/add-question'> Add New Questions! </a></h2>
 	</div>
 </body>
