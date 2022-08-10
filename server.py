@@ -1,10 +1,9 @@
 from flask import Flask, request, render_template, redirect
 from connection import write_question_and_return_new_id, write_answer, del_answer_by_id, del_question_by_id, \
-    update_question_by_id, \
-    update_answer_by_id
-import util
+    update_question_by_id, update_answer_by_id, write_comment_by_answer_id
+
 from data_manager import get_sorted_questions, get_question_by_id, get_answers_by_question_id, get_answer_by_id, \
-    get_questions, get_question_id_by_answer_id
+    get_question_id_by_answer_id, get_comments
 import os
 from werkzeug.utils import secure_filename
 
@@ -75,7 +74,7 @@ def add_question():
         #     return redirect(request.url)
         file = request.files['image']
         # if user does not select file, browser also
-        # submit a empty part without filename
+        # submit an empty part without filename
         # if file.filename == '':
         #     flash('No selected file')
         #     return redirect(request.url)
@@ -84,7 +83,7 @@ def add_question():
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             new_question["image"] = str(os.path.join(app.config['UPLOAD_FOLDER'], filename))[1:]
         question_id = write_question_and_return_new_id(new_question)
-        return redirect(f'/question/{question_id}')  # !!!! NEEED TO BE UPDATED TO HAVE QUESTION ID !!!!
+        return redirect(f'/question/{question_id}')
     return render_template('add-question.html', question={})
 
 
@@ -98,7 +97,7 @@ def post_answer(question_id):
         #     return redirect(request.url)
         file = request.files['image']
         # # if user does not select file, browser also
-        # # submit a empty part without filename
+        # # submit an empty part without filename
         # if file.filename == '':
         #     flash('No selected file')
         #     return redirect(request.url)
@@ -111,16 +110,15 @@ def post_answer(question_id):
         return redirect(f'/question/{question_id}')
     return render_template('new-answer.html', id=question_id, answer={})
 
-@app.route('/answer/<answer_id>/new-comment', methods=['POST','GET'])
+
+@app.route('/answer/<answer_id>/new-comment', methods=['POST', 'GET'])
 def add_a_comment_to_answer(answer_id):
     if request.method == 'GET':
         return render_template('add-comment.html')
     elif request.method == 'POST':
         new_comment = request.form["add-comment"]
-        write_comment_by_answer_id(answer_id,new_comment)
+        write_comment_by_answer_id(answer_id, new_comment)
         return redirect("/list")
-
-
 
 
 @app.route('/question/<question_id>/delete')
@@ -179,7 +177,7 @@ def edit_answer(answer_id):
     if request.method == 'POST':
         answer = request.form.to_dict()
         update_answer_by_id(answer_id, answer)
-        question_id= get_question_id_by_answer_id(answer_id)
+        question_id = get_question_id_by_answer_id(answer_id)
         return redirect(f"/question/{question_id}")
     else:
         answer = get_answer_by_id(int(answer_id))
