@@ -4,6 +4,9 @@ from connection import write_question_and_return_new_id, write_answer, del_answe
 
 from data_manager import get_sorted_questions, get_question_by_id, get_answers_by_question_id, get_answer_by_id, \
     get_question_id_by_answer_id, get_comments
+    get_questions, get_latest_questions
+
+
 import os
 from werkzeug.utils import secure_filename
 
@@ -23,8 +26,9 @@ def allowed_file(filename):
 
 
 @app.route('/')
-def starting_page():
-    return list()
+def index():
+    questions = get_latest_questions()
+    return render_template('index.html', questions=questions)
 
 
 @app.route('/list', methods=['GET', 'POST'])
@@ -128,7 +132,7 @@ def add_a_comment_to_comment(answer_id,parent_comment_id):
     elif request.method == 'POST':
         new_comment = request.form["comment-to-comment"]
         write_comment_to_comment(parent_comment_id,answer_id,new_comment)
-        question_id = get_question_id_by_answer_id(answer_id) 
+        question_id = get_question_id_by_answer_id(answer_id)
         return redirect(f"/question/{question_id}")
 
 @app.route('/question/<question_id>/delete')

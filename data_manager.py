@@ -90,6 +90,17 @@ def get_answers_by_question_id(cursor, question_id: int):
     cursor.execute(query, val)
     return cursor.fetchall()
 
+
+@database_common.connection_handler
+def get_latest_questions(cursor):
+    query = """
+        SELECT *
+        FROM question
+        ORDER BY submission_time desc
+        LIMIT 5"""
+    cursor.execute(query)
+    return cursor.fetchall()
+
 @database_common.connection_handler
 def get_comment_by_answer_id(cursor,answer_id: int):
     query = """
