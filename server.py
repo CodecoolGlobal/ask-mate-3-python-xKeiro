@@ -1,11 +1,12 @@
 from flask import Flask, request, render_template, redirect
 from connection import write_question_and_return_new_id, write_answer, del_answer_by_id, del_question_by_id, \
-    update_question_by_id, update_answer_by_id, write_comment_by_answer_id, attach_tags, del_tag_by_question_id, write_comment_to_comment
+    update_question_by_id, update_answer_by_id, write_comment_by_answer_id, attach_tags, del_tag_by_question_id, \
+    write_comment_to_comment
 
 from data_manager import get_sorted_questions, get_question_by_id, get_answers_by_question_id, get_answer_by_id, \
-    get_question_id_by_answer_id, get_comments, get_tags_by_question_id, get_tags, get_questions, get_latest_questions
-    get_question_id_by_answer_id, get_comments, get_questions, get_latest_questions, get_search_question, get_search_answer
-
+    get_question_id_by_answer_id, get_comments, get_tags_by_question_id, get_tags, get_questions, get_latest_questions, \
+    get_search_question, get_question_id_by_answer_id, get_comments, get_questions, get_latest_questions, \
+    get_search_question, get_search_answer
 
 import os
 from werkzeug.utils import secure_filename
@@ -57,6 +58,7 @@ def get_question(question_id):
     tags = get_tags_by_question_id(question_id)
     return render_template("questions.html", question=question, answers=answers, tags=tags)
 
+
 @app.route("/search", methods=['POST'])
 def get_search_result():
     if request.method == 'POST':
@@ -64,6 +66,7 @@ def get_search_result():
         searched_question = get_search_question(search_phrase)
         searched_answer = get_search_answer(search_phrase)
         return render_template("list.html", questions=searched_question, searched_answers=searched_answer)
+
 
 @app.route('/question/<question_id>/edit', methods=['GET', 'POST'])
 def edit_question(question_id):
@@ -153,15 +156,17 @@ def add_a_comment_to_answer(answer_id):
         question_id = get_question_id_by_answer_id(answer_id)
         return redirect(f"/question/{question_id}")
 
+
 @app.route('/answer/<answer_id>/<parent_comment_id>', methods=['POST', 'GET'])
-def add_a_comment_to_comment(answer_id,parent_comment_id):
+def add_a_comment_to_comment(answer_id, parent_comment_id):
     if request.method == 'GET':
         return render_template('comment-to-comment.html')
     elif request.method == 'POST':
         new_comment = request.form["comment-to-comment"]
-        write_comment_to_comment(parent_comment_id,answer_id,new_comment)
+        write_comment_to_comment(parent_comment_id, answer_id, new_comment)
         question_id = get_question_id_by_answer_id(answer_id)
         return redirect(f"/question/{question_id}")
+
 
 @app.route('/question/<question_id>/delete')
 def delete_question_id(question_id):
