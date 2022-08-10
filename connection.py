@@ -126,10 +126,4 @@ def update_comment_edit(cursor, id, edit_count):
     WHERE id = %(id)s""",
                    {'id': id, 'edit_count': edit_count})
 
-# @database_common.connection_handler
-# def update_comment_submission_time(cursor, id):
-#
-#     cursor.execute("""
-#     UPDATE comment SET submission_time=TIMESTAMP WITHOUT TIME ZONE
-#     WHERE id = %(id)s""",
-#                    {'id': id, 'submission_time': submission_time})
+
