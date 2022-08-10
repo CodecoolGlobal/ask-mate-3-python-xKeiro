@@ -1,7 +1,6 @@
 import csv
 import os
 from psycopg2 import sql
-import datetime
 
 import database_common
 
@@ -125,5 +124,16 @@ def update_comment_edit(cursor, id, edit_count):
     UPDATE comment SET edit_count= edit_count+1
     WHERE id = %(id)s""",
                    {'id': id, 'edit_count': edit_count})
+
+@database_common.connection_handler
+def update_comment_submission_time(cursor, id):
+    query = """
+        UPDATE comment
+        SET submission_time=LOCALTIMESTAMP(0)
+        WHERE id = %s;
+        """
+    val = (id,)
+    cursor.execute(query, val)
+
 
 
