@@ -106,3 +106,10 @@ def write_comment_by_answer_id(cursor, answer_id, new_comment):
     INSERT INTO comment (answer_id, message) 
     VALUES (%(a_s)s, %(n_c)s);
     """, {'a_s': int(answer_id), 'n_c': new_comment})
+
+@database_common.connection_handler
+def write_comment_to_comment(cursor,parent_comment_id,answer_id,new_comment):
+    cursor.execute("""
+    INSERT INTO comment (parent_comment_id, answer_id, message)
+     VALUES (%(p_cid)s, %(a_s)s, %(n_c)s); 
+     """, {'p_cid' : parent_comment_id, 'a_s': answer_id, 'n_c': new_comment})
