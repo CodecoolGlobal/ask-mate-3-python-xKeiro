@@ -1,9 +1,11 @@
 from flask import Flask, request, render_template, redirect
-from connection import write_question_and_return_new_id, write_answer, del_answer_by_id, del_question_by_id, update_question_by_id, \
-    update_answer_by_id
-import util
+from connection import write_question_and_return_new_id, write_answer, del_answer_by_id, del_question_by_id, \
+    update_question_by_id, update_answer_by_id, write_comment_by_answer_id, write_comment_to_comment
+
 from data_manager import get_sorted_questions, get_question_by_id, get_answers_by_question_id, get_answer_by_id, \
-    get_questions, get_latest_questions
+    get_question_id_by_answer_id, get_comments, get_questions, get_latest_questions
+
+
 import os
 from werkzeug.utils import secure_filename
 
@@ -25,7 +27,6 @@ def allowed_file(filename):
 @app.route('/')
 def index():
     questions = get_latest_questions()
-
     return render_template('index.html', questions=questions)
 
 
@@ -49,9 +50,10 @@ def get_question(question_id):
     question_id = int(question_id)
     question = get_question_by_id(question_id)
     question["view_count"] += 1
-    update_question_by_id(question_id,question)
+    update_question_by_id(question_id, question)
     answers = get_answers_by_question_id(question_id)
-    return render_template("questions.html", question=question, answers=answers)
+    comments = get_comments()
+    return render_template("questions.html", question=question, answers=answers, comments=comments)
 
 
 @app.route('/question/<question_id>/edit', methods=['GET', 'POST'])
@@ -75,7 +77,7 @@ def add_question():
         #     return redirect(request.url)
         file = request.files['image']
         # if user does not select file, browser also
-        # submit a empty part without filename
+        # submit an empty part without filename
         # if file.filename == '':
         #     flash('No selected file')
         #     return redirect(request.url)
@@ -84,7 +86,7 @@ def add_question():
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             new_question["image"] = str(os.path.join(app.config['UPLOAD_FOLDER'], filename))[1:]
         question_id = write_question_and_return_new_id(new_question)
-        return redirect(f'/question/{question_id}')  # !!!! NEEED TO BE UPDATED TO HAVE QUESTION ID !!!!
+        return redirect(f'/question/{question_id}')
     return render_template('add-question.html', question={})
 
 
@@ -98,7 +100,7 @@ def post_answer(question_id):
         #     return redirect(request.url)
         file = request.files['image']
         # # if user does not select file, browser also
-        # # submit a empty part without filename
+        # # submit an empty part without filename
         # if file.filename == '':
         #     flash('No selected file')
         #     return redirect(request.url)
@@ -111,6 +113,26 @@ def post_answer(question_id):
         return redirect(f'/question/{question_id}')
     return render_template('new-answer.html', id=question_id, answer={})
 
+
+@app.route('/answer/<answer_id>/new-comment', methods=['POST', 'GET'])
+def add_a_comment_to_answer(answer_id):
+    if request.method == 'GET':
+        return render_template('add-comment.html')
+    elif request.method == 'POST':
+        new_comment = request.form["add-comment"]
+        write_comment_by_answer_id(answer_id, new_comment)
+        question_id = get_question_id_by_answer_id(answer_id)
+        return redirect(f"/question/{question_id}")
+
+@app.route('/answer/<answer_id>/<parent_comment_id>', methods=['POST', 'GET'])
+def add_a_comment_to_comment(answer_id,parent_comment_id):
+    if request.method == 'GET':
+        return render_template('comment-to-comment.html')
+    elif request.method == 'POST':
+        new_comment = request.form["comment-to-comment"]
+        write_comment_to_comment(parent_comment_id,answer_id,new_comment)
+        question_id = get_question_id_by_answer_id(answer_id)
+        return redirect(f"/question/{question_id}")
 
 @app.route('/question/<question_id>/delete')
 def delete_question_id(question_id):
@@ -131,7 +153,7 @@ def question_vote_up(question_id):
     question = get_question_by_id(question_id)
     question["vote_count"] += 1
     update_question_by_id(question_id, question)
-    return redirect("/list")
+    return redirect(request.referrer)
 
 
 @app.route('/question/<question_id>/vote-down')
@@ -139,7 +161,7 @@ def question_vote_down(question_id):
     question = get_question_by_id(question_id)
     question["vote_count"] -= 1
     update_question_by_id(question_id, question)
-    return redirect("/list")
+    return redirect(request.referrer)
 
 
 @app.route('/answer/<answer_id>/vote-up')
@@ -149,19 +171,29 @@ def answer_vote_up(answer_id):
     answer = get_answer_by_id(answer_id)
     answer["vote_count"] += 1
     update_answer_by_id(answer_id, answer)
-    return redirect("/list")
-    return redirect(f"/question/{question_id}")
+    return redirect(request.referrer)
 
 
 @app.route('/answer/<answer_id>/vote-down')
 def answer_vote_down(answer_id):
-    question_id = request.args.get("question_id")
-
     answer = get_answer_by_id(answer_id)
     answer["vote_count"] -= 1
     update_answer_by_id(answer_id, answer)
-    return redirect("/list")
-    return redirect(f"/question/{question_id}")
+    return redirect(request.referrer)
+
+
+# edit answer:
+@app.route('/answer/<answer_id>/edit', methods=['GET', 'POST'])
+def edit_answer(answer_id):
+    if request.method == 'POST':
+        answer = request.form.to_dict()
+        update_answer_by_id(answer_id, answer)
+        question_id = get_question_id_by_answer_id(answer_id)
+        return redirect(f"/question/{question_id}")
+    else:
+        answer = get_answer_by_id(int(answer_id))
+        question_id = get_question_id_by_answer_id(answer_id)
+        return render_template('new-answer.html', answer=answer, answer_id=answer_id, question_id=question_id)
 
 
 if __name__ == "__main__":
