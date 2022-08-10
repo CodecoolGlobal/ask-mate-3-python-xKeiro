@@ -3,7 +3,7 @@ from psycopg2 import sql
 
 
 @database_common.connection_handler
-def get_questions(cursor):
+def get_questions(cursor) -> list[dict]:
     query = """
         SELECT *
         FROM question
@@ -14,7 +14,7 @@ def get_questions(cursor):
 
 
 @database_common.connection_handler
-def get_answers(cursor):
+def get_answers(cursor) -> list[dict]:
     query = """
         SELECT *
         FROM answer
@@ -33,9 +33,17 @@ def get_comments(cursor):
     cursor.execute(query)
     return cursor.fetchall()
 
+@database_common.connection_handler
+def get_tags(cursor) -> list[dict]:
+    query = """
+        SELECT *
+        FROM tag
+        """
+    cursor.execute(query)
+    return cursor.fetchall()
 
 @database_common.connection_handler
-def get_sorted_questions(cursor, order_by: str, order_direction: str):
+def get_sorted_questions(cursor, order_by: str, order_direction: str) -> list[dict]:
     '''
     :param order_by: title, submission_time, message, view_count, vote_count
     :param order_direction: asc, desc
@@ -54,7 +62,7 @@ def get_sorted_questions(cursor, order_by: str, order_direction: str):
 
 
 @database_common.connection_handler
-def get_question_by_id(cursor, id: int):
+def get_question_by_id(cursor, id: int) -> dict:
     query = """
         SELECT *
         FROM question
@@ -66,7 +74,7 @@ def get_question_by_id(cursor, id: int):
 
 
 @database_common.connection_handler
-def get_answer_by_id(cursor, id: int):
+def get_answer_by_id(cursor, id: int) -> dict:
     query = """
         SELECT *
         FROM answer
@@ -78,7 +86,7 @@ def get_answer_by_id(cursor, id: int):
 
 
 @database_common.connection_handler
-def get_answers_by_question_id(cursor, question_id: int):
+def get_answers_by_question_id(cursor, question_id: int) -> list[dict]:
     query = """
         SELECT *
         FROM answer
@@ -86,6 +94,18 @@ def get_answers_by_question_id(cursor, question_id: int):
         """
     val = (question_id,)
     cursor.execute(query, val)
+    return cursor.fetchall()
+
+@database_common.connection_handler
+def get_tags_by_question_id(cursor, question_id: int) -> list[dict]:
+    query = """
+        SELECT tag.*
+        FROM tag
+        LEFT JOIN question_tag on tag.id = question_tag.tag_id
+        WHERE question_tag.question_id = %s
+        """
+    val=(question_id,)
+    cursor.execute(query,val)
     return cursor.fetchall()
 
 @database_common.connection_handler
