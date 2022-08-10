@@ -99,3 +99,10 @@ def del_tag_by_question_id(cursor, question_id: int) -> None:
         """
     val = (question_id,)
     cursor.execute(query, val)
+
+@database_common.connection_handler
+def write_comment_by_answer_id(cursor, answer_id, new_comment):
+    cursor.execute(""" 
+    INSERT INTO comment (answer_id, message) 
+    VALUES (%(a_s)s, %(n_c)s);
+    """, {'a_s': int(answer_id), 'n_c': new_comment})

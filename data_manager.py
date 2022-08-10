@@ -25,6 +25,16 @@ def get_answers(cursor):
 
 
 @database_common.connection_handler
+def get_comments(cursor):
+    query = """
+    SELECT * 
+    FROM comment 
+    """
+    cursor.execute(query)
+    return cursor.fetchall()
+
+
+@database_common.connection_handler
 def get_sorted_questions(cursor, order_by: str, order_direction: str):
     '''
     :param order_by: title, submission_time, message, view_count, vote_count
@@ -75,6 +85,16 @@ def get_answers_by_question_id(cursor, question_id: int):
         WHERE question_id = %s
         """
     val = (question_id,)
+    cursor.execute(query, val)
+    return cursor.fetchall()
+
+@database_common.connection_handler
+def get_comment_by_answer_id(cursor,answer_id: int):
+    query = """
+    SELECT * FROM comment
+    WHERE answer_id = %s
+    """
+    val = (answer_id, )
     cursor.execute(query, val)
     return cursor.fetchall()
 
