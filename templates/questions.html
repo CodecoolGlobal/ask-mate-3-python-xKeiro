@@ -1,88 +1,56 @@
-{% extends "banner.html" %}
-
-{% block content %}
-
-    <div class="question-box">
-        <h2>{{ question['title'] }}</h2>
-        <p> {{ question['message'] }}</p>
-
-        <img class="image" src="{{ question["image"] if question["image"] }}"><br>
-        {% for tag in tags %}
-            <button>{{ tag["name"] }}</button>
-        {% endfor %}
-    <div class="right">
-        <a style="float: left" href="/question/{{ question['id'] }}/new-answer"><img src="/static/reply.png" width="30" height="30"
-                                                                 alt="Reply"></a>
-        <a href="{{ url_for("question_vote_up", question_id=question["id"]) }}"><img
-                src="/static/like.png" width="30" height="30" alt="Like"></a>
-        <a href="{{ url_for("question_vote_down", question_id=question["id"]) }}"><img
-                src="/static/dislike.png" width="30" height="30" alt="Dislike"></a>
-        <a href="/question/{{ question['id'] }}/edit"><img src="/static/edit.png" width="30" height="30" alt="Edit"></a>
-        <a href="/question/{{ question['id'] }}/delete"><img src="/static/delete.png" width="30" height="30"
-                                                             alt="Delete"></a>
-        <p class="comment-info">Vote: {{ question['vote_count'] }} | {{ question['submission_time'] }}</p>
-    </div>
-    </div>
-    <h2>Comments</h2>
-    {% for answer in answers %}
-        <div class="comment-box">
-            <div class="comment">
-                <div class="comment-info">
-                    <p>Votes: {{ answer.vote_count }} • {{ answer.submission_time }}</p>
-                </div>
-                <p><strong> Answer {{ loop.index }}:</strong></p>
-                <div class="comment-body">
-                    <p>{{ answer['message'] }}</p>
-                </div>
-
-                <img class="image" src="{{ answer["image"] if answer["image"] }}">
-                <div class="right">
-                    <a style="float: left" href="/answer/{{ answer['id'] }}/edit"><img src="/static/reply.png" width="30" height="30"
-                                                                   alt="Reply"></a>
-                    <a href="{{ url_for("answer_vote_up", answer_id=answer["id"], question_id=answer["question_id"]) }}"><img
-                        src="/static/like.png" width="30" height="30" alt="Like"></a>
-                    <a href="{{ url_for("answer_vote_down", answer_id=answer["id"], question_id=answer["question_id"]) }}"><img
-                        src="/static/dislike.png" width="30" height="30" alt="Dislike"></a>
-                    <a href="/answer/{{ answer['id'] }}/new-comment"><img src="/static/edit.png" width="30" height="30"
-                                                                          alt="Edit"></a>
-                    <a href="/answer/{{ answer['id'] }}/delete"><img src="/static/delete.png" width="30" height="30"
-                                                                     alt="Delete"></a>
-                </div>
-
-                <hr>
-
-            </div>
-
-            <div style="margin-left: 80px">
-                {% for comment in comments %}
-                    {% if comment.parent_comment_id == None and comment.answer_id == answer['id'] %}
-                        <p style="text-align: left">Reply:
-                            <span style="float: right">{{ comment.submission_time }}</span></p>
-                        <p>{{ comment.message }}</p><br>
-                        Edited: {{ comment.edit_count }} times <br>
-                        <a href="/answer/{{ answer['id'] }}/{{ answer['id'] }}"><img src="/static/reply.png" width="20"
-                                                                                     height="20" alt="Reply"></a>
-                        <hr>
-                    {% elif comment.parent_comment_id != None and comment.answer_id == answer['id'] %}
-                        <div style="margin-left: 80px">
-                            <p style="text-align: left">Reply:
-                                <span style="float: right">{{ comment.submission_time }}</span></p>
-                            <p>{{ comment.message }}</p><br>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Questions</title>
+	<meta charset="UTF-8">
+	<title>Questions</title>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet"
+	      integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+</head>
+<body>
+	<div class="container bg-white">
+		<h2 class="pt-5"> {{ question['title'] }} </h2>
+		<small class ="text-secondary"> Question id: {{ question['id'] }}</small>
+		<br>
+        <img src="{{ question["image"] if question["image"] }}" class="img-fluid">
+		{% for tag in tags %}
+			<button type="button" class="tag" disabled>{{ tag["name"] }}</button>
+		{% endfor %}
+		<p class="bg-warning py-2 px-3"> {{ question['message'] }}</p>
+    <h2><a class="btn btn-info" href="/question/{{ question['id'] }}/edit">Edit question</a></h2>
+		{% for answer in answers %}
+			<div class="text-dark bg-light py-2 px-3 my-5">
+				<p><strong> Answer {{ loop.index }}:</strong></p>
+				<p>{{ answer['message'] }}</p>
+				<img src="{{ answer["image"] if answer["image"] }}" class="img-fluid">
+                <p>Vote number: {{ answer.vote_count }}</p>
+					<a href="{{ url_for("answer_vote_up", answer_id=answer["id"], question_id=answer["question_id"]) }}"><img
+							src="/static/like.png" width="30" height="30" alt="Like"></a>
+					<a href="{{ url_for("answer_vote_down", answer_id=answer["id"], question_id=answer["question_id"]) }}"><img
+							src="/static/dislike.png" width="30" height="30" alt="Dislike"></a>
+				<br>
+				<a class= "text-success" href="/answer/{{ answer['id'] }}/delete"> Delete this answer! </a> <br>
+                <div class="comment">
+                    {% for comment in comments %}
+                        {% if comment.answer_id == answer['id'] %}
+                            Message: {{ comment.message }} <br>
+                            Submission time: {{ comment.submission_time }} <br>
                             Edited: {{ comment.edit_count }} times <br>
-                            <a href="/answer/{{ answer['id'] }}/{{ comment.parent_comment_id }}"><img
-                                    src="/static/reply.png" width="20" height="20" alt="Reply"></a>
+                            <a href="/comment/{{ comment['id'] }}/edit">Edit comment!</a>
                             <hr>
-                        </div>
+                        {% endif %}
+                        {% endfor %}
 
-                    {% endif %}
-                {% endfor %}
-            </div>
-        </div>
+                </div>
+            <a class= "text-success" href="/answer/{{ answer['id'] }}/new-comment"> Add comment! </a> <br>
+                <a class= "text-success" href="/answer/{{ answer['id'] }}/edit"> Edit this answer! </a>
+			</div>
+		{% endfor %}
 
-    {% endfor %}
-
-
-    <a href='/list'> Back </a>
-
-
-{% endblock %}
+		<h2><a class="btn btn-primary" href="/question/{{ question['id'] }}/new-answer">Add a new answer! </a></h2>
+		<h3><a class="btn btn-danger" href="/question/{{ question['id'] }}/delete">Delete this question! </a></h3>
+        <h2><a class="btn btn-success" href='/list'> Back </a></h2>
+	</div>
+</body>
+</html>
