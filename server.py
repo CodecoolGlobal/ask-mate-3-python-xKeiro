@@ -1,11 +1,9 @@
 from flask import Flask, request, render_template, redirect
 from connection import write_question_and_return_new_id, write_answer, del_answer_by_id, del_question_by_id, \
-    update_question_by_id, update_answer_by_id, write_comment_by_answer_id, write_comment_to_comment
+    update_question_by_id, update_answer_by_id, write_comment_by_answer_id, attach_tags, del_tag_by_question_id, write_comment_to_comment
 
 from data_manager import get_sorted_questions, get_question_by_id, get_answers_by_question_id, get_answer_by_id, \
-    get_question_id_by_answer_id, get_comments, get_questions, get_latest_questions
-
-
+    get_question_id_by_answer_id, get_comments, get_tags_by_question_id, get_tags, get_questions, get_latest_questions
 import os
 from werkzeug.utils import secure_filename
 
@@ -53,24 +51,41 @@ def get_question(question_id):
     update_question_by_id(question_id, question)
     answers = get_answers_by_question_id(question_id)
     comments = get_comments()
-    return render_template("questions.html", question=question, answers=answers, comments=comments)
+    tags = get_tags_by_question_id(question_id)
+    return render_template("questions.html", question=question, answers=answers, tags=tags)
 
 
 @app.route('/question/<question_id>/edit', methods=['GET', 'POST'])
 def edit_question(question_id):
     if request.method == 'POST':
         question = request.form.to_dict()
+        tags = None
+        if "tags" in question:
+            question.pop("tags")
+            tags = request.form.getlist("tags")
         update_question_by_id(question_id, question)
+        if tags != None:
+            tags = [{"question_id": question_id, "tag_id": tag_id} for tag_id in tags]
+            attach_tags(tags)
+        else:
+            del_tag_by_question_id(question_id)
         return redirect(f"/question/{question_id}")
     else:
         question = get_question_by_id(int(question_id))
-        return render_template('add-question.html', question=question)
+        ids_of_selected_tags = [tag["id"] for tag in get_tags_by_question_id(question_id)]
+        all_tags = get_tags()
+        return render_template('add-question.html', question=question, all_tags=all_tags,
+                               ids_of_selected_tags=ids_of_selected_tags)
 
 
 @app.route('/add-question', methods=["GET", "POST"])
 def add_question():
     if request.method == "POST":
         new_question = request.form.to_dict()
+        tags = None
+        if "tags" in new_question:
+            new_question.pop("tags")
+            tags = request.form.getlist("tags")
         # check if the post request has the file part
         # if 'image' not in request.files:
         #     flash('No file part')
@@ -86,8 +101,12 @@ def add_question():
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             new_question["image"] = str(os.path.join(app.config['UPLOAD_FOLDER'], filename))[1:]
         question_id = write_question_and_return_new_id(new_question)
-        return redirect(f'/question/{question_id}')
-    return render_template('add-question.html', question={})
+        if tags != None:
+            tags = [{"question_id": question_id, "tag_id": tag_id} for tag_id in tags]
+            attach_tags(tags)
+            return redirect(f'/question/{question_id}')
+    all_tags = get_tags()
+    return render_template('add-question.html', question={}, all_tags=all_tags)
 
 
 @app.route('/question/<question_id>/new-answer', methods=["GET", "POST"])
@@ -176,6 +195,8 @@ def answer_vote_up(answer_id):
 
 @app.route('/answer/<answer_id>/vote-down')
 def answer_vote_down(answer_id):
+    question_id = request.args.get("question_id")
+
     answer = get_answer_by_id(answer_id)
     answer["vote_count"] -= 1
     update_answer_by_id(answer_id, answer)
