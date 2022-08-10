@@ -71,6 +71,7 @@ def get_answer_by_id(cursor, id: int):
         SELECT *
         FROM answer
         WHERE id = %s
+        ORDER BY vote_count DESC
         """
     val = (id,)
     cursor.execute(query, val)
@@ -83,6 +84,7 @@ def get_answers_by_question_id(cursor, question_id: int):
         SELECT *
         FROM answer
         WHERE question_id = %s
+        ORDER BY vote_count DESC
         """
     val = (question_id,)
     cursor.execute(query, val)
