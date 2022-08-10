@@ -18,6 +18,7 @@ def get_answers(cursor):
     query = """
         SELECT *
         FROM answer
+        ORDER BY vote_count DESC
         """
     cursor.execute(query)
     return cursor.fetchall()

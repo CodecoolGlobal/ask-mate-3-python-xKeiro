@@ -81,7 +81,7 @@ def del_answer_by_id(cursor, id: int) -> None:
     cursor.execute(query, val)
 
 @database_common.connection_handler
-def attach_tags(cursor, tags: list[dict]) -> int:
+def attach_tags(cursor, tags):
     del_tag_by_question_id(tags[0]["question_id"])
     for fields in tags:
         query = "INSERT INTO question_tag(" + ", ".join(fields.keys()) + ") VALUES ("
