@@ -18,6 +18,11 @@
 			<button type="button" class="tag" disabled>{{ tag["name"] }}</button>
 		{% endfor %}
 		<p class="bg-warning py-2 px-3"> {{ question['message'] }}</p>
+        <p>Vote count: {{ question.vote_count }}</p>
+            <a href="{{ url_for("question_vote_up", question_id=question["id"]) }}"><img
+                src="/static/like.png" width="30" height="30" alt="Like"></a>
+            <a href="{{ url_for("question_vote_down", question_id=question["id"]) }}"><img
+                    src="/static/dislike.png" width="30" height="30" alt="Dislike"></a>
     <h2><a class="btn btn-info" href="/question/{{ question['id'] }}/edit">Edit question</a></h2>
 		{% for answer in answers %}
 			<div class="text-dark bg-light py-2 px-3 my-5">
@@ -33,12 +38,20 @@
 				<a class= "text-success" href="/answer/{{ answer['id'] }}/delete"> Delete this answer! </a> <br>
                 <div class="comment">
                     {% for comment in comments %}
-                        {% if comment.answer_id == answer['id'] %}
+                        {% if comment.parent_comment_id == None and comment.answer_id == answer['id'] %}
                             Message: {{ comment.message }} <br>
                             Submission time: {{ comment.submission_time }} <br>
                             Edited: {{ comment.edit_count }} times <br>
                             <a href="/comment/{{ comment['id'] }}/edit">Edit comment!</a>
+                            <a class="text-success" href="/answer/{{answer['id']}}/{{answer['id']}}"> Comment to comment!</a>
                             <hr>
+                            {%elif comment.parent_comment_id != None and comment.answer_id == answer['id'] %}
+                            Comment-To-Comment Message: {{ comment.message }} <br>
+                            Submission time: {{ comment.submission_time }} <br>
+                            Edited: {{ comment.edit_count }} times <br>
+                            <a class="text-success" href="/answer/{{answer['id']}}/{{comment.parent_comment_id}}"> Comment to comment!</a>
+                            <hr>
+
                         {% endif %}
                         {% endfor %}
 

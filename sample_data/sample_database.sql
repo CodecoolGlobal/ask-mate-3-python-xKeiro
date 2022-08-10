@@ -33,6 +33,7 @@ CREATE TABLE comment
     id                SERIAL PRIMARY KEY,
     parent_comment_id INTEGER,
     answer_id         INTEGER NOT NULL,
+    vote_count      INTEGER                     NOT NULL DEFAULT 0,
     message           TEXT                        NOT NULL,
     submission_time   TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT LOCALTIMESTAMP(0),
     edit_count        INTEGER                     NOT NULL DEFAULT 0,
