@@ -12,13 +12,13 @@
 		<form action="{{ "/add-question" if request.path == "/add-question" else "/question/"+question["id"]|string+"/edit" }}"
 		      method="POST" enctype="multipart/form-data">
 			<div>
-				<label for="title">Question Title:</label>
+				<label for="title">Title<span style="color: red">*</span></label>
 				<br>
 				<input type="text" name="title" id="title" value="{{ question.setdefault('title','') }}" required>
 			</div>
 			<br>
 			<div>
-				<label for="message">Question message:</label>
+				<label for="message">Message<span style="color: red">*</span></label>
 				<br>
 				<textarea name="message" id="message" required>{{ question.setdefault('message','') }}</textarea>
 			</div>
@@ -27,6 +27,16 @@
 				<label for="image">Upload image:</label>
 				<br>
 				<input class="btn btn-warning" type="file" name="image" id="image">
+			</div>
+			<br>
+			<div>
+				<label for="tags">Select tag(s):</label>
+				<br>
+				<select name="tags" id="tags" multiple>
+					{% for tag in all_tags %}
+						<option value="{{ tag["id"] }}" {{ "selected" if tag["id"] in ids_of_selected_tags }}>{{ tag["name"] }}</option>
+					{% endfor %}
+				</select>
 			</div>
 			<br>
 			<div>
