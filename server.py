@@ -56,7 +56,7 @@ def get_question(question_id):
     answers = get_answers_by_question_id(question_id)
     comments = get_comments()
     tags = get_tags_by_question_id(question_id)
-    return render_template("questions.html", question=question, answers=answers, tags=tags)
+    return render_template("questions.html", question=question, answers=answers, tags=tags, comments=comments)
 
 
 @app.route("/search", methods=['POST'])
