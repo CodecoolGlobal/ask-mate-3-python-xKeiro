@@ -37,6 +37,7 @@
                             Message: {{ comment.message }} <br>
                             Submission time: {{ comment.submission_time }} <br>
                             Edited: {{ comment.edit_count }} times <br>
+                            <a href="/comment/{{ comment['id'] }}/edit">Edit comment!</a>
                             <hr>
                         {% endif %}
                         {% endfor %}

@@ -90,13 +90,14 @@ def get_answers_by_question_id(cursor, question_id: int):
     cursor.execute(query, val)
     return cursor.fetchall()
 
+
 @database_common.connection_handler
-def get_comment_by_answer_id(cursor,answer_id: int):
+def get_comment_by_answer_id(cursor, answer_id: int):
     query = """
     SELECT * FROM comment
     WHERE answer_id = %s
     """
-    val = (answer_id, )
+    val = (answer_id,)
     cursor.execute(query, val)
     return cursor.fetchall()
 
@@ -106,5 +107,38 @@ def get_question_id_by_answer_id(cursor, answer_id: int):
     cursor.execute("""
         SELECT question_id FROM answer
         WHERE id = %(answer_id)s""",
-        {'answer_id': answer_id})
+                   {'answer_id': answer_id})
     return cursor.fetchall()[0]['question_id']
+
+
+@database_common.connection_handler
+def get_answer_id_from_comment(cursor, comment_id):
+    cursor.execute("""
+        SELECT answer_id FROM comment
+        WHERE id = %(comment_id)s""",
+                   {'comment_id': comment_id})
+    return cursor.fetchall()[0]['answer_id']
+
+
+@database_common.connection_handler
+def get_comment_by_id(cursor, id):
+    query = """
+        SELECT *
+        FROM comment
+        WHERE id = %s
+        """
+    val = (id,)
+    cursor.execute(query, val)
+    return cursor.fetchall()[0]
+
+
+@database_common.connection_handler
+def get_edit_count_by_comment_id(cursor, id):
+    query = """
+        SELECT edit_count
+        FROM comment
+        WHERE id = %s
+        """
+    val = (id,)
+    cursor.execute(query, val)
+    return cursor.fetchall()[0]['edit_count']
