@@ -1,3 +1,5 @@
+from psycopg2.extras import RealDictCursor
+
 import database_common
 from psycopg2 import sql
 
@@ -41,6 +43,7 @@ def get_tags(cursor) -> list[dict]:
         """
     cursor.execute(query)
     return cursor.fetchall()
+
 
 @database_common.connection_handler
 def get_sorted_questions(cursor, order_by: str, order_direction: str) -> list[dict]:
@@ -106,8 +109,19 @@ def get_tags_by_question_id(cursor, question_id: int) -> list[dict]:
         LEFT JOIN question_tag on tag.id = question_tag.tag_id
         WHERE question_tag.question_id = %s
         """
-    val=(question_id,)
-    cursor.execute(query,val)
+    val = (question_id,)
+    cursor.execute(query, val)
+    return cursor.fetchall()
+
+
+@database_common.connection_handler
+def get_latest_questions(cursor):
+    query = """
+        SELECT *
+        FROM question
+        ORDER BY submission_time desc
+        LIMIT 5"""
+    cursor.execute(query)
     return cursor.fetchall()
 
 @database_common.connection_handler
