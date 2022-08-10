@@ -3,7 +3,7 @@ from connection import write_question_and_return_new_id, write_answer, del_answe
     update_question_by_id, update_answer_by_id, write_comment_by_answer_id, write_comment_to_comment
 
 from data_manager import get_sorted_questions, get_question_by_id, get_answers_by_question_id, get_answer_by_id, \
-    get_question_id_by_answer_id, get_comments, get_questions, get_latest_questions
+    get_question_id_by_answer_id, get_comments, get_questions, get_latest_questions, get_search_question, get_search_answer
 
 
 import os
@@ -55,6 +55,13 @@ def get_question(question_id):
     comments = get_comments()
     return render_template("questions.html", question=question, answers=answers, comments=comments)
 
+@app.route("/search", methods=['POST'])
+def get_search_result():
+    if request.method == 'POST':
+        search_phrase = request.form["search-question"]
+        searched_question = get_search_question(search_phrase)
+        searched_answer = get_search_answer(search_phrase)
+        return render_template("list.html", questions=searched_question, searched_answers=searched_answer)
 
 @app.route('/question/<question_id>/edit', methods=['GET', 'POST'])
 def edit_question(question_id):
