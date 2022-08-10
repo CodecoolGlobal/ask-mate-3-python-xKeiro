@@ -118,7 +118,8 @@ def add_a_comment_to_answer(answer_id):
     elif request.method == 'POST':
         new_comment = request.form["add-comment"]
         write_comment_by_answer_id(answer_id, new_comment)
-        return redirect("/list")
+        question_id = get_question_id_by_answer_id(answer_id)
+        return redirect(f"/question/{question_id}")
 
 
 @app.route('/question/<question_id>/delete')
