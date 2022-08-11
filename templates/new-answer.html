@@ -1,31 +1,26 @@
+{% extends "banner.html" %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<title>New answer</title>
-
-</head>
-<body>
-	<div>
-		<h1>{{ "New answer" if request.path == "/question/" + id|string +"/new-answer" else "Edit answer" }}</h1>
-		<form action= "{{ "/question/" +id|string +"/new-answer" if request.path == "/question/" +id|string +"/new-answer" else "/answer/"+answer_id|string +"/edit"}}" method="POST" enctype="multipart/form-data">
+{% block content %}
+	<div class="container">
+		<h2>{{ "New answer" if request.path == "/question/" + id|string +"/new-answer" else "Edit answer" }}</h2>
+		<form style="text-align: center" action= "{{ "/question/" +id|string +"/new-answer" if request.path == "/question/" +id|string +"/new-answer" else "/answer/"+answer_id|string +"/edit"}}" method="POST" enctype="multipart/form-data">
 			<div>
 				<label for="message">{{ "Post answer message" if request.path == "/question/" + id|string +"/new-answer" else "Edit answer message" }}</label>
 				<br>
-				<textarea name="message" id="message" required>{{ answer.setdefault('message','') }}</textarea>
+				<textarea  name="message" id="message" required>{{ answer.setdefault('message','') }}</textarea>
+			</div>
+
+			<div>
+                <input type="file" name="image" id="image" style="display:none">
+                <br>
+                <label class="button button1" for="image">Upload image</label>
 			</div>
 			<br>
 			<div>
-				<label for="image">Upload image:</label>
-				<br>
-				<input type="file" name="image" id="image">
-			</div>
-			<br>
-			<div>
-				<button type="submit">{{ "Add new answer" if request.path == "/question/" + id|string +"/new-answer" else "Edit answer" }}</button>
+				<button class="button button1" type="submit">{{ "Add new answer" if request.path == "/question/" + id|string +"/new-answer" else "Edit answer" }}</button>
 			</div>
 		</form>
 	</div>
-</body>
-</html>
+
+
+{% endblock %}

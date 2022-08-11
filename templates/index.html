@@ -1,35 +1,27 @@
 {% extends "banner.html" %}
 
 {% block content %}
-		<table>
-			<thead>
-				<tr>
-					<th>Submission time</th>
-					<th>View number</th>
-					<th>Vote number</th>
-					<th>Title</th>
-					<th>Message</th>
-					<th>Vote</th>
-				</tr>
-			</thead>
-			<tbody>
-				{% for question in questions %}
-					<tr>
-						<td>{{ question.submission_time }}</td>
-						<td>{{ question.view_count }}</td>
-						<td>{{ question.vote_count }} point</td>
-						<td><a href="/question/{{ question["id"] }}"> {{question["title"]}} </a> </td>
-						<td>{{ question.message }}</td>
-						<td>
-                            <a href="{{ url_for("question_vote_up", question_id=question["id"]) }}"><img
-								src="/static/like.png" width="30" height="30" alt="Like"></a>
-							<a href="{{ url_for("question_vote_down", question_id=question["id"]) }}"><img
-									src="/static/dislike.png" width="30" height="30" alt="Dislike"></a>
-						</td>
-					</tr>
-				{% endfor %}
-			</tbody>
-		</table>
+    <h2> 5 latest questions </h2>
+    <div class="question-box">
+        {% for question in questions %}
+            <p class="comment-info">Vote: {{ question['vote_count'] }} | {{ question['submission_time'] }}</p>
+            <h2>{{ question['title'] }}</h2>
+            <p class="text"> {{ question['message'] }}</p>
+            <div class="right">
+            <a style="float: left" href="/question/{{ question["id"] }}">
+                <button class="button button1">Read more</button>
+            </a>
+            <a href="{{ url_for("question_vote_up", question_id=question["id"]) }}"><img
+                    src="/static/like.png" width="30" height="30" alt="Like"></a>
+            <a href="{{ url_for("question_vote_down", question_id=question["id"]) }}"><img
+                    src="/static/dislike.png" width="30" height="30" alt="Dislike"></a>
+            </div>
+            <hr>
+        {% endfor %}
+        <a href="/list">
+            <button class="button button1">Let's see every question</button>
+        </a>
+    </div>
+    <br>
 
-    <a href="{{ url_for('list') }}">Every question</a>
 {% endblock %}

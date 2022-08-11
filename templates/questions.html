@@ -2,25 +2,25 @@
 
 {% block content %}
 
-	<div class="question-box">
-		<h2>{{ question['title'] }}</h2>
-		<p> {{ question['message'] }}</p>
+    <div class="question-box">
+        <p class="comment-info">Vote: {{ question['vote_count'] }} | {{ question['submission_time'] }}</p>
+        <h2>{{ question['title'] }}</h2>
+        <p> {{ question['message'] }}</p>
 
-		<img class="image" src="{{ question["image"] if question["image"] }}"><br>
-		{% for tag in tags %}
-			<button>{{ tag["name"] }}</button>
-		{% endfor %}
-		<div class="right">
-			<a style="float: left" href="/question/{{ question['id'] }}/new-answer"><img
+        <img class="image" src="{{ question["image"] if question["image"] }}"><br>
+        {% for tag in tags %}
+            <button class="tag button1">{{ tag["name"] }}</button>
+        {% endfor %}
+        <div class="right">
+            <a style="float: left" href="/question/{{ question['id'] }}/new-answer"><img
 					src="/static/reply.png" width="30" height="30" alt="Reply"></a>
-			<a href="{{ url_for("question_vote_up", question_id=question["id"]) }}"><img
+            <a href="{{ url_for("question_vote_up", question_id=question["id"]) }}"><img
 					src="/static/like.png" width="30" height="30" alt="Like"></a>
-			<a href="{{ url_for("question_vote_down", question_id=question["id"]) }}"><img
+            <a href="{{ url_for("question_vote_down", question_id=question["id"]) }}"><img
 					src="/static/dislike.png" width="30" height="30" alt="Dislike"></a>
-			<a href="/question/{{ question['id'] }}/edit"><img src="/static/edit.png" width="30" height="30" alt="Edit"></a>
-			<a href="/question/{{ question['id'] }}/delete"><img
+            <a href="/question/{{ question['id'] }}/edit"><img src="/static/edit.png" width="30" height="30" alt="Edit"></a>
+            <a href="/question/{{ question['id'] }}/delete"><img
 					src="/static/delete.png" width="30" height="30" alt="Delete"></a>
-			<p class="comment-info">Vote: {{ question['vote_count'] }} | {{ question['submission_time'] }}</p>
 		</div>
 	</div>
 	<h2>Comments</h2>
@@ -139,8 +139,6 @@
 
 	{% endfor %}
 
-
-	<a href='/list'> Back </a>
 
 
 {% endblock %}
