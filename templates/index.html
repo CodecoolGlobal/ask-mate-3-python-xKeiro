@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+</head>
+<body>
+		<table class="table table-striped mt-3">
+			<thead>
+				<tr>
+					<th>Id</th>
+					<th>Submission time</th>
+					<th>View number</th>
+					<th>Vote number</th>
+					<th>Title</th>
+					<th>Message</th>
+					<th>Vote</th>
+				</tr>
+			</thead>
+			<tbody class="align-middle">
+				{% for question in questions %}
+					<tr>
+						<td>{{ question.id }}</td>
+						<td>{{ question.submission_time }}</td>
+						<td>{{ question.view_count }}</td>
+						<td>{{ question.vote_count }} point</td>
+						<td><a href="/question/{{ question["id"] }}"> {{question["title"]}} </a> </td>
+						<td>{{ question.message }}</td>
+						<td>
+                            <a href="{{ url_for("question_vote_up", question_id=question["id"]) }}"><img
+								src="/static/like.png" width="30" height="30" alt="Like"></a>
+							<a href="{{ url_for("question_vote_down", question_id=question["id"]) }}"><img
+									src="/static/dislike.png" width="30" height="30" alt="Dislike"></a>
+						</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+</body>
+</html>
