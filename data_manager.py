@@ -3,7 +3,7 @@ from psycopg2 import sql
 
 
 @database_common.connection_handler
-def get_questions(cursor):
+def get_questions(cursor) -> list[dict]:
     query = """
         SELECT *
         FROM question
@@ -14,7 +14,7 @@ def get_questions(cursor):
 
 
 @database_common.connection_handler
-def get_answers(cursor):
+def get_answers(cursor) -> list[dict]:
     query = """
         SELECT *
         FROM answer
@@ -34,7 +34,7 @@ def get_comments(cursor):
     return cursor.fetchall()
 
 @database_common.connection_handler
-def get_tags(cursor):
+def get_tags(cursor) -> list[dict]:
     query = """
         SELECT *
         FROM tag
@@ -43,7 +43,7 @@ def get_tags(cursor):
     return cursor.fetchall()
 
 @database_common.connection_handler
-def get_sorted_questions(cursor, order_by: str, order_direction: str):
+def get_sorted_questions(cursor, order_by: str, order_direction: str) -> list[dict]:
     '''
     :param order_by: title, submission_time, message, view_count, vote_count
     :param order_direction: asc, desc
@@ -87,7 +87,7 @@ def get_answer_by_id(cursor, id: int) -> dict:
 
 
 @database_common.connection_handler
-def get_answers_by_question_id(cursor, question_id: int):
+def get_answers_by_question_id(cursor, question_id: int) -> list[dict]:
     query = """
         SELECT *
         FROM answer
@@ -110,7 +110,7 @@ def get_latest_questions(cursor):
     return cursor.fetchall()
 
 @database_common.connection_handler
-def get_tags_by_question_id(cursor, question_id: int):
+def get_tags_by_question_id(cursor, question_id: int) -> list[dict]:
     query = """
         SELECT tag.*
         FROM tag
@@ -123,12 +123,12 @@ def get_tags_by_question_id(cursor, question_id: int):
 
 
 @database_common.connection_handler
-def get_comment_by_answer_id(cursor,answer_id: int):
+def get_comment_by_answer_id(cursor, answer_id: int):
     query = """
     SELECT * FROM comment
     WHERE answer_id = %s
     """
-    val = (answer_id, )
+    val = (answer_id,)
     cursor.execute(query, val)
     return cursor.fetchall()
 
@@ -138,9 +138,25 @@ def get_question_id_by_answer_id(cursor, answer_id: int):
     cursor.execute("""
         SELECT question_id FROM answer
         WHERE id = %(answer_id)s""",
-        {'answer_id': answer_id})
+                   {'answer_id': answer_id})
     return cursor.fetchall()[0]['question_id']
 
+@database_common.connection_handler
+def get_search_question(cursor,search_phrase):
+    cursor.execute("""
+    SELECT * FROM question
+    WHERE title ILIKE %(m)s
+    OR message ILIKE %(m)s; 
+    """, {'m': "%" + search_phrase + '%'})
+    return cursor.fetchall()
+
+@database_common.connection_handler
+def get_search_answer(cursor,search_phrase):
+    cursor.execute(""" 
+    SELECT * FROM answer
+    WHERE message ILIKE %(m)s;
+    """,{'m': "%" + search_phrase + '%'})
+    return cursor.fetchall()
 
 @database_common.connection_handler
 def get_answer_id_from_comment(cursor, comment_id):
@@ -174,6 +190,7 @@ def get_edit_count_by_comment_id(cursor, id):
     cursor.execute(query, val)
     return cursor.fetchall()[0]['edit_count']
 
+
 @database_common.connection_handler
 def get_search_question(cursor,search_phrase):
     cursor.execute("""
@@ -182,6 +199,7 @@ def get_search_question(cursor,search_phrase):
     OR message ILIKE %(m)s; 
     """, {'m': "%" + search_phrase + '%'})
     return cursor.fetchall()
+
 
 @database_common.connection_handler
 def get_search_answer(cursor,search_phrase):
