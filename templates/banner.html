@@ -1,31 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>{% block page_title %}{% endblock %}Food Q&A</title>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Oleo+Script+Swash+Caps">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+	<title>{% block page_title %}{% endblock %}Food Q&A</title>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Oleo+Script+Swash+Caps">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+	<!-- CDN of mark.js -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js"
+	        integrity=
+			        "sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww=="
+	        crossorigin="anonymous">
+	</script>
 </head>
 <body>
-<div class="nav_bar">
-  <a class="active" href="/">Home</a>
-  <a href="/list">Questions</a>
-  <a href="/add-question">Add new Question</a>
-    <div class="search-container">
-<form action="/search" method="POST">
-    <label for="search-question"></label>
-    <input type="search" placeholder="Search..." id="search-question" name="search-question" value="{{ search_phrase if search_phrase is defined  }}">
-    <button type="submit"> Submit</button>
-</form>
-    </div>
+	<div class="nav_bar">
+		<a class="active" href="/">Home</a>
+		<a href="/list">Questions</a>
+		<a href="/add-question">Add new Question</a>
+		<div class="search-container">
+			<form action="/search" method="POST">
+				<label for="search-question"></label>
+				<input type="search" placeholder="Search..." id="search-question" name="search-question"
+				       value="{{ search_phrase if search_phrase is defined }}">
+				<button type="submit"> Submit</button>
+			</form>
+		</div>
 
-</div>
-<div class="header">
-    <h1>Food Questions & Answers</h1>
-</div>
-{% block content %}{% endblock %}
+	</div>
+	<div class="header">
+		<h1>Food Questions & Answers</h1>
+	</div>
+	{% block content %}{% endblock %}
 
 </body>
 </html>
