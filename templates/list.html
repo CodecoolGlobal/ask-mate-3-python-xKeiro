@@ -17,7 +17,9 @@
 		<form action="/list" method="POST">
 			<select name="order_by" id="order_by" required>
 				<option {{ 'selected="selected"' if order_by=="id" }} value="id">ID</option>
-				<option {{ 'selected="selected"' if order_by=="submission_time" }} value="submission_time">Submission time</option>
+				<option {{ 'selected="selected"' if order_by=="submission_time" }} value="submission_time">Submission
+				                                                                                           time
+				</option>
 				<option {{ 'selected="selected"' if order_by=="view_count" }} value="view_count">View number</option>
 				<option {{ 'selected="selected"' if order_by=="vote_count" }} value="vote_count">Vote number</option>
 				<option {{ 'selected="selected"' if order_by=="title" }} value="title">Title</option>
@@ -29,13 +31,13 @@
 			</select>
 			<button class="btn btn-outline-secondary" type="submit">Sort</button>
 		</form>
-    <div class="search-questions">
-        <form action="/search" method="POST">
-            <label for="search-question"> Search Question</label>
-            <input type="search" id="search-question" name="search-question" value="Test Question">
-            <button type="submit"> Submit </button>
-        </form>
-</div>
+		<div class="search-questions">
+			<form action="/search" method="POST">
+				<label for="search-question"> Search Question</label>
+				<input type="search" id="search-question" name="search-question" value="Test Question">
+				<button type="submit"> Submit</button>
+			</form>
+		</div>
 		<table class="table table-striped mt-3">
 			<thead>
 				<tr>
@@ -48,49 +50,33 @@
 					<th>Vote</th>
 				</tr>
 			</thead>
-			<tbody class="align-middle">
-				{% for question in questions %}
+		</table>
+		<tbody class="align-middle">
+			{% for question in questions %}
+				<table class="table table-striped mt-3">
 					<tr>
 						<td>{{ question.id }}</td>
 						<td>{{ question.submission_time }}</td>
 						<td>{{ question.view_count }}</td>
 						<td>{{ question.vote_count }} point</td>
-						<td><a href="/question/{{ question["id"] }}"> {{question["title"]}} </a> </td>
+						<td><a href="/question/{{ question["id"] }}"> {{ question["title"] }} </a></td>
 						<td>{{ question.message }}</td>
 						<td>
-                            <a href="{{ url_for("question_vote_up", question_id=question["id"]) }}"><img
-								src="/static/like.png" width="30" height="30" alt="Like"></a>
+							<a href="{{ url_for("question_vote_up", question_id=question["id"]) }}"><img
+									src="/static/like.png" width="30" height="30" alt="Like"></a>
 							<a href="{{ url_for("question_vote_down", question_id=question["id"]) }}"><img
 									src="/static/dislike.png" width="30" height="30" alt="Dislike"></a>
 						</td>
 					</tr>
+				</table>
+				{% for answer in searched_answers %}
+					{% if question["id"] == answer["question_id"] %}
+						<p>Answer: {{ answer.message }}</p>
+					{% endif %}
 				{% endfor %}
-                <table class="table table-striped mt-3">
-                {% if searched_answers %}
-                    <h1 class="text-center mt-5 mb-4"> Answers </h1>
-                    <thead>
-                        <tr>
-                            <th>Id</th>
-                            <th>Submission time</th>
-                            <th>Message</th>
-                            <th>Image</th>
-                            <th>Edit count</th>
-                        </tr>
-                    </thead>
-                                    {% for answer in searched_answers %}
-                            <tr>
-                                <td>{{ answer.id }}</td>
-                                <td>{{ answer.submission_time }}</td>
-                                <td>{{ answer.message }}</td>
-                                <td>{{ answer.image }}
-                                <td>{{ answer.edit_count }} </td>
-                                </td>
-                            </tr>
-                    </tbody>
-                {% endfor %}
-                {% endif %}
-                </table>
-		<h2><a class="btn btn-warning" href='/add-question'> Add New Questions! </a></h2>
+			{% endfor %}
+
+			<h2><a class="btn btn-warning" href='/add-question'> Add New Questions! </a></h2>
 	</div>
 </body>
 </html>
