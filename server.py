@@ -204,10 +204,23 @@ def question_vote_down(question_id):
     return redirect(request.referrer)
 
 
+@app.route('/comment/<comment_id>/vote-up')
+def comment_vote_up(comment_id):
+    comment = get_comment_by_id(comment_id)
+    comment["vote_count"] += 1
+    update_comment_by_id(comment_id, comment)
+    return redirect(request.referrer)
+
+@app.route('/comment/<comment_id>/vote-down')
+def comment_vote_down(comment_id):
+    comment = get_comment_by_id(comment_id)
+    comment["vote_count"] -= 1
+    update_comment_by_id(comment_id, comment)
+    return redirect(request.referrer)
+
+
 @app.route('/answer/<answer_id>/vote-up')
 def answer_vote_up(answer_id):
-    question_id = request.args.get("question_id")
-
     answer = get_answer_by_id(answer_id)
     answer["vote_count"] += 1
     update_answer_by_id(answer_id, answer)
@@ -216,8 +229,6 @@ def answer_vote_up(answer_id):
 
 @app.route('/answer/<answer_id>/vote-down')
 def answer_vote_down(answer_id):
-    question_id = request.args.get("question_id")
-
     answer = get_answer_by_id(answer_id)
     answer["vote_count"] -= 1
     update_answer_by_id(answer_id, answer)
