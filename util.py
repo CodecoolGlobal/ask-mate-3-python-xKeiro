@@ -19,7 +19,6 @@ def generate_new_id_answer() -> int:
 
 
 def convert_timestamp_to_date(data):
-
     for row in data:
         time = int(row["submission_time"])
         row["submission_time"] = datetime.fromtimestamp(time)

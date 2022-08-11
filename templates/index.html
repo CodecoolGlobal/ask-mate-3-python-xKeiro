@@ -1,28 +1,28 @@
 {% extends "banner.html" %}
 
 {% block content %}
-    <h2> 5 latest questions </h2>
-    <div class="question-box">
-        {% for question in questions %}
-            <p class="comment-info">Vote: {{ question['vote_count'] }} | {{ question['submission_time'] }}</p>
-            <h2>{{ question['title'] }}</h2>
-            <p class="text"> {{ question['message'] }}</p>
-            <div class="right">
-                <a style="float: left" href="/question/{{ question["id"] }}">
-                    <button class="button button1">Read more</button>
-                </a>
-                <a href="{{ url_for("question_vote_up", question_id=question["id"]) }}"><img
-                        src="/static/like.png" width="30" height="30" alt="Like"></a>
-                <a href="{{ url_for("question_vote_down", question_id=question["id"]) }}"><img
-                        src="/static/dislike.png" width="30" height="30" alt="Dislike"></a>
-            </div>
-            <hr>
-        {% endfor %}
-    </div>
-    <div class="foot-box">
-        <a style="margin: auto" href="/list">
-            <button class="foot foot1">Let's see every Question</button>
-        </a>
-    </div>
+	<h2> 5 latest questions </h2>
+	<div class="question-box">
+		{% for question in questions %}
+			<p class="comment-info">Vote: {{ question['vote_count'] }} | {{ question['submission_time'] }}</p>
+			<h2>{{ question['title'] }}</h2>
+			<p class="text"> {{ question['message'] }}</p>
+			<div class="right">
+				<a style="float: left" href="/question/{{ question["id"] }}">
+					<button class="button button1">Read more</button>
+				</a>
+				<a href="{{ url_for("question_vote_up", question_id=question["id"]) }}"><img
+						src="/static/like.png" width="30" height="30" alt="Like"></a>
+				<a href="{{ url_for("question_vote_down", question_id=question["id"]) }}"><img
+						src="/static/dislike.png" width="30" height="30" alt="Dislike"></a>
+			</div>
+			<hr>
+		{% endfor %}
+	</div>
+	<div class="foot-box">
+		<a style="margin: auto" href="/list">
+			<button class="foot foot1">Let's see every Question</button>
+		</a>
+	</div>
 
 {% endblock %}

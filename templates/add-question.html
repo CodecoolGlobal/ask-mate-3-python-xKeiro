@@ -3,7 +3,8 @@
 {% block content %}
 	<div class="container">
 		<h2>{{ "Add question" if request.path == "/add-question" else "Edit question" }}</h2>
-		<form style="text-align: center" action="{{ "/add-question" if request.path == "/add-question" else "/question/"+question["id"]|string+"/edit" }}"
+		<form style="text-align: center"
+		      action="{{ "/add-question" if request.path == "/add-question" else "/question/"+question["id"]|string+"/edit" }}"
 		      method="POST" enctype="multipart/form-data">
 			<div>
 				<label for="title">Title<span style="color: red">*</span></label>
@@ -18,9 +19,9 @@
 			</div>
 			<br>
 			<div>
-                <input type="file" name="image" id="image" style="display:none">
-                <br>
-                <label class="button button1" for="image">Upload image</label>
+				<input type="file" name="image" id="image" style="display:none">
+				<br>
+				<label class="button button1" for="image">Upload image</label>
 			</div>
 			<br>
 			<div>
@@ -34,10 +35,11 @@
 			</div>
 			<br>
 			<div>
-				<button class="button button1" type="submit">{{ "Add new question" if request.path == "/add-question" else "Edit question" }}</button>
+				<button class="button button1"
+				        type="submit">{{ "Add new question" if request.path == "/add-question" else "Edit question" }}</button>
 			</div>
-        </form>
-    </div>
+		</form>
+	</div>
 
-{% include 'footer.html' %}
+	{% include 'footer.html' %}
 {% endblock %}

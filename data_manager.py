@@ -33,6 +33,7 @@ def get_comments(cursor):
     cursor.execute(query)
     return cursor.fetchall()
 
+
 @database_common.connection_handler
 def get_tags(cursor) -> list[dict]:
     query = """
@@ -41,6 +42,7 @@ def get_tags(cursor) -> list[dict]:
         """
     cursor.execute(query)
     return cursor.fetchall()
+
 
 @database_common.connection_handler
 def get_sorted_questions(cursor, order_by: str, order_direction: str) -> list[dict]:
@@ -109,6 +111,7 @@ def get_latest_questions(cursor):
     cursor.execute(query)
     return cursor.fetchall()
 
+
 @database_common.connection_handler
 def get_tags_by_question_id(cursor, question_id: int) -> list[dict]:
     query = """
@@ -117,8 +120,8 @@ def get_tags_by_question_id(cursor, question_id: int) -> list[dict]:
         LEFT JOIN question_tag on tag.id = question_tag.tag_id
         WHERE question_tag.question_id = %s
         """
-    val=(question_id,)
-    cursor.execute(query,val)
+    val = (question_id,)
+    cursor.execute(query, val)
     return cursor.fetchall()
 
 
@@ -141,8 +144,9 @@ def get_question_id_by_answer_id(cursor, answer_id: int):
                    {'answer_id': answer_id})
     return cursor.fetchall()[0]['question_id']
 
+
 @database_common.connection_handler
-def get_search_question(cursor,search_phrase):
+def get_search_question(cursor, search_phrase):
     cursor.execute("""
     SELECT * FROM question
     WHERE title ILIKE %(m)s
@@ -150,13 +154,15 @@ def get_search_question(cursor,search_phrase):
     """, {'m': "%" + search_phrase + '%'})
     return cursor.fetchall()
 
+
 @database_common.connection_handler
-def get_search_answer(cursor,search_phrase):
+def get_search_answer(cursor, search_phrase):
     cursor.execute(""" 
     SELECT * FROM answer
     WHERE message ILIKE %(m)s;
-    """,{'m': "%" + search_phrase + '%'})
+    """, {'m': "%" + search_phrase + '%'})
     return cursor.fetchall()
+
 
 @database_common.connection_handler
 def get_answer_id_from_comment(cursor, comment_id):
@@ -192,7 +198,7 @@ def get_edit_count_by_comment_id(cursor, id):
 
 
 @database_common.connection_handler
-def get_search_question(cursor,search_phrase):
+def get_search_question(cursor, search_phrase):
     cursor.execute("""
     SELECT * FROM question
     WHERE title ILIKE %(m)s
@@ -202,9 +208,9 @@ def get_search_question(cursor,search_phrase):
 
 
 @database_common.connection_handler
-def get_search_answer(cursor,search_phrase):
+def get_search_answer(cursor, search_phrase):
     cursor.execute(""" 
     SELECT * FROM answer
     WHERE message ILIKE %(m)s;
-    """,{'m': "%" + search_phrase + '%'})
+    """, {'m': "%" + search_phrase + '%'})
     return cursor.fetchall()

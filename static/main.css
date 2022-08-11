@@ -22,6 +22,11 @@ body {
     background: linear-gradient(135deg, rgba(209, 209, 209, 1) 0%, rgb(255, 255, 255) 200%);
 }
 
+ mark {
+            padding: 5px;
+            background: coral;
+        }
+
 .header {
     margin-top: 0;
     width: 100%;
