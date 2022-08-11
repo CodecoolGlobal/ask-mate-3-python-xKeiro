@@ -8,20 +8,21 @@
             <h2>{{ question['title'] }}</h2>
             <p class="text"> {{ question['message'] }}</p>
             <div class="right">
-            <a style="float: left" href="/question/{{ question["id"] }}">
-                <button class="button button1">Read more</button>
-            </a>
-            <a href="{{ url_for("question_vote_up", question_id=question["id"]) }}"><img
-                    src="/static/like.png" width="30" height="30" alt="Like"></a>
-            <a href="{{ url_for("question_vote_down", question_id=question["id"]) }}"><img
-                    src="/static/dislike.png" width="30" height="30" alt="Dislike"></a>
+                <a style="float: left" href="/question/{{ question["id"] }}">
+                    <button class="button button1">Read more</button>
+                </a>
+                <a href="{{ url_for("question_vote_up", question_id=question["id"]) }}"><img
+                        src="/static/like.png" width="30" height="30" alt="Like"></a>
+                <a href="{{ url_for("question_vote_down", question_id=question["id"]) }}"><img
+                        src="/static/dislike.png" width="30" height="30" alt="Dislike"></a>
             </div>
             <hr>
         {% endfor %}
-        <a href="/list">
-            <button class="button button1">Let's see every question</button>
+    </div>
+    <div class="foot-box">
+        <a style="margin: auto" href="/list">
+            <button class="foot foot1">Let's see every Question</button>
         </a>
     </div>
-    <br>
 
 {% endblock %}

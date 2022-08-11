@@ -2,13 +2,14 @@
 
 {% block content %}
 
-<div class="container">
-<div id="add-comment-to-comment">
-    <form action="" method="POST">
-        <p><label for="add-comment-to-comment"> Add a comment: </label></p>
-        <textarea id="add-comment-to-comment" name="comment-to-comment" rows="4" cols="50"></textarea>
-        <button type="submit"> Submit! </button>
-    </form>
-</div>
-</div>
+    <div class="container">
+        <div id="add-comment-to-comment">
+            <form style="text-align: center" action="" method="POST">
+                <h2><label for="add-comment-to-comment"> Add a comment: </label></h2>
+                <textarea id="add-comment-to-comment" name="comment-to-comment" rows="4" cols="50"></textarea><br>
+                <button class="button button1" type="submit"> Submit!</button>
+            </form>
+        </div>
+    </div>
+    {% include 'footer.html' %}
 {% endblock %}
