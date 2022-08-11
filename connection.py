@@ -18,7 +18,7 @@ def write_question_and_return_new_id(cursor, fields: dict) -> int:
 
 
 @database_common.connection_handler
-def write_answer(cursor, fields: dict):
+def write_answer(cursor, fields: dict) -> int:
     query = "INSERT INTO answer(" + ", ".join(fields.keys()) + ") VALUES ("
     for value in fields.values():
         query += "%s, "
@@ -134,9 +134,6 @@ def update_comment_submission_time(cursor, id):
         """
     val = (id,)
     cursor.execute(query, val)
-
-
-
 
 
 @database_common.connection_handler
