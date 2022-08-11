@@ -57,43 +57,36 @@ CREATE TABLE question_tag
 
 
 
-INSERT INTO question(submission_time, view_count, vote_count, title, message, image)
-VALUES ('2017-04-28 08:29:00', 1, 0, 'Test question', 'Am I doing this right?', NULL),
-       ('2017-04-28 08:29:00', 56, 9, 'Wordpress loading multiple jQuery Versions',
-        'I developed a plugin that uses the jquery booklet plugin (http://builtbywill.com/booklet/#/) this plugin binds a function to $ so I cann call $(''.myBook '').booklet();
+INSERT INTO question(submission_time,view_count,vote_count,title,message,image,edit_count)
+VALUES ('2022-08-11 15:15:55', 4,  0, 'Miből van a kenyér hélya? :D', 'Kenyírt szeretnékap stüni! Tudnátaok segíni?', NULL, 0),
+	  ('2022-08-12 12:17:55', 15, 2, 'Földrajz érettségi', 'Sziasztok! Szerintetek, ha az érettségin a kifejtős kérdésre a paprikás krumpli receptjét írom le, akkor valahogy át lehet csusszani a vizsgán?', NULL, 0),
+  	  ('2022-08-11 21:19:55', 11, 5, 'Paprikás krumpli ', 'Sziasztok! :) Tudna esetleg valaki  NorbiUpdate paprikás krumpli receptet ajánlani?', NULL, 0),
+  	  ('2022-08-11 22:14:55', 12, 6, 'Valakinél vetési tarhonya eladó?', 'Sziasztok! Tudja valaki, hogy honnan tudnék vetési tarhonyát beszerezni? Szeretnék ültetni mert a család kifejezetten tarhonyával szereti a pörköltet.','/static/upload\tarhonya-elkeszitese-recept-foto.jpg', 0);
 
-I could easy managing the loading order with wp_enqueue_script so first I load jquery then I load booklet so everything is fine.
+INSERT INTO answer(submission_time,vote_count,question_id,message,image)
+VALUES ('2022-08-11 15:14:55', 0, 2, 'Persze, ha jó a recept akkor minden bizonnyal. xD', '/static/upload\paprikas-krumpli.jpg'),
+	  ('2022-08-11 15:15:01', 1, 2, 'Te most magadtól vagy ennyire hülye, vagy valaki fogja a kezedet? O.o ', '/static/upload\areyouserious.jpg'),
+	  ('2022-08-11 15:18:23', 3, 3, 'Persze, fél kilóval kevesebb zsírszalonnán pirítsd le a hagymát hozzá xDDD', '/static/upload\szalonna.jpg'),
+	  ('2022-08-11 16:25:29', 4, 3, 'Budapesten tuti kapsz ötezerééééé :D ', NULL),
+	  ('2022-08-11 17:48:39', 5, 4, 'Ezt most teljesen komolyan kérdezed? O.o xDD', NULL),
+	  ('2022-08-11 19:25:48', 4, 4, 'Persze, milyen kiszerelésben kéne? Ez jó lesz?', '/static/upload\tarhonyavetomag.jpg'),
+	  ('2022-08-11 20:15:45', 2, 1, 'héJa a kenyér kívülről sült héja. valamelyik fajta liszt felhasználából.', NULL),
+ 	  ('2022-08-11 21:14:32', 1, 1, '85% A könyér haja azér van hogy mögegyed, nem csak a belit köll zabáni.', NULL),
+	  ('2022-08-11 22:22:22', 0, 1, 'Há héjjjamadárbó, mibő lenne.', NULL);
 
-BUT in my theme i also using jquery via webpack so the loading order is now following:
-
-jquery
-booklet
-app.js (bundled file with webpack, including jquery)', NULL),
-       ('2017-04-28 08:29:00', 71, 7, 'How to make lists in Python?', 'I am totally new to this, any hints?',
-        '/static/upload\1_pqJe7r067R7ZX569OloQew.jpg'),
-       ('2017-04-28 08:29:00', 9, -3, 'Am I doing this right?', 'Am I doing this right?', NULL);
-
-INSERT INTO answer(submission_time, vote_count, question_id, message, image)
-VALUES ('2017-04-28 08:29:00', 4, 3, 'You need to use brackets: my_list = []', NULL),
-
-       ('2017-04-28 08:29:00', 35, 3, 'Look it up in the Python docs', NULL),
-
-       ('2017-04-28 08:29:00', -7, 2, 'You need to do something', NULL),
-
-       ('2017-04-28 08:29:00', 3, 4,
-        'You forgot to provide example code and context!',
-        '/static/upload\76-765183_cute-cat-stickers-series-cute-angry-cat-cartoon.png');
-
-INSERT INTO comment(parent_comment_id, answer_id, message, submission_time)
-VALUES ( NULL, 1, 'This is a comment', '2017-04-28 08:29:00'),
-       ( 1, 1, 'This is a comment to a comment', '2017-04-28 08:29:00');
+INSERT INTO comment (parent_comment_id, answer_id, message, submission_time,edit_count)
+VALUES (NULL, 1, 'Yummii, ez tök jól néz ki. Linkelnéd a receptet légyszíves? :D ','2022-08-12 14:11:25', 0),
+  	  (1, 1,'Google a barátod. :P ','2022-08-12 17:12:35',0),
+ 	  (NULL, 3, 'Fuuu, de jól néz ki tuti faluról van. ','2022-08-13 15:16:45', 0),
+	  (NULL, 6,'Hát kicsit többre gondoltam úgy két mázsa kéne, annyid is van? ','2022-08-14 15:14:55', 0);
 
 INSERT INTO tag(name)
 VALUES ('Code'),
        ('Cooking'),
        ('Newbie');
 
-INSERT INTO question_tag
-VALUES (1, 1),
-       (1, 2),
-       (3, 3);
+INSERT INTO question_tag(question_id,tag_id)
+VALUES (2,2),
+   	  (3,2),
+	  (4,2),
+ 	  (1,3);
