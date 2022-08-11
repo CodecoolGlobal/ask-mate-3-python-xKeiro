@@ -16,7 +16,7 @@
     <div class="search-container">
 <form action="/search" method="POST">
     <label for="search-question"></label>
-    <input type="search" placeholder="Search..." id="search-question" name="search-question">
+    <input type="search" placeholder="Search..." id="search-question" name="search-question" value="{{ search_phrase if search_phrase is defined  }}">
     <button type="submit"> Submit</button>
 </form>
     </div>
