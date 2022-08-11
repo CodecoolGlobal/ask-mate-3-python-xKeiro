@@ -1,14 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Home</title>
-</head>
-<body>
-		<table class="table table-striped mt-3">
+{% extends "banner.html" %}
+
+{% block content %}
+		<table>
 			<thead>
 				<tr>
-					<th>Id</th>
 					<th>Submission time</th>
 					<th>View number</th>
 					<th>Vote number</th>
@@ -17,10 +12,9 @@
 					<th>Vote</th>
 				</tr>
 			</thead>
-			<tbody class="align-middle">
+			<tbody>
 				{% for question in questions %}
 					<tr>
-						<td>{{ question.id }}</td>
 						<td>{{ question.submission_time }}</td>
 						<td>{{ question.view_count }}</td>
 						<td>{{ question.vote_count }} point</td>
@@ -36,5 +30,6 @@
 				{% endfor %}
 			</tbody>
 		</table>
-</body>
-</html>
+
+    <a href="{{ url_for('list') }}">Every question</a>
+{% endblock %}

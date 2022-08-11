@@ -179,7 +179,7 @@ def delete_question_id(question_id):
 def delete_answers(answer_id):
     answer_id = int(answer_id)
     del_answer_by_id(answer_id)
-    return redirect('/list')
+    return redirect(request.referrer)
 
 
 @app.route('/question/<question_id>/vote-up')
