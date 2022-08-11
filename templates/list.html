@@ -35,6 +35,11 @@
                             src="/static/dislike.png" width="30" height="30" alt="Dislike"></a>
                 </div>
                 <hr>
+                				{% for answer in searched_answers %}
+					{% if question["id"] == answer["question_id"] %}
+						<p>Answer: {{ answer.message }}</p>
+					{% endif %}
+				{% endfor %}
             {% endfor %}
         </div>
 

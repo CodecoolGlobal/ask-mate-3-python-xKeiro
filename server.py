@@ -1,11 +1,12 @@
 from flask import Flask, request, render_template, redirect
 from connection import write_question_and_return_new_id, write_answer, del_answer_by_id, del_question_by_id, \
-    update_question_by_id, update_answer_by_id, write_comment_by_answer_id, attach_tags, del_tag_by_question_id, \
-    write_comment_to_comment
+    update_question_by_id, update_answer_by_id, write_comment_by_answer_id, update_comment_by_id, update_comment_edit, \
+    update_comment_submission_time, attach_tags, del_tag_by_question_id, write_comment_to_comment, \
+    delete_comment_by_id
 
 from data_manager import get_sorted_questions, get_question_by_id, get_answers_by_question_id, get_answer_by_id, \
-    get_question_id_by_answer_id, get_comments, get_tags_by_question_id, get_tags, get_questions, get_latest_questions, \
-    get_search_question, get_question_id_by_answer_id, get_comments, get_questions, get_latest_questions, \
+    get_question_id_by_answer_id, get_comments, get_answer_id_from_comment, get_comment_by_id, \
+    get_edit_count_by_comment_id, get_tags_by_question_id, get_tags, get_questions, get_latest_questions, \
     get_search_question, get_search_answer
 
 import os
@@ -65,7 +66,10 @@ def get_search_result():
         search_phrase = request.form["search-question"]
         searched_question = get_search_question(search_phrase)
         searched_answer = get_search_answer(search_phrase)
-        return render_template("list.html", questions=searched_question, searched_answers=searched_answer)
+        for answer in searched_answer:
+            question_id = (answer["question_id"])
+            searched_question.append(get_question_by_id(question_id))
+    return render_template("list.html", questions=searched_question, searched_answers=searched_answer)
 
 
 @app.route('/question/<question_id>/edit', methods=['GET', 'POST'])
@@ -166,6 +170,8 @@ def add_a_comment_to_comment(answer_id, parent_comment_id):
         write_comment_to_comment(parent_comment_id, answer_id, new_comment)
         question_id = get_question_id_by_answer_id(answer_id)
         return redirect(f"/question/{question_id}")
+        question_id = get_question_id_by_answer_id(answer_id)
+        return redirect(f"/question/{question_id}")
 
 
 @app.route('/question/<question_id>/delete')
@@ -198,10 +204,23 @@ def question_vote_down(question_id):
     return redirect(request.referrer)
 
 
+@app.route('/comment/<comment_id>/vote-up')
+def comment_vote_up(comment_id):
+    comment = get_comment_by_id(comment_id)
+    comment["vote_count"] += 1
+    update_comment_by_id(comment_id, comment)
+    return redirect(request.referrer)
+
+@app.route('/comment/<comment_id>/vote-down')
+def comment_vote_down(comment_id):
+    comment = get_comment_by_id(comment_id)
+    comment["vote_count"] -= 1
+    update_comment_by_id(comment_id, comment)
+    return redirect(request.referrer)
+
+
 @app.route('/answer/<answer_id>/vote-up')
 def answer_vote_up(answer_id):
-    question_id = request.args.get("question_id")
-
     answer = get_answer_by_id(answer_id)
     answer["vote_count"] += 1
     update_answer_by_id(answer_id, answer)
@@ -210,8 +229,6 @@ def answer_vote_up(answer_id):
 
 @app.route('/answer/<answer_id>/vote-down')
 def answer_vote_down(answer_id):
-    question_id = request.args.get("question_id")
-
     answer = get_answer_by_id(answer_id)
     answer["vote_count"] -= 1
     update_answer_by_id(answer_id, answer)
@@ -230,6 +247,32 @@ def edit_answer(answer_id):
         answer = get_answer_by_id(int(answer_id))
         question_id = get_question_id_by_answer_id(answer_id)
         return render_template('new-answer.html', answer=answer, answer_id=answer_id, question_id=question_id)
+
+
+# edit comment
+@app.route('/comment/<comment_id>/edit', methods=['GET', 'POST'])
+def edit_comment(comment_id):
+    comment_id = int(comment_id)
+    if request.method == "POST":
+        comment = request.form.to_dict()
+        update_comment_submission_time(comment_id)
+        edit_count = get_edit_count_by_comment_id(comment_id)
+        update_comment_edit(comment_id, edit_count)
+        update_comment_by_id(comment_id, comment)
+        answer_id = get_answer_id_from_comment(comment_id)
+        question_id = get_question_id_by_answer_id(answer_id)
+        return redirect(f"/question/{question_id}")
+    else:
+        comment = get_comment_by_id(comment_id)
+        answer_id = get_answer_id_from_comment(comment_id)
+        return render_template('update-comment.html', comment=comment, comment_id=comment_id, answer_id=answer_id)
+
+
+# delete comment
+@app.route('/comments/<comment_id>/delete')
+def delete_comment(comment_id):
+    delete_comment_by_id(comment_id)
+    return redirect(request.referrer)
 
 
 if __name__ == "__main__":
