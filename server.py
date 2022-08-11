@@ -66,7 +66,10 @@ def get_search_result():
         search_phrase = request.form["search-question"]
         searched_question = get_search_question(search_phrase)
         searched_answer = get_search_answer(search_phrase)
-        return render_template("list.html", questions=searched_question, searched_answers=searched_answer)
+        for answer in searched_answer:
+            question_id = (answer["question_id"])
+            searched_question.append(get_question_by_id(question_id))
+    return render_template("list.html", questions=searched_question, searched_answers=searched_answer)
 
 
 @app.route('/question/<question_id>/edit', methods=['GET', 'POST'])
