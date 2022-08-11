@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>{% block page_title %}{% endblock %}Food Q&A</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Oleo+Script+Swash+Caps">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+</head>
+<body>
+<div class="nav_bar">
+  <a class="active" href="/">Home</a>
+  <a href="/list">Questions</a>
+  <a href="/add-question">Add new Question</a>
+    <div class="search-container">
+<form action="/search" method="POST">
+    <label for="search-question"></label>
+    <input type="search" placeholder="Search..." id="search-question" name="search-question">
+    <button type="submit"> Submit</button>
+</form>
+    </div>
+
+</div>
+<div class="header">
+    <h1>Food Questions & Answers</h1>
+</div>
+{% block content %}{% endblock %}
+
+</body>
+</html>
