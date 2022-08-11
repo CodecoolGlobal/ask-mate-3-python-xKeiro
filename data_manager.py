@@ -7,7 +7,7 @@ def get_questions(cursor) -> list[dict]:
     query = """
         SELECT *
         FROM question
-        ORDER BY id
+        ORDER BY submission_time DESC
         """
     cursor.execute(query)
     return cursor.fetchall()

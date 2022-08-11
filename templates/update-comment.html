@@ -1,18 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Update Comment</title>
-</head>
-<body>
-<div id="add-comment">
-    <form action="" method="POST">
-        <p><label for="message"> Update comment: </label></p>
+{% extends "banner.html" %}
 
-        <textarea id="add-comment" name="message" rows="4" cols="50"> {{ comment['message']}}
-        </textarea>
-        <button type="submit"> Update! </button>
-    </form>
-</div>
-</body>
-</html>
+{% block content %}
+    <div class="container">
+        <div id="add-comment">
+            <form style="text-align: center" action="" method="POST">
+                <h2><label for="message"> Update comment: </label></h2>
+                <br>
+                <textarea id="add-comment" name="message" rows="4" cols="50">{{ comment['message'] }}</textarea><br>
+                <button class="button button1" type="submit"> Update!</button>
+            </form>
+        </div>
+    </div>
+{% include 'footer.html' %}
+{% endblock %}

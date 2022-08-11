@@ -3,25 +3,26 @@
     box-sizing: border-box;
 }
 
-h1{
+h1 {
     font-family: 'Oleo Script Swash Caps', cursive;
     font-size: 80px;
     text-align: left;
 }
 
-h2{
+
+h2 {
     font-family: 'Oleo Script Swash Caps', cursive;
     font-size: 40px;
     text-align: center;
 }
 
-body{
+body {
     min-height: 100vh;
-    background: rgb(209,209,209);
-    background: linear-gradient(135deg, rgba(209,209,209,1) 0%, rgb(255, 255, 255) 200%);
+    background: rgb(209, 209, 209);
+    background: linear-gradient(135deg, rgba(209, 209, 209, 1) 0%, rgb(255, 255, 255) 200%);
 }
 
-.header{
+.header {
     margin-top: 0;
     width: 100%;
     height: 400px;
@@ -33,7 +34,7 @@ body{
     color: white;
 }
 
-.question{
+.question {
     width: 700px;
     max-width: 100%;
     margin: auto;
@@ -44,7 +45,7 @@ body{
     font-family: 'Ubuntu', cursive;
 }
 
-.question-box{
+.question-box {
     width: 1000px;
     max-width: 100%;
     margin: auto;
@@ -83,6 +84,7 @@ body{
     text-align: right;
 
 }
+
 .reply-box {
     margin: auto;
     width: 700px;
@@ -101,162 +103,196 @@ body{
     margin-left: auto;
     margin-right: auto;
 }
-.center{
-    position: absolute;
-    align-content: center;
+
+.center {
+    position: relative;
+    margin: auto;
 }
 
-.right{
+.right {
     text-align: right;
 }
 
 .nav_bar {
-  overflow: hidden;
-  background-color: #333333;
+    overflow: hidden;
+    background-color: #333333;
 }
 
 .nav_bar a {
-  float: left;
-  display: block;
-  color: white;
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
-  font-size: 17px;
+    float: left;
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
 }
 
 .nav_bar .search-container button:hover {
-  background: #ccc;
+    background: #ccc;
 }
 
 .nav_bar a:hover {
-  background-color: #02b9b9;
-  color: white;
+    background-color: #02b9b9;
+    color: white;
 }
 
 .nav_bar .search-container {
-  float: right;
+    float: right;
 }
 
 .nav_bar input[type=search] {
-  padding: 6px;
-  margin-top: 8px;
-  font-size: 17px;
-  border: none;
+    padding: 6px;
+    margin-top: 8px;
+    font-size: 17px;
+    border: none;
 }
 
 .nav_bar .search-container button {
-  float: right;
-  padding: 6px;
-  margin-top: 8px;
-  margin-right: 16px;
+    float: right;
+    padding: 6px;
+    margin-top: 8px;
+    margin-right: 16px;
     color: white;
-  background: #02b9b9;
-  font-size: 17px;
-  border: none;
-  cursor: pointer;
+    background: #02b9b9;
+    font-size: 17px;
+    border: none;
+    cursor: pointer;
 }
 
 .nav_bar .search-container button:hover {
-  background: #008181;
+    background: #008181;
     color: white;
 }
 
 @media screen and (max-width: 600px) {
-  .nav_bar .search-container {
-    float: none;
-  }
-  .nav_bar a, .nav_bar input[type=search], .nav_bar .search-container button {
-    float: none;
-    display: block;
-    text-align: left;
-    width: 100%;
-    margin: 0;
-    padding: 14px;
-  }
-  .nav_bar input[type=text] {
-    border: 1px solid #ccc;
-  }
+    .nav_bar .search-container {
+        float: none;
+    }
+
+    .nav_bar a, .nav_bar input[type=search], .nav_bar .search-container button {
+        float: none;
+        display: block;
+        text-align: left;
+        width: 100%;
+        margin: 0;
+        padding: 14px;
+    }
+
+    .nav_bar input[type=text] {
+        border: 1px solid #ccc;
+    }
 }
 
 .text {
-  display: block;
-  width: 300px;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+    display: block;
+    width: 300px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
 .button {
-  border: none;
-  color: white;
-  padding: 10px 10px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  transition-duration: 0.4s;
-  cursor: pointer;
+    border: none;
+    color: white;
+    padding: 10px 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    transition-duration: 0.4s;
+    cursor: pointer;
 }
 
 .button1 {
-  background-color: #333333;
-  color: white;
+    background-color: #333333;
+    color: white;
 }
 
 .button1:hover {
-  background-color: #02b9b9;
-  color: white;
+    background-color: #02b9b9;
+    color: white;
 }
 
-.tag{
-  border: none;
-  color: white;
-  padding: 7px 7px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 14px;
-  transition-duration: 0.4s;
-  cursor: pointer;
+.foot-box {
+    text-align: center;
+    margin: auto;
+    width: 300px;
+    height: 200px;
+    padding-top: 20px;
+}
+
+.foot {
+    border: none;
+    position: relative;
+    /*bottom: 5%;*/
+    /*right: 20%;*/
+    color: white;
+    padding: 10px 10px;
+    text-align: center;
+    text-decoration: none;
+    /*display: inline-block;*/
+    font-size: 16px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+}
+
+.foot1 {
+    background-color: #02b9b9;
+    color: white;
+}
+
+.foot1:hover {
+    background-color: #333333;
+    color: white;
+}
+
+.tag {
+    border: none;
+    color: white;
+    padding: 7px 7px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    transition-duration: 0.4s;
+    cursor: pointer;
 }
 
 select.minimal {
-  background-image:
-    linear-gradient(45deg, transparent 50%, gray 50%),
+    background-image: linear-gradient(45deg, transparent 50%, gray 50%),
     linear-gradient(135deg, gray 50%, transparent 50%),
     linear-gradient(to right, #ccc, #ccc);
-  background-position:
-    calc(100% - 20px) calc(1em + 2px),
+    background-position: calc(100% - 20px) calc(1em + 2px),
     calc(100% - 15px) calc(1em + 2px),
     calc(100% - 2.5em) 0.5em;
-  background-size:
-    5px 5px,
+    background-size: 5px 5px,
     5px 5px,
     1px 1.5em;
-  background-repeat: no-repeat;
+    background-repeat: no-repeat;
 }
 
 select {
 
-  background-color: white;
-  border: thin solid #333333;
-  border-radius: 4px;
-  display: inline-block;
-  font: inherit;
-  line-height: 1.5em;
-  padding: 0.5em 3.5em 0.5em 1em;
+    background-color: white;
+    border: thin solid #333333;
+    border-radius: 4px;
+    display: inline-block;
+    font: inherit;
+    line-height: 1.5em;
+    padding: 0.5em 3.5em 0.5em 1em;
 
-  margin: 0;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-  -webkit-appearance: none;
-  -moz-appearance: none;
+    margin: 0;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    -webkit-appearance: none;
+    -moz-appearance: none;
 }
 
-.container{
+.container {
     width: 1000px;
+    max-width: 100%;
     margin: auto;
     padding: 10px 30px;
     background-color: rgba(255, 255, 255, 0.27);
@@ -264,17 +300,17 @@ select {
     font-family: 'Ubuntu', cursive;
 }
 
-textarea {
-  width: 300px;
-  height: 150px;
+.box {
+    position: absolute;
+    bottom: 0;
+    width: 1000px;
+    max-width: 100%;
+
+    padding: 10px 30px;
+    font-family: 'Ubuntu', cursive;
 }
 
-footer {
-    clear: both;
-    position: fixed;
-    height: 200px;
-    margin-top: -200px;
-    left: 0;
-    bottom: 0;
-    text-align: center;
+textarea {
+    width: 300px;
+    height: 150px;
 }
