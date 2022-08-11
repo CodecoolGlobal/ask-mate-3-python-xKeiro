@@ -1,14 +1,12 @@
 from flask import Flask, request, render_template, redirect
 from connection import write_question_and_return_new_id, write_answer, del_answer_by_id, del_question_by_id, \
-    update_question_by_id, update_answer_by_id, write_comment_by_answer_id, update_comment_by_id, update_comment_edit, update_comment_submission_time
-    update_question_by_id, update_answer_by_id, write_comment_by_answer_id, attach_tags, del_tag_by_question_id, \
-    write_comment_to_comment
+    update_question_by_id, update_answer_by_id, write_comment_by_answer_id, update_comment_by_id, update_comment_edit, \
+    update_comment_submission_time, attach_tags, del_tag_by_question_id, write_comment_to_comment, \
+    delete_comment_by_id
 
 from data_manager import get_sorted_questions, get_question_by_id, get_answers_by_question_id, get_answer_by_id, \
     get_question_id_by_answer_id, get_comments, get_answer_id_from_comment, get_comment_by_id, \
-    get_edit_count_by_comment_id
-    get_question_id_by_answer_id, get_comments, get_tags_by_question_id, get_tags, get_questions, get_latest_questions, \
-    get_search_question, get_question_id_by_answer_id, get_comments, get_questions, get_latest_questions, \
+    get_edit_count_by_comment_id, get_tags_by_question_id, get_tags, get_questions, get_latest_questions, \
     get_search_question, get_search_answer
 
 import os
@@ -254,6 +252,13 @@ def edit_comment(comment_id):
         comment = get_comment_by_id(comment_id)
         answer_id = get_answer_id_from_comment(comment_id)
         return render_template('update-comment.html', comment=comment, comment_id=comment_id, answer_id=answer_id)
+
+
+# delete comment
+@app.route('/comments/<comment_id>/delete')
+def delete_comment(comment_id):
+    delete_comment_by_id(comment_id)
+    return redirect(request.referrer)
 
 
 if __name__ == "__main__":

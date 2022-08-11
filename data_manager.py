@@ -3,7 +3,7 @@ from psycopg2 import sql
 
 
 @database_common.connection_handler
-def get_questions(cursor) -> list[dict]:
+def get_questions(cursor):
     query = """
         SELECT *
         FROM question
@@ -14,7 +14,7 @@ def get_questions(cursor) -> list[dict]:
 
 
 @database_common.connection_handler
-def get_answers(cursor) -> list[dict]:
+def get_answers(cursor):
     query = """
         SELECT *
         FROM answer
@@ -34,7 +34,7 @@ def get_comments(cursor):
     return cursor.fetchall()
 
 @database_common.connection_handler
-def get_tags(cursor) -> list[dict]:
+def get_tags(cursor):
     query = """
         SELECT *
         FROM tag
@@ -43,7 +43,7 @@ def get_tags(cursor) -> list[dict]:
     return cursor.fetchall()
 
 @database_common.connection_handler
-def get_sorted_questions(cursor, order_by: str, order_direction: str) -> list[dict]:
+def get_sorted_questions(cursor, order_by: str, order_direction: str):
     '''
     :param order_by: title, submission_time, message, view_count, vote_count
     :param order_direction: asc, desc
@@ -87,7 +87,7 @@ def get_answer_by_id(cursor, id: int) -> dict:
 
 
 @database_common.connection_handler
-def get_answers_by_question_id(cursor, question_id: int) -> list[dict]:
+def get_answers_by_question_id(cursor, question_id: int):
     query = """
         SELECT *
         FROM answer
@@ -110,7 +110,7 @@ def get_latest_questions(cursor):
     return cursor.fetchall()
 
 @database_common.connection_handler
-def get_tags_by_question_id(cursor, question_id: int) -> list[dict]:
+def get_tags_by_question_id(cursor, question_id: int):
     query = """
         SELECT tag.*
         FROM tag

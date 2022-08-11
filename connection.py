@@ -18,7 +18,7 @@ def write_question_and_return_new_id(cursor, fields: dict) -> int:
 
 
 @database_common.connection_handler
-def write_answer(cursor, fields: dict) -> int:
+def write_answer(cursor, fields: dict):
     query = "INSERT INTO answer(" + ", ".join(fields.keys()) + ") VALUES ("
     for value in fields.values():
         query += "%s, "
@@ -145,3 +145,10 @@ def write_comment_to_comment(cursor,parent_comment_id,answer_id,new_comment):
     INSERT INTO comment (parent_comment_id, answer_id, message)
      VALUES (%(p_cid)s, %(a_s)s, %(n_c)s); 
      """, {'p_cid' : parent_comment_id, 'a_s': answer_id, 'n_c': new_comment})
+
+@database_common.connection_handler
+def delete_comment_by_id(cursor, comment_id):
+    cursor.execute("""
+    DELETE FROM comment 
+    WHERE id =%(comment_id)s""",
+                   {'comment_id': comment_id})

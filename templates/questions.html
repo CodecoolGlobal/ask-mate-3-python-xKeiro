@@ -36,6 +36,7 @@
 							src="/static/dislike.png" width="30" height="30" alt="Dislike"></a>
 				<br>
 				<a class= "text-success" href="/answer/{{ answer['id'] }}/delete"> Delete this answer! </a> <br>
+            <br>
                 <div class="comment">
                     {% for comment in comments %}
                         {% if comment.parent_comment_id == None and comment.answer_id == answer['id'] %}
@@ -43,15 +44,17 @@
                             Submission time: {{ comment.submission_time }} <br>
                             Edited: {{ comment.edit_count }} times <br>
                             <a href="/comment/{{ comment['id'] }}/edit">Edit comment!</a>
+                            <a class="text-success" href="/comments/{{comment['id']}}/delete" onclick="return confirm('Do you really want to delete this comment?');">Delete comment!</a>
                             <a class="text-success" href="/answer/{{answer['id']}}/{{answer['id']}}"> Comment to comment!</a>
                             <hr>
                             {%elif comment.parent_comment_id != None and comment.answer_id == answer['id'] %}
                             Comment-To-Comment Message: {{ comment.message }} <br>
                             Submission time: {{ comment.submission_time }} <br>
                             Edited: {{ comment.edit_count }} times <br>
+                            <a href="/comment/{{ comment['id'] }}/edit">Edit comment!</a>
                             <a class="text-success" href="/answer/{{answer['id']}}/{{comment.parent_comment_id}}"> Comment to comment!</a>
+                            <a class="text-success" href="/comments/{{comment['id']}}/delete" onclick="return confirm('Do you really want to delete this comment?');">Delete comment!</a>
                             <hr>
-
                         {% endif %}
                         {% endfor %}
 
