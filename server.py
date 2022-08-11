@@ -80,6 +80,11 @@ def edit_question(question_id):
         if "tags" in question:
             question.pop("tags")
             tags = request.form.getlist("tags")
+        file = request.files['image']
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            question["image"] = str(os.path.join(app.config['UPLOAD_FOLDER'], filename))[1:]
         update_question_by_id(question_id, question)
         if tags != None:
             tags = [{"question_id": question_id, "tag_id": tag_id} for tag_id in tags]
@@ -211,6 +216,7 @@ def comment_vote_up(comment_id):
     update_comment_by_id(comment_id, comment)
     return redirect(request.referrer)
 
+
 @app.route('/comment/<comment_id>/vote-down')
 def comment_vote_down(comment_id):
     comment = get_comment_by_id(comment_id)
@@ -240,6 +246,11 @@ def answer_vote_down(answer_id):
 def edit_answer(answer_id):
     if request.method == 'POST':
         answer = request.form.to_dict()
+        file = request.files['image']
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            answer["image"] = str(os.path.join(app.config['UPLOAD_FOLDER'], filename))[1:]
         update_answer_by_id(answer_id, answer)
         question_id = get_question_id_by_answer_id(answer_id)
         return redirect(f"/question/{question_id}")
