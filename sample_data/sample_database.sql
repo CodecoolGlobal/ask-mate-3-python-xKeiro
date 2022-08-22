@@ -68,8 +68,8 @@ CREATE TABLE question_tag
 CREATE TABLE "user"
 (
     id                        SERIAL PRIMARY KEY,
-    username                  VARCHAR(25)                 NOT NULL,
-    email                     VARCHAR(25)                 NOT NULL,
+    username                  VARCHAR(25)                 NOT NULL UNIQUE,
+    email                     VARCHAR(25)                 NOT NULL UNIQUE,
     password                  VARCHAR                     NOT NULL,
     registration_date         TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT LOCALTIMESTAMP(0),
     number_of_asked_questions INTEGER                     NOT NULL DEFAULT 0,
