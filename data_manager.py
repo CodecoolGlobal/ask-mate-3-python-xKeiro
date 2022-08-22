@@ -206,6 +206,22 @@ def get_answer_id_from_comment(cursor, comment_id):
     return cursor.fetchall()[0]['answer_id']
 
 
+@database_common.connection_handler
+def is_this_comment_belongs_to_user(cursor, user_id: int, comment_id: int) -> bool:
+    query = """
+    SELECT
+        CASE WHEN EXISTS(
+            SELECT * FROM user_comment
+            WHERE user_id=%s AND comment_id = %s
+            )
+            THEN TRUE
+            ELSE FALSE
+        END
+    """
+    val = (user_id, comment_id)
+    cursor.execute(query, val)
+    return cursor.fetchall()[0]['case']
+
 #endregion
 
 #region ----------------TAG------------------

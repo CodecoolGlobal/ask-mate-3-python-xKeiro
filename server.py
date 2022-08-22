@@ -162,26 +162,30 @@ def post_answer(question_id):
 
 @app.route('/answer/<answer_id>/new-comment', methods=['POST', 'GET'])
 def add_a_comment_to_answer(answer_id):
-    if request.method == 'GET':
-        return render_template('add-comment.html')
-    elif request.method == 'POST':
-        new_comment = request.form["add-comment"]
-        connection.write_comment_by_answer_id(answer_id, new_comment)
-        question_id = data_manager.get_question_id_by_answer_id(answer_id)
-        return redirect(f"/question/{question_id}")
+    if 'user_id' in session:
+        if request.method == 'GET':
+            return render_template('add-comment.html')
+        elif request.method == 'POST':
+            new_comment = request.form["add-comment"]
+            connection.write_comment_by_answer_id(answer_id, new_comment, int(session['user_id']))
+            question_id = data_manager.get_question_id_by_answer_id(answer_id)
+            return redirect(f"/question/{question_id}")
+    return redirect(request.referrer)
 
 
 @app.route('/answer/<answer_id>/<parent_comment_id>', methods=['POST', 'GET'])
 def add_a_comment_to_comment(answer_id, parent_comment_id):
-    if request.method == 'GET':
-        return render_template('comment-to-comment.html')
-    elif request.method == 'POST':
-        new_comment = request.form["comment-to-comment"]
-        connection.write_comment_to_comment(parent_comment_id, answer_id, new_comment)
-        question_id = data_manager.get_question_id_by_answer_id(answer_id)
-        return redirect(f"/question/{question_id}")
-        question_id = data_manager.get_question_id_by_answer_id(answer_id)
-        return redirect(f"/question/{question_id}")
+    if 'user_id' in session:
+        if request.method == 'GET':
+            return render_template('comment-to-comment.html')
+        elif request.method == 'POST':
+            new_comment = request.form["comment-to-comment"]
+            connection.write_comment_to_comment(parent_comment_id, answer_id, new_comment, int(session['user_id']))
+            question_id = data_manager.get_question_id_by_answer_id(answer_id)
+            return redirect(f"/question/{question_id}")
+            question_id = data_manager.get_question_id_by_answer_id(answer_id)
+            return redirect(f"/question/{question_id}")
+    return redirect(request.referrer)
 
 
 @app.route('/question/<question_id>/delete')
@@ -274,19 +278,22 @@ def edit_answer(answer_id):
 @app.route('/comment/<comment_id>/edit', methods=['GET', 'POST'])
 def edit_comment(comment_id):
     comment_id = int(comment_id)
-    if request.method == "POST":
-        comment = request.form.to_dict()
-        connection.update_comment_submission_time(comment_id)
-        edit_count = data_manager.get_edit_count_by_comment_id(comment_id)
-        connection.update_comment_edit(comment_id, edit_count)
-        connection.update_comment_by_id(comment_id, comment)
-        answer_id = data_manager.get_answer_id_from_comment(comment_id)
-        question_id = data_manager.get_question_id_by_answer_id(answer_id)
-        return redirect(f"/question/{question_id}")
-    else:
-        comment = data_manager.get_comment_by_id(comment_id)
-        answer_id = data_manager.get_answer_id_from_comment(comment_id)
-        return render_template('update-comment.html', comment=comment, comment_id=comment_id, answer_id=answer_id)
+    if 'user_id' in session:
+        if data_manager.is_this_comment_belongs_to_user(int(session['user_id']), comment_id):
+            if request.method == "POST":
+                comment = request.form.to_dict()
+                connection.update_comment_submission_time(comment_id)
+                edit_count = data_manager.get_edit_count_by_comment_id(comment_id)
+                connection.update_comment_edit(comment_id, edit_count)
+                connection.update_comment_by_id(comment_id, comment)
+                answer_id = data_manager.get_answer_id_from_comment(comment_id)
+                question_id = data_manager.get_question_id_by_answer_id(answer_id)
+                return redirect(f"/question/{question_id}")
+            else:
+                comment = data_manager.get_comment_by_id(comment_id)
+                answer_id = data_manager.get_answer_id_from_comment(comment_id)
+                return render_template('update-comment.html', comment=comment, comment_id=comment_id, answer_id=answer_id)
+    return redirect(request.referrer)
 
 
 # delete comment
