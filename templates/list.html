@@ -1,0 +1,71 @@
+{% extends "banner.html" %}
+
+{% block content %}
+	<div>
+		<h2> Questions </h2>
+		<form style="text-align: center" action="/list" method="POST">
+			<select class="minimal" name="order_by" id="order_by" required>
+				<option {{ 'selected="selected"' if order_by=="submission_time" }} value="submission_time">Submission
+				                                                                                           time
+				</option>
+				<option {{ 'selected="selected"' if order_by=="view_count" }} value="view_count">View number</option>
+				<option {{ 'selected="selected"' if order_by=="vote_count" }} value="vote_count">Vote number</option>
+				<option {{ 'selected="selected"' if order_by=="title" }} value="title">Title</option>
+				<option {{ 'selected="selected"' if order_by=="message" }} value="message">Message</option>
+			</select>
+			<select class="minimal" name="order_direction" id="order_direction" required>
+				<option {{ 'selected="selected"' if order_direction=="asc" }} value="asc">Ascending</option>
+				<option {{ 'selected="selected"' if order_direction=="desc" }} value="desc">Descending</option>
+			</select>
+			<button class="button button1" type="submit">Sort</button>
+		</form>
+
+	</div>
+	<div class="question-box">
+		{% for question in questions %}
+			<p class="comment-info">Vote: {{ question['vote_count'] }} | {{ question['submission_time'] }}</p>
+			<h2>{{ question['title'] }}</h2>
+			<p class="{{ "text" if search_phrase is not defined }} search-in"> {{ question['message'] }}</p>
+			<div class="right">
+				<a style="float: left" href="/question/{{ question["id"] }}">
+					<button class="button button1">Read more</button>
+				</a>
+				<a href="{{ url_for("question_vote_up", question_id=question["id"]) }}"><img
+						src="/static/like.png" width="30" height="30" alt="Like"></a>
+				<a href="{{ url_for("question_vote_down", question_id=question["id"]) }}"><img
+						src="/static/dislike.png" width="30" height="30" alt="Dislike"></a>
+			</div>
+			<hr>
+			{% for answer in searched_answers %}
+				{% if question["id"] == answer["question_id"] %}
+					<p class="search-in">Answer: {{ answer.message }}</p>
+					<hr>
+				{% endif %}
+			{% endfor %}
+		{% endfor %}
+
+	</div>
+	<div class="foot-box">
+		<a style="margin: auto" href="/">
+			<a href="/add-question"><button class="foot foot1">Add new question</button></a><br><br>
+			<button class="foot foot1">Go Back</button>
+		</a>
+	</div>
+
+	<script>
+        window.onload = function highlight() {
+
+            // Select the whole paragraph
+            var ob = new Mark(document.querySelector(".question-box"));
+
+            // First unmark the highlighted word or letter
+            ob.unmark();
+
+            // Highlight letter or word
+            ob.mark(
+                document.getElementById("search-question").value
+            );
+        }
+	</script>
+
+{% endblock %}
