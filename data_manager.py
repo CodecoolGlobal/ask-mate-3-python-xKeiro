@@ -64,7 +64,7 @@ def get_sorted_questions(cursor, order_by: str, order_direction: str) -> list[di
 
 
 @database_common.connection_handler
-def get_question_by_id(cursor, id: int) -> dict:
+def get_question_by_id(cursor, id: int):
     query = """
         SELECT *
         FROM question
@@ -214,3 +214,15 @@ def get_search_answer(cursor, search_phrase):
     WHERE message ILIKE %(m)s;
     """, {'m': "%" + search_phrase + '%'})
     return cursor.fetchall()
+
+
+@database_common.connection_handler
+def get_answer_edit_count_by_answer_id(cursor, id):
+    query = """
+        SELECT edit_count
+        FROM answer
+        WHERE id = %s
+        """
+    val = (id,)
+    cursor.execute(query, val)
+    return cursor.fetchall()[0]['edit_count']

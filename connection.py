@@ -151,3 +151,11 @@ def delete_comment_by_id(cursor, comment_id):
     DELETE FROM comment 
     WHERE id =%(comment_id)s""",
                    {'comment_id': comment_id})
+
+
+@database_common.connection_handler
+def update_answer_edit_count(cursor, id, edit_count):
+    cursor.execute("""
+    UPDATE answer SET edit_count= edit_count+1
+    WHERE id = %(id)s""",
+                   {'id': id, 'edit_count': edit_count})
