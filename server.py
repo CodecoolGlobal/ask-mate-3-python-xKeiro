@@ -291,6 +291,14 @@ def delete_comment(comment_id):
     return redirect(request.referrer)
 
 
+@app.route('/users')
+def user_list():
+    if 'user_id' in session:
+        users = data_manager.get_users()
+        return render_template('users.html', users=users)
+# The page is linked on the front page when logged in.
+# The page is not accessible without logging in.
+
 @app.route("/bonus-questions")
 def main():
     return render_template('bonus_questions.html', questions=SAMPLE_QUESTIONS)

@@ -231,3 +231,16 @@ def get_edit_count_by_comment_id(cursor, id):
     val = (id,)
     cursor.execute(query, val)
     return cursor.fetchall()[0]['edit_count']
+
+
+# ----------------USER------------------
+
+@database_common.connection_handler
+def get_users(cursor):
+    query = """
+        SELECT username, email, registration_date, number_of_asked_questions, number_of_answers, number_of_comments, reputation
+        FROM "user"
+        ORDER BY registration_date ASC
+        """
+    cursor.execute(query)
+    return cursor.fetchall()
