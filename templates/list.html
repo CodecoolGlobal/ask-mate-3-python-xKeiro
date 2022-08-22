@@ -23,10 +23,9 @@
 	</div>
 	<div class="question-box">
 		{% for question in questions %}
-
 			<p class="comment-info">Vote: {{ question['vote_count'] }} | {{ question['submission_time'] }}</p>
 			<h2>{{ question['title'] }}</h2>
-			<p class="text search-in"> {{ question['message'] }}</p>
+			<p class="{{ "text" if search_phrase is not defined }} search-in"> {{ question['message'] }}</p>
 			<div class="right">
 				<a style="float: left" href="/question/{{ question["id"] }}">
 					<button class="button button1">Read more</button>
