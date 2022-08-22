@@ -5,8 +5,7 @@ from psycopg2 import sql
 import database_common
 
 
-# ----------------QUESTION------------------
-
+# region ----------------QUESTION------------------
 
 @database_common.connection_handler
 def write_question_and_return_new_id(cursor, fields: dict, user_id: int) -> int:
@@ -52,17 +51,32 @@ def update_question_vote(cursor, id: int, vote_count: int) -> None:
     cursor.execute(query, val)
 
 
-# ----------------ANSWER------------------
+# endregion
+
+# region ----------------ANSWER------------------
 
 
 @database_common.connection_handler
-def write_answer(cursor, fields: dict) -> int:
+def write_answer(cursor, fields: dict, user_id:int) -> int:
     query = "INSERT INTO answer(" + ", ".join(fields.keys()) + ") VALUES ("
     for value in fields.values():
         query += "%s, "
     query = query[:-2] + ")"
     val = tuple([field for field in fields.values()])
     cursor.execute(sql.SQL(query), val)
+    id_of_new_row = cursor.fetchone()["id"]
+    write_user_answer(user_id, id_of_new_row)
+
+
+@database_common.connection_handler
+def write_user_answer(cursor, user_id: int, answer_id: int) -> None:
+    query = """
+    INSERT INTO user_answer(user_id, answer_id)
+    VALUES (%s,%s)
+    """
+    val = user_id, answer_id
+    cursor.execute(query, val)
+
 
 
 @database_common.connection_handler
@@ -102,7 +116,10 @@ def update_answer_edit_count(cursor, id, edit_count):
     WHERE id = %(id)s""",
                    {'id': id, 'edit_count': edit_count})
 
-# ----------------COMMENT------------------
+
+# endregion
+
+#region ----------------COMMENT------------------
 
 
 @database_common.connection_handler
@@ -158,7 +175,9 @@ def delete_comment_by_id(cursor, comment_id):
                    {'comment_id': comment_id})
 
 
-# ----------------TAG------------------
+# endregion
+
+# region ----------------TAG------------------
 
 
 @database_common.connection_handler
@@ -182,4 +201,10 @@ def del_tag_by_question_id(cursor, question_id: int) -> None:
     val = (question_id,)
     cursor.execute(query, val)
 
-# ----------------USER------------------
+
+# endregion
+
+# region ----------------USER------------------
+
+
+# endregion

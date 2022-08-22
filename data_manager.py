@@ -2,7 +2,7 @@ import database_common
 from psycopg2 import sql
 
 
-# ----------------QUESTION------------------
+#region ----------------QUESTION------------------
 @database_common.connection_handler
 def get_questions(cursor) -> list[dict]:
     query = """
@@ -92,7 +92,9 @@ def get_search_question(cursor, search_phrase):
     return cursor.fetchall()
 
 
-# ----------------ANSWER------------------
+#endregion
+
+#region ----------------ANSWER------------------
 
 
 @database_common.connection_handler
@@ -152,7 +154,27 @@ def get_answer_edit_count_by_answer_id(cursor, id):
     cursor.execute(query, val)
     return cursor.fetchall()[0]['edit_count']
 
-# ----------------COMMENT------------------
+
+@database_common.connection_handler
+def is_this_answer_belongs_to_user(cursor, user_id: int, answer_id: int) -> bool:
+    query = """
+    SELECT
+        CASE WHEN EXISTS(
+            SELECT * FROM user_answer
+            WHERE user_id=%s AND answer_id = %s
+            )
+            THEN TRUE
+            ELSE FALSE
+        END
+    """
+    val = (user_id, answer_id)
+    cursor.execute(query, val)
+    return cursor.fetchall()[0]['case']
+
+
+#endregion
+
+#region ----------------COMMENT------------------
 
 @database_common.connection_handler
 def get_comments(cursor):
@@ -184,7 +206,9 @@ def get_answer_id_from_comment(cursor, comment_id):
     return cursor.fetchall()[0]['answer_id']
 
 
-# ----------------TAG------------------
+#endregion
+
+#region ----------------TAG------------------
 
 @database_common.connection_handler
 def get_tags(cursor) -> list[dict]:
@@ -231,3 +255,6 @@ def get_edit_count_by_comment_id(cursor, id):
     val = (id,)
     cursor.execute(query, val)
     return cursor.fetchall()[0]['edit_count']
+
+
+#endregion

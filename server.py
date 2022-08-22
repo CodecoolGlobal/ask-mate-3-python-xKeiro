@@ -102,60 +102,62 @@ def edit_question(question_id):
 
 @app.route('/add-question', methods=["GET", "POST"])
 def add_question():
-    if request.method == "POST":
-        if 'user_id' in session:
-            new_question = request.form.to_dict()
-            tags = None
-            if "tags" in new_question:
-                new_question.pop("tags")
-                tags = request.form.getlist("tags")
-            # check if the post request has the file part
+    if 'user_id' in session:
+        if request.method == "POST":
+                new_question = request.form.to_dict()
+                tags = None
+                if "tags" in new_question:
+                    new_question.pop("tags")
+                    tags = request.form.getlist("tags")
+                # check if the post request has the file part
+                # if 'image' not in request.files:
+                #     flash('No file part')
+                #     return redirect(request.url)
+                file = request.files['image']
+                # if user does not select file, browser also
+                # submit an empty part without filename
+                # if file.filename == '':
+                #     flash('No selected file')
+                #     return redirect(request.url)
+                if file and allowed_file(file.filename):
+                    filename = secure_filename(file.filename)
+                    file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                    new_question["image"] = str(os.path.join(app.config['UPLOAD_FOLDER'], filename))[1:]
+                question_id = connection.write_question_and_return_new_id(new_question, int(session['id']))
+                if tags != None:
+                    tags = [{"question_id": question_id, "tag_id": tag_id} for tag_id in tags]
+                    connection.attach_tags(tags)
+                    return redirect(f'/question/{question_id}')
+        else:
+            all_tags = data_manager.get_tags()
+            return render_template('add-question.html', question={}, all_tags=all_tags)
+    redirect(request.referrer)
+
+
+@app.route('/question/<question_id>/new-answer', methods=["GET", "POST"])
+def post_answer(question_id):
+    if 'user_id' in session:
+        if request.method == "POST":
+            new_answer = request.form.to_dict()
+            # # check if the post request has the file part
             # if 'image' not in request.files:
             #     flash('No file part')
             #     return redirect(request.url)
             file = request.files['image']
-            # if user does not select file, browser also
-            # submit an empty part without filename
+            # # if user does not select file, browser also
+            # # submit an empty part without filename
             # if file.filename == '':
             #     flash('No selected file')
             #     return redirect(request.url)
             if file and allowed_file(file.filename):
                 filename = secure_filename(file.filename)
                 file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-                new_question["image"] = str(os.path.join(app.config['UPLOAD_FOLDER'], filename))[1:]
-            question_id = connection.write_question_and_return_new_id(new_question, int(session['id']))
-            if tags != None:
-                tags = [{"question_id": question_id, "tag_id": tag_id} for tag_id in tags]
-                connection.attach_tags(tags)
-                return redirect(f'/question/{question_id}')
-        else:
-            redirect(request.referrer)
-    all_tags = data_manager.get_tags()
-    return render_template('add-question.html', question={}, all_tags=all_tags)
-
-
-@app.route('/question/<question_id>/new-answer', methods=["GET", "POST"])
-def post_answer(question_id):
-    if request.method == "POST":
-        new_answer = request.form.to_dict()
-        # # check if the post request has the file part
-        # if 'image' not in request.files:
-        #     flash('No file part')
-        #     return redirect(request.url)
-        file = request.files['image']
-        # # if user does not select file, browser also
-        # # submit an empty part without filename
-        # if file.filename == '':
-        #     flash('No selected file')
-        #     return redirect(request.url)
-        if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            new_answer["image"] = str(os.path.join(app.config['UPLOAD_FOLDER'], filename))[1:]
-        new_answer['question_id'] = question_id
-        connection.write_answer(new_answer)
-        return redirect(f'/question/{question_id}')
-    return render_template('new-answer.html', id=question_id, answer={})
+                new_answer["image"] = str(os.path.join(app.config['UPLOAD_FOLDER'], filename))[1:]
+            new_answer['question_id'] = question_id
+            connection.write_answer(new_answer)
+            return redirect(f'/question/{question_id}')
+        return render_template('new-answer.html', id=question_id, answer={})
+    return redirect(request.referrer)
 
 
 @app.route('/answer/<answer_id>/new-comment', methods=['POST', 'GET'])
@@ -247,22 +249,25 @@ def answer_vote_down(answer_id):
 # edit answer:
 @app.route('/answer/<answer_id>/edit', methods=['GET', 'POST'])
 def edit_answer(answer_id):
-    if request.method == 'POST':
-        answer = request.form.to_dict()
-        file = request.files['image']
-        if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            answer["image"] = str(os.path.join(app.config['UPLOAD_FOLDER'], filename))[1:]
-        answer_edit_count = data_manager.get_answer_edit_count_by_answer_id(answer_id)
-        connection.update_answer_edit_count(answer_id, answer_edit_count)
-        connection.update_answer_by_id(answer_id, answer)
-        question_id = data_manager.get_question_id_by_answer_id(answer_id)
-        return redirect(f"/question/{question_id}")
-    else:
-        answer = data_manager.get_answer_by_id(int(answer_id))
-        question_id = data_manager.get_question_id_by_answer_id(answer_id)
-        return render_template('new-answer.html', answer=answer, answer_id=answer_id, question_id=question_id)
+    if 'user_id' in session:
+        if data_manager.is_this_answer_belongs_to_user(int(session['user_id']), int(answer_id)):
+            if request.method == 'POST':
+                answer = request.form.to_dict()
+                file = request.files['image']
+                if file and allowed_file(file.filename):
+                    filename = secure_filename(file.filename)
+                    file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                    answer["image"] = str(os.path.join(app.config['UPLOAD_FOLDER'], filename))[1:]
+                answer_edit_count = data_manager.get_answer_edit_count_by_answer_id(answer_id)
+                connection.update_answer_edit_count(answer_id, answer_edit_count)
+                connection.update_answer_by_id(answer_id, answer)
+                question_id = data_manager.get_question_id_by_answer_id(answer_id)
+                return redirect(f"/question/{question_id}")
+            else:
+                answer = data_manager.get_answer_by_id(int(answer_id))
+                question_id = data_manager.get_question_id_by_answer_id(answer_id)
+                return render_template('new-answer.html', answer=answer, answer_id=answer_id, question_id=question_id)
+        return redirect(request.referrer)
 
 
 # edit comment
