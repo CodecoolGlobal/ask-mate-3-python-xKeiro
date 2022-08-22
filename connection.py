@@ -123,11 +123,22 @@ def update_answer_edit_count(cursor, id, edit_count):
 
 
 @database_common.connection_handler
-def write_comment_by_answer_id(cursor, answer_id, new_comment):
+def write_comment_by_answer_id(cursor, answer_id, new_comment, user_id):
     cursor.execute(""" 
     INSERT INTO comment (answer_id, message) 
     VALUES (%(a_s)s, %(n_c)s);
     """, {'a_s': int(answer_id), 'n_c': new_comment})
+    id_of_new_row = cursor.fetchone()["id"]
+    write_user_question(user_id,id_of_new_row)
+
+@database_common.connection_handler
+def write_user_comment(cursor, user_id: int, comment_id: int) -> None:
+    query = """
+    INSERT INTO user_comment(user_id, question_id)
+    VALUES (%s,%s)
+    """
+    val = user_id, comment_id
+    cursor.execute(query, val)
 
 
 @database_common.connection_handler
