@@ -76,6 +76,8 @@ def edit_question(question_id):
             if request.method == 'POST':
                 question = request.form.to_dict()
                 tags = None
+                question_edit_count = data_manager.get_question_edit_count_by_id(question_id)
+                connection.update_question_edit_count(question_id, question_edit_count)
                 if "tags" in question:
                     question.pop("tags")
                     tags = request.form.getlist("tags")

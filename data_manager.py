@@ -92,6 +92,18 @@ def get_search_question(cursor, search_phrase):
     return cursor.fetchall()
 
 
+@database_common.connection_handler
+def get_question_edit_count_by_id(cursor, id):
+    query = """
+        SELECT edit_count
+        FROM question
+        WHERE id = %s
+        """
+    val = (id,)
+    cursor.execute(query, val)
+    return cursor.fetchall()[0]['edit_count']
+
+
 # ----------------ANSWER------------------
 
 
@@ -151,6 +163,7 @@ def get_answer_edit_count_by_answer_id(cursor, id):
     val = (id,)
     cursor.execute(query, val)
     return cursor.fetchall()[0]['edit_count']
+
 
 # ----------------COMMENT------------------
 
