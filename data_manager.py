@@ -2,7 +2,7 @@ import database_common
 from psycopg2 import sql
 
 
-#region ----------------QUESTION------------------
+# region ----------------QUESTION------------------
 @database_common.connection_handler
 def get_questions(cursor) -> list[dict]:
     query = """
@@ -92,9 +92,23 @@ def get_search_question(cursor, search_phrase):
     return cursor.fetchall()
 
 
-#endregion
+@database_common.connection_handler
+def get_questions_by_user_id(cursor, user_id: int):
+    query = """
+    SELECT question_id FROM user_question
+    WHERE user_id=%s
+    """
+    val = (user_id, )
+    cursor.execute(query, val)
+    question_dictionaries_in_list = cursor.fetchall()
+    if question_dictionaries_in_list != []:
+        question_ids = [question['question_id'] for question in question_dictionaries_in_list]
+    return question_ids
 
-#region ----------------ANSWER------------------
+
+# endregion
+
+# region ----------------ANSWER------------------
 
 
 @database_common.connection_handler
@@ -172,9 +186,24 @@ def is_this_answer_belongs_to_user(cursor, user_id: int, answer_id: int) -> bool
     return cursor.fetchall()[0]['case']
 
 
-#endregion
+@database_common.connection_handler
+def get_answers_by_user_id(cursor, user_id: int):
+    query = """
+    SELECT answer_id FROM user_answer
+    WHERE user_id=%s
+    """
+    val = (user_id, )
+    cursor.execute(query, val)
+    answer_dictionaries_in_list = cursor.fetchall()
+    if answer_dictionaries_in_list != []:
+        answer_ids = [answer['answer_id'] for answer in answer_dictionaries_in_list]
+    return answer_ids
 
-#region ----------------COMMENT------------------
+
+
+# endregion
+
+# region ----------------COMMENT------------------
 
 @database_common.connection_handler
 def get_comments(cursor):
@@ -222,9 +251,24 @@ def is_this_comment_belongs_to_user(cursor, user_id: int, comment_id: int) -> bo
     cursor.execute(query, val)
     return cursor.fetchall()[0]['case']
 
-#endregion
 
-#region ----------------TAG------------------
+@database_common.connection_handler
+def get_comments_by_user_id(cursor, user_id: int):
+    query = """
+    SELECT comment_id FROM user_comment
+    WHERE user_id=%s
+    """
+    val = (user_id, )
+    cursor.execute(query, val)
+    comment_dictionaries_in_list = cursor.fetchall()
+    if comment_dictionaries_in_list != []:
+        comment_ids = [comment['comment_id'] for comment in comment_dictionaries_in_list]
+    return comment_ids
+
+
+# endregion
+
+# region ----------------TAG------------------
 
 @database_common.connection_handler
 def get_tags(cursor) -> list[dict]:
@@ -272,5 +316,4 @@ def get_edit_count_by_comment_id(cursor, id):
     cursor.execute(query, val)
     return cursor.fetchall()[0]['edit_count']
 
-
-#endregion
+# endregion

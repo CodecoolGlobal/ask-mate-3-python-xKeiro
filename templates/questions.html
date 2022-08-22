@@ -18,10 +18,12 @@
 					src="/static/like.png" width="30" height="30" alt="Like"></a>
 			<a href="{{ url_for("question_vote_down", question_id=question["id"]) }}"><img
 					src="/static/dislike.png" width="30" height="30" alt="Dislike"></a>
+			{% if question['id'] in user_content["question_ids"] %}
 			<a href="/question/{{ question['id'] }}/edit"><img src="/static/edit.png" width="30" height="30" alt="Edit"></a>
 			<a href="/question/{{ question['id'] }}/delete"><img
 					src="/static/delete.png" width="30" height="30" alt="Delete"
 					onclick="return confirm('Do you really want to delete this answer?');"></a>
+			{% endif %}
 		</div>
 	</div>
 	<h2>Comments</h2>
@@ -45,15 +47,15 @@
 							src="/static/like.png" width="30" height="30" alt="Like"></a>
 					<a href="{{ url_for("answer_vote_down", answer_id=answer["id"]) }}"><img
 							src="/static/dislike.png" width="30" height="30" alt="Dislike"></a>
-					<a href="/answer/{{ answer['id'] }}/edit"><img
-							src="/static/edit.png" width="30" height="30" alt="Edit"></a>
-					<a href="/answer/{{ answer['id'] }}/delete"><img
-							src="/static/delete.png" width="30" height="30" alt="Delete"
-							onclick="return confirm('Do you really want to delete this answer?');"></a>
+					{% if answer['id'] in user_content["answer_ids"] %}
+						<a href="/answer/{{ answer['id'] }}/edit"><img
+								src="/static/edit.png" width="30" height="30" alt="Edit"></a>
+						<a href="/answer/{{ answer['id'] }}/delete"><img
+								src="/static/delete.png" width="30" height="30" alt="Delete"
+								onclick="return confirm('Do you really want to delete this answer?');"></a>
+					{% endif %}
 				</div>
-
 				<hr>
-
 			</div>
 
 			{% for comment in comments %}
@@ -74,11 +76,13 @@
 									src="/static/like.png" width="30" height="30" alt="Like"></a>
 							<a href="{{ url_for("comment_vote_down", comment_id=comment["id"]) }}"><img
 									src="/static/dislike.png" width="30" height="30" alt="Dislike"></a>
-							<a href="/comment/{{ comment['id'] }}/edit"><img
-									src="/static/edit.png" width="30" height="30" alt="Edit"></a>
-							<a href="/comments/{{ comment['id'] }}/delete"><img
-									src="/static/delete.png" width="30" height="30" alt="Delete"
-									onclick="return confirm('Do you really want to delete this comment?');"></a>
+							{% if comment['id'] in user_content["comment_ids"] %}
+								<a href="/comment/{{ comment['id'] }}/edit"><img
+										src="/static/edit.png" width="30" height="30" alt="Edit"></a>
+								<a href="/comments/{{ comment['id'] }}/delete"><img
+										src="/static/delete.png" width="30" height="30" alt="Delete"
+										onclick="return confirm('Do you really want to delete this comment?');"></a>
+							{% endif %}
 						</div>
 						<hr>
 					</div>
@@ -99,11 +103,13 @@
 											src="/static/like.png" width="30" height="30" alt="Like"></a>
 									<a href="{{ url_for("comment_vote_down", comment_id=comment1["id"]) }}"><img
 											src="/static/dislike.png" width="30" height="30" alt="Dislike"></a>
-									<a href="/comment/{{ comment1['id'] }}/edit"><img
-											src="/static/edit.png" width="30" height="30" alt="Edit"></a>
-									<a href="/comments/{{ comment1['id'] }}/delete"><img
-											src="/static/delete.png" width="30" height="30" alt="Delete"
-											onclick="return confirm('Do you really want to delete this comment?');"></a>
+									{% if comment1['id'] in user_content["comment_ids"] %}
+										<a href="/comment/{{ comment1['id'] }}/edit"><img
+												src="/static/edit.png" width="30" height="30" alt="Edit"></a>
+										<a href="/comments/{{ comment1['id'] }}/delete"><img
+												src="/static/delete.png" width="30" height="30" alt="Delete"
+												onclick="return confirm('Do you really want to delete this comment?');"></a>
+									{% endif %}
 								</div>
 								<hr>
 							</div>
@@ -122,11 +128,13 @@
 													src="/static/like.png" width="30" height="30" alt="Like"></a>
 											<a href="{{ url_for("comment_vote_down", comment_id=comment2["id"]) }}"><img
 													src="/static/dislike.png" width="30" height="30" alt="Dislike"></a>
-											<a href="/comment/{{ comment2['id'] }}/edit"><img
-													src="/static/edit.png" width="30" height="30" alt="Edit"></a>
-											<a href="/comments/{{ comment2['id'] }}/delete"><img
-													src="/static/delete.png" width="30" height="30" alt="Delete"
-													onclick="return confirm('Do you really want to delete this comment?');"></a>
+											{% if comment2['id'] in user_content["comment_ids"] %}
+												<a href="/comment/{{ comment2['id'] }}/edit"><img
+														src="/static/edit.png" width="30" height="30" alt="Edit"></a>
+												<a href="/comments/{{ comment2['id'] }}/delete"><img
+														src="/static/delete.png" width="30" height="30" alt="Delete"
+														onclick="return confirm('Do you really want to delete this comment?');"></a>
+											{% endif %}
 										</div>
 										<hr>
 									</div>

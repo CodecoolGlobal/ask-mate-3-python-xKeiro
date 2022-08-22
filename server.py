@@ -53,7 +53,14 @@ def get_question(question_id):
     answers = data_manager.get_answers_by_question_id(question_id)
     comments = data_manager.get_comments()
     tags = data_manager.get_tags_by_question_id(question_id)
-    return render_template("questions.html", question=question, answers=answers, tags=tags, comments=comments)
+    user_content = dict()
+    if "user_id" in session:
+        user_id = session["user_id"]
+        user_content["question_ids"] = data_manager.get_questions_by_user_id(user_id)
+        user_content["answer_ids"] = data_manager.get_answers_by_user_id(user_id)
+        user_content["comment_ids"] = data_manager.get_comments_by_user_id(user_id)
+    return render_template("questions.html", question=question, answers=answers, tags=tags, comments=comments,
+                           user_content=user_content)
 
 
 @app.route("/search", methods=['POST'])
@@ -104,30 +111,30 @@ def edit_question(question_id):
 def add_question():
     if 'user_id' in session:
         if request.method == "POST":
-                new_question = request.form.to_dict()
-                tags = None
-                if "tags" in new_question:
-                    new_question.pop("tags")
-                    tags = request.form.getlist("tags")
-                # check if the post request has the file part
-                # if 'image' not in request.files:
-                #     flash('No file part')
-                #     return redirect(request.url)
-                file = request.files['image']
-                # if user does not select file, browser also
-                # submit an empty part without filename
-                # if file.filename == '':
-                #     flash('No selected file')
-                #     return redirect(request.url)
-                if file and allowed_file(file.filename):
-                    filename = secure_filename(file.filename)
-                    file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-                    new_question["image"] = str(os.path.join(app.config['UPLOAD_FOLDER'], filename))[1:]
-                question_id = connection.write_question_and_return_new_id(new_question, int(session['id']))
-                if tags != None:
-                    tags = [{"question_id": question_id, "tag_id": tag_id} for tag_id in tags]
-                    connection.attach_tags(tags)
-                    return redirect(f'/question/{question_id}')
+            new_question = request.form.to_dict()
+            tags = None
+            if "tags" in new_question:
+                new_question.pop("tags")
+                tags = request.form.getlist("tags")
+            # check if the post request has the file part
+            # if 'image' not in request.files:
+            #     flash('No file part')
+            #     return redirect(request.url)
+            file = request.files['image']
+            # if user does not select file, browser also
+            # submit an empty part without filename
+            # if file.filename == '':
+            #     flash('No selected file')
+            #     return redirect(request.url)
+            if file and allowed_file(file.filename):
+                filename = secure_filename(file.filename)
+                file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                new_question["image"] = str(os.path.join(app.config['UPLOAD_FOLDER'], filename))[1:]
+            question_id = connection.write_question_and_return_new_id(new_question, int(session['id']))
+            if tags != None:
+                tags = [{"question_id": question_id, "tag_id": tag_id} for tag_id in tags]
+                connection.attach_tags(tags)
+                return redirect(f'/question/{question_id}')
         else:
             all_tags = data_manager.get_tags()
             return render_template('add-question.html', question={}, all_tags=all_tags)
@@ -292,7 +299,8 @@ def edit_comment(comment_id):
             else:
                 comment = data_manager.get_comment_by_id(comment_id)
                 answer_id = data_manager.get_answer_id_from_comment(comment_id)
-                return render_template('update-comment.html', comment=comment, comment_id=comment_id, answer_id=answer_id)
+                return render_template('update-comment.html', comment=comment, comment_id=comment_id,
+                                       answer_id=answer_id)
     return redirect(request.referrer)
 
 
