@@ -9,13 +9,13 @@
 			<div>
 				<label for="title">Title<span style="color: red">*</span></label>
 				<br>
-				<input type="text" name="title" id="title" value="{{ question.setdefault('title','') }}" required>
+				<input minlength="5" type="text" name="title" id="title" value="{{ question.setdefault('title','') }}" required>
 			</div>
 			<br>
 			<div>
 				<label for="message">Message<span style="color: red">*</span></label>
 				<br>
-				<textarea name="message" id="message" required>{{ question.setdefault('message','') }}</textarea>
+				<textarea minlength="5" name="message" id="message" required>{{ question.setdefault('message','') }}</textarea>
 			</div>
 			<br>
 			<div>

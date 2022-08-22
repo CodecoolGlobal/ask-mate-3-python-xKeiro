@@ -9,7 +9,7 @@
 			<div>
 				<label for="message">{{ "Post answer message" if request.path == "/question/" + id|string +"/new-answer" else "Edit answer message" }}</label>
 				<br>
-				<textarea name="message" id="message" required>{{ answer.setdefault('message','') }}</textarea>
+				<textarea minlength="5" name="message" id="message" required>{{ answer.setdefault('message','') }}</textarea>
 			</div>
 
 			<div>
