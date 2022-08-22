@@ -154,7 +154,7 @@ def post_answer(question_id):
                 file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
                 new_answer["image"] = str(os.path.join(app.config['UPLOAD_FOLDER'], filename))[1:]
             new_answer['question_id'] = question_id
-            connection.write_answer(new_answer)
+            connection.write_answer(new_answer, int(session['user_id']))
             return redirect(f'/question/{question_id}')
         return render_template('new-answer.html', id=question_id, answer={})
     return redirect(request.referrer)
