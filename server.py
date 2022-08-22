@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, redirect
+from flask import Flask, request, render_template, redirect, session
 from connection import write_question_and_return_new_id, write_answer, del_answer_by_id, del_question_by_id, \
     update_question_by_id, update_answer_by_id, write_comment_by_answer_id, update_comment_by_id, update_comment_edit, \
     update_comment_submission_time, attach_tags, del_tag_by_question_id, write_comment_to_comment, \
@@ -32,6 +32,7 @@ def allowed_file(filename):
 @app.route('/')
 def index():
     questions = get_latest_questions()
+    session['username']="asdasd"
     return render_template('index.html', questions=questions)
 
 
