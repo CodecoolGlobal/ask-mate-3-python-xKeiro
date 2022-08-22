@@ -1,8 +1,13 @@
-DROP TABLE IF EXISTS question;
-DROP TABLE IF EXISTS answer;
-DROP TABLE IF EXISTS comment;
-DROP TABLE IF EXISTS tag;
-DROP TABLE IF EXISTS question_tag;
+DROP TABLE IF EXISTS question CASCADE;
+DROP TABLE IF EXISTS answer CASCADE;
+DROP TABLE IF EXISTS comment CASCADE;
+DROP TABLE IF EXISTS tag CASCADE;
+DROP TABLE IF EXISTS question_tag CASCADE;
+DROP TABLE IF EXISTS "user" CASCADE;
+DROP TABLE IF EXISTS user_question CASCADE;
+DROP TABLE IF EXISTS user_answer CASCADE;
+DROP TABLE IF EXISTS user_comment CASCADE;
+
 
 CREATE TABLE question
 (
@@ -13,7 +18,9 @@ CREATE TABLE question
     title           VARCHAR(150)                NOT NULL,
     message         TEXT                        NOT NULL,
     image           VARCHAR(255),
-    edit_count      INTEGER                     NOT NULL DEFAULT 0
+    edit_count      INTEGER                     NOT NULL DEFAULT 0,
+    CHECK (LENGTH(title) >= 5),
+    CHECK (LENGTH(message) >= 5)
 );
 
 CREATE TABLE answer
@@ -25,6 +32,8 @@ CREATE TABLE answer
     message         TEXT                        NOT NULL,
     image           VARCHAR(255),
     edit_count      INTEGER                     NOT NULL DEFAULT 0,
+    accepted        BOOLEAN                     NOT NULL DEFAULT FALSE,
+    CHECK (LENGTH(message) >= 5),
     FOREIGN KEY (question_id) REFERENCES question (id) ON DELETE CASCADE
 );
 
@@ -37,6 +46,7 @@ CREATE TABLE comment
     message           TEXT                        NOT NULL,
     submission_time   TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT LOCALTIMESTAMP(0),
     edit_count        INTEGER                     NOT NULL DEFAULT 0,
+    CHECK (LENGTH(message) >= 5),
     FOREIGN KEY (answer_id) REFERENCES answer (id) ON DELETE CASCADE
 );
 
