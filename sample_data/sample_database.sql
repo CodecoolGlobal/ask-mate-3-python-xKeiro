@@ -55,7 +55,48 @@ CREATE TABLE question_tag
     PRIMARY KEY (question_id, tag_id)
 );
 
+CREATE TABLE "user"
+(
+    id                        SERIAL PRIMARY KEY,
+    username                  VARCHAR(25)                 NOT NULL,
+    email                     VARCHAR(25)                 NOT NULL,
+    password                  VARCHAR                     NOT NULL,
+    registration_date         TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT LOCALTIMESTAMP(0),
+    number_of_asked_questions INTEGER                     NOT NULL DEFAULT 0,
+    number_of_answers         INTEGER                     NOT NULL DEFAULT 0,
+    number_of_comments        INTEGER                     NOT NULL DEFAULT 0,
+    reputation                INTEGER                     NOT NULL DEFAULT 0,
+    CHECK (LENGTH(username) >= 5),
+    CHECK (LENGTH(email) >= 5),
+    CHECK (LENGTH(password) >= 5)
+);
 
+CREATE TABLE user_question
+(
+    user_id     INTEGER,
+    question_id INTEGER UNIQUE,
+    FOREIGN KEY (user_id) REFERENCES "user" (id) ON DELETE CASCADE,
+    FOREIGN KEY (question_id) REFERENCES question (id) ON DELETE CASCADE,
+    PRIMARY KEY (user_id, question_id)
+);
+
+CREATE TABLE user_answer
+(
+    user_id   INTEGER,
+    answer_id INTEGER UNIQUE,
+    FOREIGN KEY (user_id) REFERENCES "user" (id) ON DELETE CASCADE,
+    FOREIGN KEY (answer_id) REFERENCES answer (id) ON DELETE CASCADE,
+    PRIMARY KEY (user_id, answer_id)
+);
+
+CREATE TABLE user_comment
+(
+    user_id    INTEGER,
+    comment_id INTEGER UNIQUE,
+    FOREIGN KEY (user_id) REFERENCES "user" (id) ON DELETE CASCADE,
+    FOREIGN KEY (comment_id) REFERENCES comment (id) ON DELETE CASCADE,
+    PRIMARY KEY (user_id, comment_id)
+);
 
 INSERT INTO question(submission_time, view_count, vote_count, title, message, image, edit_count)
 VALUES ('2022-08-11 15:15:55', 4, 0, 'Miből van a kenyér hélya? :D', 'Kenyírt szeretnékap stüni! Tudnátaok segíni?',
@@ -100,4 +141,25 @@ INSERT INTO question_tag(question_id, tag_id)
 VALUES (2, 2),
        (3, 2),
        (4, 2),
+       (1, 3);
+
+INSERT INTO "user"(username, email, password, registration_date)
+VALUES ('Johny', 'john@mail.com', 'apple', '2022-08-14 15:14:55'),
+       ('Harry', 'harry@mail.com', 'banana', '2022-08-14 15:14:55'),
+       ('asdasd', 'asd@asd.com', 'asdasd', '2022-08-15 15:14:55'),
+       ('Elizabeth', 'bella@mail.com', 'broccoli', '2022-08-14 15:14:55');
+
+INSERT INTO user_question(user_id, question_id)
+VALUES (1, 1),
+       (1, 2),
+       (2, 3);
+
+INSERT INTO user_answer(user_id, answer_id)
+VALUES (1, 1),
+       (1, 2),
+       (2, 3);
+
+INSERT INTO user_comment(user_id, comment_id)
+VALUES (2, 1),
+       (2, 2),
        (1, 3);
