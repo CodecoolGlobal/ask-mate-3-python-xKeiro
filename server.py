@@ -25,7 +25,7 @@ def allowed_file(filename):
 @app.route('/')
 def index():
     questions = data_manager.get_latest_questions()
-    session['id'] = 1
+    session['user_id'] = 1
     return render_template('index.html', questions=questions)
 
 
@@ -71,8 +71,8 @@ def get_search_result():
 
 @app.route('/question/<question_id>/edit', methods=['GET', 'POST'])
 def edit_question(question_id):
-    if 'id' in session:
-        if data_manager.is_this_question_belongs_to_user(int(session['id']), int(question_id)):
+    if 'user_id' in session:
+        if data_manager.is_this_question_belongs_to_user(int(session['user_id']), int(question_id)):
             if request.method == 'POST':
                 question = request.form.to_dict()
                 tags = None
@@ -103,7 +103,7 @@ def edit_question(question_id):
 @app.route('/add-question', methods=["GET", "POST"])
 def add_question():
     if request.method == "POST":
-        if 'id' in session:
+        if 'user_id' in session:
             new_question = request.form.to_dict()
             tags = None
             if "tags" in new_question:
