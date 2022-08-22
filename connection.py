@@ -5,8 +5,11 @@ from psycopg2 import sql
 import database_common
 
 
+# ----------------QUESTION------------------
+
+
 @database_common.connection_handler
-def write_question_and_return_new_id(cursor, fields: dict) -> int:
+def write_question_and_return_new_id(cursor, fields: dict, user_id: int) -> int:
     query = "INSERT INTO question(" + ", ".join(fields.keys()) + ") VALUES ("
     for value in fields.values():
         query += "%s, "
@@ -14,32 +17,23 @@ def write_question_and_return_new_id(cursor, fields: dict) -> int:
     val = tuple([field for field in fields.values()])
     cursor.execute(sql.SQL(query), val)
     id_of_new_row = cursor.fetchone()["id"]
+    write_user_question(user_id, id_of_new_row)
     return id_of_new_row
 
 
 @database_common.connection_handler
-def write_answer(cursor, fields: dict) -> int:
-    query = "INSERT INTO answer(" + ", ".join(fields.keys()) + ") VALUES ("
-    for value in fields.values():
-        query += "%s, "
-    query = query[:-2] + ")"
-    val = tuple([field for field in fields.values()])
-    cursor.execute(sql.SQL(query), val)
+def write_user_question(cursor, user_id: int, question_id: int) -> None:
+    query = """
+    INSERT INTO user_question(user_id, question_id)
+    VALUES (%s,%s)
+    """
+    val = user_id, question_id
+    cursor.execute(query, val)
 
 
 @database_common.connection_handler
 def update_question_by_id(cursor, id: int, fields: dict) -> None:
     query = "UPDATE question SET "
-    for key, value in fields.items():
-        query += f"{key} = %s, "
-    query = query[:-2] + f"WHERE id = {id}"
-    val = tuple([field for field in fields.values()])
-    cursor.execute(sql.SQL(query), val)
-
-
-@database_common.connection_handler
-def update_answer_by_id(cursor, id: int, fields: dict) -> None:
-    query = "UPDATE answer SET "
     for key, value in fields.items():
         query += f"{key} = %s, "
     query = query[:-2] + f"WHERE id = {id}"
@@ -56,6 +50,29 @@ def update_question_vote(cursor, id: int, vote_count: int) -> None:
         """
     val = (vote_count, id)
     cursor.execute(query, val)
+
+
+# ----------------ANSWER------------------
+
+
+@database_common.connection_handler
+def write_answer(cursor, fields: dict) -> int:
+    query = "INSERT INTO answer(" + ", ".join(fields.keys()) + ") VALUES ("
+    for value in fields.values():
+        query += "%s, "
+    query = query[:-2] + ")"
+    val = tuple([field for field in fields.values()])
+    cursor.execute(sql.SQL(query), val)
+
+
+@database_common.connection_handler
+def update_answer_by_id(cursor, id: int, fields: dict) -> None:
+    query = "UPDATE answer SET "
+    for key, value in fields.items():
+        query += f"{key} = %s, "
+    query = query[:-2] + f"WHERE id = {id}"
+    val = tuple([field for field in fields.values()])
+    cursor.execute(sql.SQL(query), val)
 
 
 @database_common.connection_handler
@@ -78,26 +95,7 @@ def del_answer_by_id(cursor, id: int) -> None:
     cursor.execute(query, val)
 
 
-@database_common.connection_handler
-def attach_tags(cursor, tags):
-    del_tag_by_question_id(tags[0]["question_id"])
-    for fields in tags:
-        query = "INSERT INTO question_tag(" + ", ".join(fields.keys()) + ") VALUES ("
-        for value in fields.values():
-            query += "%s, "
-        query = query[:-2] + ")"
-        val = tuple([field for field in fields.values()])
-        cursor.execute(sql.SQL(query), val)
-
-
-@database_common.connection_handler
-def del_tag_by_question_id(cursor, question_id: int) -> None:
-    query = """
-        DELETE FROM question_tag
-        WHERE question_id = %s;
-        """
-    val = (question_id,)
-    cursor.execute(query, val)
+# ----------------COMMENT------------------
 
 
 @database_common.connection_handler
@@ -151,3 +149,30 @@ def delete_comment_by_id(cursor, comment_id):
     DELETE FROM comment 
     WHERE id =%(comment_id)s""",
                    {'comment_id': comment_id})
+
+
+# ----------------TAG------------------
+
+
+@database_common.connection_handler
+def attach_tags(cursor, tags):
+    del_tag_by_question_id(tags[0]["question_id"])
+    for fields in tags:
+        query = "INSERT INTO question_tag(" + ", ".join(fields.keys()) + ") VALUES ("
+        for value in fields.values():
+            query += "%s, "
+        query = query[:-2] + ")"
+        val = tuple([field for field in fields.values()])
+        cursor.execute(sql.SQL(query), val)
+
+
+@database_common.connection_handler
+def del_tag_by_question_id(cursor, question_id: int) -> None:
+    query = """
+        DELETE FROM question_tag
+        WHERE question_id = %s;
+        """
+    val = (question_id,)
+    cursor.execute(query, val)
+
+# ----------------USER------------------
