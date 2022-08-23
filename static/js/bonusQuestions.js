@@ -49,19 +49,17 @@ function toggleTheme() {
     console.log("toggle theme");
     const style = document.createElement('style');
     // const backgroundColor = document.body.style.backgroundColor;
-    var backgroundColor= document.getElementById("body").style.backgroundColor;
+    var backgroundColor = document.body.style.background;
     console.log(backgroundColor);
-    if (backgroundColor === "white" || backgroundColor === "") {
-        document.body.style.backgroundColor = "black";
-        document.body.style.color = "white";
-        document.getElementById("table").style.backgroundColor = "black";
-        document.getElementById("table").style.color = "white";
-    }
-    else if (backgroundColor === "black"){
-        document.body.style.backgroundColor = "white";
-        document.body.style.color = "black";
-        document.getElementById("table").style.backgroundColor = "white";
-        document.getElementById("table").style.color = "black";
+    if (backgroundColor === "rgb(204, 204, 204)" || backgroundColor === "") {
+        document.body.style.background = "rgb(34, 34, 34)";
+        document.getElementById("content").style.color = "rgb(204, 204, 204)";
+        // document.getElementById("table").style.backgroundColor = "black";
+        // document.getElementById("table").style.color = "white";
+    } else if (backgroundColor === "rgb(34, 34, 34)") {
+        document.body.style.background = "rgb(204, 204, 204)";
+        document.getElementById("content").style.color = "rgb(34, 34, 34)";
+        var buttons = document.getElementsByClassName("button");
     }
     //     style.innerHTML = `
     // body {
@@ -92,25 +90,24 @@ function toggleTheme() {
 function increaseFont() {
     'use strict';
     console.log("increaseFont");
-    var sz = document.body.style.fontSize;
+    var sz = document.getElementById("content").style.fontSize;
     if (sz === '') {
         sz = 14;
     } //default font size
 
     var size = parseFloat(sz) * (1.2) + "px";
-    document.body.style.fontSize = size;
-    document.getElementById("table").style.fontSize = size;
+    document.getElementById("content").style.fontSize = size;
+    // document.getElementById("table").style.fontSize = size;
 }
 
 function decreaseFont() {
     'use strict';
     console.log("decreaseFont");
-    var sz = document.body.style.fontSize;
+    var sz = document.getElementById("content").style.fontSize;
     if (sz === '') {
         sz = 14;
     } //default font size
 
     var size = parseFloat(sz) / (1.2) + "px";
-    document.body.style.fontSize = size;
-    document.getElementById("table").style.fontSize = size;
+    document.getElementById("content").style.fontSize = size;
 }
