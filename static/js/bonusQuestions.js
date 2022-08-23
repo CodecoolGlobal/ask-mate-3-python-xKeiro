@@ -30,18 +30,36 @@ function getSortedItems(items, sortField, sortDirection) {
 // you receive an array of objects which you must filter by all its keys to have a value matching "filterValue"
 function getFilteredItems(items, filterValue) {
     'use strict';
-    console.log(items);
-    console.log(filterValue);
+    // console.log(items);
+    // console.log(filterValue);
 
     // === SAMPLE CODE ===
     // if you have not changed the original html uncomment the code below to have an idea of the
     // effect this function has on the table
     //
-    for (let i = 0; i < filterValue.length; i++) {
-        items.pop();
+    // for (let i = 0; i < filterValue.length; i++) {
+    //     items.pop();
+    // }
+    let filtered_items = [];
+    if (filterValue !== "") {
+        for (let i = 0; i < items.length; i++) {
+            if (filterValue.length > 1 && filterValue[0] === "!") {
+                if (items[i].Description.includes(filterValue.slice(1,filterValue.length)) === false && items[i].Title.includes(filterValue.slice(1,filterValue.length)) === false) {
+                    filtered_items.push(items[i]);
+                    console.log(items[i].Description.includes(filterValue.slice(1,filterValue.length)));
+                }
+            } else {
+                if (items[i].Description.includes(filterValue) || items[i].Title.includes(filterValue)) {
+                    filtered_items.push(items[i]);
+
+                }
+            }
+        }
+        return filtered_items;
+    } else {
+        return items;
     }
 
-    return items;
 }
 
 function toggleTheme() {
