@@ -311,6 +311,35 @@ def delete_comment(comment_id):
     return redirect(request.referrer)
 
 
+@app.route('/user/<user_id>')
+def user_page(user_id):
+    user = data_manager.get_user_by_id(user_id)
+    user_question_ids= data_manager.get_question_ids_by_user(user_id)
+    questions=[]
+    for item in user_question_ids:
+        id= item['question_id']
+        questions.append(data_manager.get_question_by_id(id))
+        print(item['question_id'])
+
+    user_answer_ids=data_manager.get_answer_ids_by_user(user_id)
+    answers=[]
+    for item in user_answer_ids:
+        answer_id= item['answer_id']
+        answers.append(data_manager.get_answer_by_id(answer_id))
+
+    user_comment_ids=data_manager.get_comment_ids_by_user(user_id)
+    comments=[]
+    answer_ids_by_comment=[]
+    for item in user_comment_ids:
+        comment_id = item['comment_id']
+        comments.append(data_manager.get_comment_by_id(comment_id))
+        answer_id = data_manager.get_answer_id_from_comment(comment_id)
+        question_id = data_manager.get_question_id_by_answer_id(answer_id)
+
+    return render_template('user-page.html', user=user, questions=questions, answers=answers, comments=comments,
+                           question_id=question_id)
+
+
 @app.route("/bonus-questions")
 def main():
     return render_template('bonus_questions.html', questions=SAMPLE_QUESTIONS)

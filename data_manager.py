@@ -98,7 +98,7 @@ def get_questions_by_user_id(cursor, user_id: int):
     SELECT question_id FROM user_question
     WHERE user_id=%s
     """
-    val = (user_id, )
+    val = (user_id,)
     cursor.execute(query, val)
     question_dictionaries_in_list = cursor.fetchall()
     if question_dictionaries_in_list != []:
@@ -192,13 +192,12 @@ def get_answers_by_user_id(cursor, user_id: int):
     SELECT answer_id FROM user_answer
     WHERE user_id=%s
     """
-    val = (user_id, )
+    val = (user_id,)
     cursor.execute(query, val)
     answer_dictionaries_in_list = cursor.fetchall()
     if answer_dictionaries_in_list != []:
         answer_ids = [answer['answer_id'] for answer in answer_dictionaries_in_list]
     return answer_ids
-
 
 
 # endregion
@@ -258,7 +257,7 @@ def get_comments_by_user_id(cursor, user_id: int):
     SELECT comment_id FROM user_comment
     WHERE user_id=%s
     """
-    val = (user_id, )
+    val = (user_id,)
     cursor.execute(query, val)
     comment_dictionaries_in_list = cursor.fetchall()
     if comment_dictionaries_in_list != []:
@@ -316,4 +315,60 @@ def get_edit_count_by_comment_id(cursor, id):
     cursor.execute(query, val)
     return cursor.fetchall()[0]['edit_count']
 
+
 # endregion
+
+
+# region ----------------USERS------------------
+
+@database_common.connection_handler
+def get_user_by_id(cursor, user_id):
+    cursor.execute("""
+        SELECT id,
+        username,
+        email,
+        registration_date,
+        number_of_asked_questions,
+        number_of_answers,
+        number_of_comments,
+        reputation
+        FROM "user"
+        WHERE id=%(user_id)s""",
+                   {'user_id': user_id})
+    user = cursor.fetchall()[0]
+    return user
+
+
+@database_common.connection_handler
+def get_question_ids_by_user(cursor, user_id):
+    cursor.execute("""
+        SELECT question_id
+        FROM user_question
+        JOIN "user" ON user_question.user_id ="user".id
+        WHERE id=%(user_id)s""",
+                   {'user_id': user_id})
+    return cursor.fetchall()
+
+
+
+@database_common.connection_handler
+def get_answer_ids_by_user(cursor, user_id):
+    cursor.execute("""
+        SELECT answer_id
+        FROM user_answer
+        JOIN "user" ON user_answer.user_id ="user".id
+        WHERE id=%(user_id)s""",
+                   {'user_id': user_id})
+    return cursor.fetchall()
+
+
+
+@database_common.connection_handler
+def get_comment_ids_by_user(cursor, user_id):
+    cursor.execute("""
+        SELECT comment_id
+        FROM user_comment
+        JOIN "user" ON user_comment.user_id ="user".id
+        WHERE id=%(user_id)s""",
+                   {'user_id': user_id})
+    return cursor.fetchall()

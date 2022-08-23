@@ -319,3 +319,41 @@ textarea {
     width: 300px;
     height: 150px;
 }
+
+/* user-page css */
+.wrapper{
+    display:flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 1000px;
+    max-width: 100%;
+    margin: auto;
+    padding: 10px 30px;
+    background-color: rgba(255, 255, 255, 0.27);
+    /*border: 1px solid;*/
+    font-family: 'Ubuntu', cursive;
+}
+
+.user-box{
+    width: 48%;
+    height: 300px;
+    margin-bottom: 2%;
+}
+
+.reputation{
+    width: 48%;
+    height: 300px;
+    margin-bottom: 2%;
+}
+
+.user-question{
+     width: 100%;
+}
+
+.user-answers{
+     width: 100%;
+}
+
+.user-comments{
+     width: 100%;
+}
