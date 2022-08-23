@@ -12,18 +12,41 @@ function getSortedItems(items, sortField, sortDirection) {
     // if you have not changed the original html uncomment the code below to have an idea of the
     // effect this function has on the table
     //
-    if (sortDirection === "asc") {
-        const firstItem = items.shift();
-        if (firstItem) {
-            items.push(firstItem);
+    // if (sortDirection === "asc") {
+    //     const firstItem = items.shift();
+    //     if (firstItem) {
+    //         items.push(firstItem);
+    //     }
+    // } else {
+    //     const lastItem = items.pop();
+    //     if (lastItem) {
+    //         items.push(lastItem);
+    //     }
+    // }
+
+    console.log(sortField);
+    if (sortField === "VoteCount" || sortField === "ViewNumber") {
+        if (sortDirection === "asc") {
+            items.sort(function (a, b) {
+                return a[sortField] - b[sortField];
+            });
+        } else {
+            items.sort(function (a, b) {
+                return b[sortField] - a[sortField];
+            });
         }
     } else {
-        const lastItem = items.pop();
-        if (lastItem) {
-            items.push(lastItem);
+        if (sortDirection === "asc") {
+            items.sort(function (a, b) {
+                return a[sortField].localeCompare(b[sortField]);
+            });
+        } else {
+            items.sort(function (a, b) {
+                return b[sortField].localeCompare(a[sortField]);
+            });
         }
-    }
 
+    }
     return items;
 }
 
@@ -44,9 +67,9 @@ function getFilteredItems(items, filterValue) {
     if (filterValue !== "") {
         for (let i = 0; i < items.length; i++) {
             if (filterValue.length > 1 && filterValue[0] === "!") {
-                if (items[i].Description.includes(filterValue.slice(1,filterValue.length)) === false && items[i].Title.includes(filterValue.slice(1,filterValue.length)) === false) {
+                if (items[i].Description.includes(filterValue.slice(1, filterValue.length)) === false && items[i].Title.includes(filterValue.slice(1, filterValue.length)) === false) {
                     filtered_items.push(items[i]);
-                    console.log(items[i].Description.includes(filterValue.slice(1,filterValue.length)));
+                    console.log(items[i].Description.includes(filterValue.slice(1, filterValue.length)));
                 }
             } else {
                 if (items[i].Description.includes(filterValue) || items[i].Title.includes(filterValue)) {

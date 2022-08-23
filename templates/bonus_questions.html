@@ -2,33 +2,36 @@
 
 {% block content %}
 
-	<div id="content">
+	<div id="content" style="width: 1000px; max-width: 100%; margin: auto;">
 		<h2>Bonus Questions:</h2>
-		<button class="button button1" id="theme-button">Change Theme to Dark</button>
-		<button class="button button1" id="increase-font-button">Increase page font</button>
-		<button class="button button1" id="decrease-font-button">Decrease page font</button>
+		<div style="display: flex; align-items: center; flex-wrap: wrap; justify-content: center;">
+			<button class="button button1" id="theme-button" style="margin: 5px">Change Theme to Dark</button>
+			<button class="button button1" id="increase-font-button" style="margin: 5px">Increase font</button>
+			<button class="button button1" id="decrease-font-button" style="margin: 5px">Decrease font</button>
+
 		<input
 				data-table-body="doNotModifyThisId_QuestionsTableBody"
-				style="width: 500px; height: 40px; border-color: #02b9b9; border-style: solid; background-color: #cccccc"
+				style="width: 500px; height: 40px; border-color: #02b9b9; border-style: solid; background-color: #cccccc; margin: 5px"
 				id="doNotModifyThisId_QuestionsFilter"
 				type="text"
-				placeholder="filter questions by keywords">
+				placeholder="Filter questions by keywords">
+		</div>
 		<table id="table">
 			<thead id="doNotModifyThisId_QuestionsTableHeader">
-				<tr>
-					<td>Title</td>
-					<td>Description</td>
-					<td>Vote Count</td>
-					<td>View Number</td>
+				<tr style="text-align: justify">
+					<th style="padding: 5px">Title</th>
+					<th style="padding: 5px">Description</th>
+					<th style="padding: 5px">Vote Count</th>
+					<th style="padding: 5px">View Number</th>
 				</tr>
 			</thead>
 			<tbody id="doNotModifyThisId_QuestionsTableBody">
 				{% for question in questions %}
 					<tr>
-						<td>{{ question['title'] }}</td>
-						<td>{{ question['description'] }}</td>
-						<td>{{ question['vote_number'] }}</td>
-						<td>{{ question['view_number'] }}</td>
+						<td style="padding: 5px">{{ question['title'] }}</td>
+						<td style="padding: 5px">{{ question['description'] }}</td>
+						<td style="padding: 5px">{{ question['vote_number'] }}</td>
+						<td style="padding: 5px">{{ question['view_number'] }}</td>
 					</tr>
 				{% endfor %}
 			</tbody>
