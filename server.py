@@ -312,7 +312,7 @@ def delete_comment(comment_id):
 
 
 @app.route("/bonus-questions")
-def main():
+def bonus_questions():
     return render_template('bonus_questions.html', questions=SAMPLE_QUESTIONS)
 
 
