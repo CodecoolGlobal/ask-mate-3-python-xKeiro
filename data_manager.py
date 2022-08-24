@@ -107,7 +107,7 @@ def get_questions_by_user_id(cursor, user_id: int):
 
 
 @database_common.connection_handler
-def get_questions_by_tag_id(cursor,tag_id: int) -> list[dict]:
+def get_questions_by_tag_id(cursor, tag_id: int) -> list[dict]:
     query = """
         SELECT DISTINCT question.*
         FROM question
@@ -223,6 +223,15 @@ def get_answers_by_user_id(cursor, user_id: int):
     if answer_dictionaries_in_list != []:
         answer_ids = [answer['answer_id'] for answer in answer_dictionaries_in_list]
     return answer_ids
+
+
+@database_common.connection_handler
+def change_accept_state(cursor, answer_id):
+    cursor.execute("""
+        UPDATE answer
+        SET accepted = NOT accepted
+        WHERE id = %(answer_id)s""",
+                   {'answer_id': answer_id})
 
 
 # endregion
@@ -466,6 +475,7 @@ def get_user_name_from_comment(cursor, comment_id):
     val = (comment_id,)
     cursor.execute(query, val)
     return cursor.fetchone()['username']
+
 
 # endregion
 

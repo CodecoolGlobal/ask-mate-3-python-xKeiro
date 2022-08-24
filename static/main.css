@@ -360,5 +360,13 @@ textarea {
 
 .user-info{
     color: rgba(0, 0, 0, 1);
-    text-align: right;
+    text-align: left;
+}
+
+#accept{
+    background-color: #8bba82;
+    border: 1px solid black;
+    border-radius: 3px;
+    box-shadow: 5px 5px 5px grey;
+
 }

@@ -356,13 +356,13 @@ def user_page(user_id):
 def bonus_questions():
     return render_template('bonus_questions.html', questions=SAMPLE_QUESTIONS)
 
+
 @app.route("/tags")
 def tags_page():
     tags = data_manager.get_tags()
     searched_tag_id = request.args.get('tag_id')
     filtered_questions = data_manager.get_questions_by_tag_id(searched_tag_id)
-    return render_template("tags.html",tags=tags, questions=filtered_questions)
-
+    return render_template("tags.html", tags=tags, questions=filtered_questions)
 
 
 @app.route('/registration', methods=["GET", "POST"])
@@ -375,6 +375,14 @@ def add_applicants():
             username, email, password)
         return redirect("/")
     return render_template('registration.html')
+
+
+@app.route('/accept/<answer_id>', methods=["POST"])
+def accept_answer(answer_id):
+    question = data_manager.get_question_id_by_answer_id(answer_id)
+    answer=data_manager.get_answer_by_id(answer_id)
+    data_manager.change_accept_state(answer_id)
+    return redirect(request.referrer)
 
 
 if __name__ == "__main__":

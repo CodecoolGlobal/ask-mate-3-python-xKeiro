@@ -35,6 +35,21 @@
 		<div class="comment-box">
 			<div class="comment">
 				<div class="comment-info">
+                    {% if session['user_id'] == question['user_id'] %}
+                    {% if answer['accepted'] == False %}
+                        <form action="{{ url_for("accept_answer", answer_id = answer['id']) }}" method="POST">
+                            <button type="submit" id="accept">
+                                Accept
+                            </button>
+                        </form>
+                    {% else %}
+                        <form action="{{ url_for("accept_answer", answer_id = answer['id']) }}" method="POST">
+                        <button type="submit" id="not_accept">
+                            Withdraw accept
+                        </button>
+                    {% endif %}
+                    {% endif %}
+
 					<p class="user-info">Answer by: {{ answer.username }}</p>
 					<p>Votes: {{ answer.vote_count }} • {{ answer.submission_time }}</p>
 				</div>
