@@ -11,7 +11,9 @@
             <p>here since:{{ user['registration_date'] }}</p>
         </div>
         <div class="reputation">
-            <p>Badge</p>
+            {% if user['reputation']> 5 %}
+            <p> <img src="/static/MasterChef.png" width="30" height="30" alt="MasterChef"></p>
+            {% endif %} 
             <p>{{ user['reputation'] }}</p>
 
         </div>

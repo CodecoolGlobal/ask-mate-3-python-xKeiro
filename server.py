@@ -113,8 +113,9 @@ def edit_question(question_id):
                 question = data_manager.get_question_by_id(int(question_id))
                 ids_of_selected_tags = [tag["id"] for tag in data_manager.get_tags_by_question_id(question_id)]
                 all_tags = data_manager.get_tags()
+                user = data_manager.get_all_users_reputation()
                 return render_template('add-question.html', question=question, all_tags=all_tags,
-                                       ids_of_selected_tags=ids_of_selected_tags)
+                                       ids_of_selected_tags=ids_of_selected_tags, user=user)
     return redirect(request.referrer)
 
 
@@ -226,6 +227,8 @@ def question_vote_up(question_id):
     question = data_manager.get_question_by_id(question_id)
     question["vote_count"] += 1
     connection.update_question_by_id(question_id, question)
+    user_name = data_manager.get_user_name_from_question(question_id)
+    connection.update_add_reputation_by_username(user_name)
     return redirect(request.referrer)
 
 
@@ -234,6 +237,8 @@ def question_vote_down(question_id):
     question = data_manager.get_question_by_id(question_id)
     question["vote_count"] -= 1
     connection.update_question_by_id(question_id, question)
+    user_name = data_manager.get_user_name_from_question(question_id)
+    connection.update_decrease_reputation_by_username(user_name)
     return redirect(request.referrer)
 
 
@@ -242,6 +247,8 @@ def comment_vote_up(comment_id):
     comment = data_manager.get_comment_by_id(comment_id)
     comment["vote_count"] += 1
     connection.update_comment_by_id(comment_id, comment)
+    user_name = data_manager.get_user_name_from_comment(comment_id)
+    connection.update_add_reputation_by_username(user_name)
     return redirect(request.referrer)
 
 
@@ -250,6 +257,8 @@ def comment_vote_down(comment_id):
     comment = data_manager.get_comment_by_id(comment_id)
     comment["vote_count"] -= 1
     connection.update_comment_by_id(comment_id, comment)
+    user_name = data_manager.get_user_name_from_comment(comment_id)
+    connection.update_decrease_reputation_by_username(user_name)
     return redirect(request.referrer)
 
 
@@ -258,6 +267,8 @@ def answer_vote_up(answer_id):
     answer = data_manager.get_answer_by_id(answer_id)
     answer["vote_count"] += 1
     connection.update_answer_by_id(answer_id, answer)
+    user_name = data_manager.get_user_name_from_answer(answer_id)
+    connection.update_add_reputation_by_username(user_name)
     return redirect(request.referrer)
 
 
@@ -266,6 +277,8 @@ def answer_vote_down(answer_id):
     answer = data_manager.get_answer_by_id(answer_id)
     answer["vote_count"] -= 1
     connection.update_answer_by_id(answer_id, answer)
+    user_name = data_manager.get_user_name_from_answer(answer_id)
+    connection.update_decrease_reputation_by_username(user_name)
     return redirect(request.referrer)
 
 
@@ -331,7 +344,6 @@ def user_page(user_id):
     for item in user_question_ids:
         id = item['question_id']
         questions.append(data_manager.get_question_by_id(id))
-        print(item['question_id'])
 
     user_answer_ids = data_manager.get_answer_ids_by_user(user_id)
     answers = []
@@ -356,13 +368,13 @@ def user_page(user_id):
 def bonus_questions():
     return render_template('bonus_questions.html', questions=SAMPLE_QUESTIONS)
 
+
 @app.route("/tags")
 def tags_page():
     tags = data_manager.get_tags()
     searched_tag_id = request.args.get('tag_id')
     filtered_questions = data_manager.get_questions_by_tag_id(searched_tag_id)
-    return render_template("tags.html",tags=tags, questions=filtered_questions)
-
+    return render_template("tags.html", tags=tags, questions=filtered_questions)
 
 
 @app.route('/registration', methods=["GET", "POST"])

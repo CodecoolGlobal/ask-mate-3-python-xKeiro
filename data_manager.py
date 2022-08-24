@@ -107,7 +107,7 @@ def get_questions_by_user_id(cursor, user_id: int):
 
 
 @database_common.connection_handler
-def get_questions_by_tag_id(cursor,tag_id: int) -> list[dict]:
+def get_questions_by_tag_id(cursor, tag_id: int) -> list[dict]:
     query = """
         SELECT DISTINCT question.*
         FROM question
@@ -345,6 +345,14 @@ def get_edit_count_by_comment_id(cursor, id):
 
 
 # region ----------------USERS------------------
+@database_common.connection_handler
+def get_all_users_reputation(cursor):
+    cursor.execute("""
+    SELECT reputation
+    FROM "user"
+    """)
+    return cursor.fetchall()
+
 
 @database_common.connection_handler
 def get_user_by_id(cursor, user_id):
@@ -466,6 +474,7 @@ def get_user_name_from_comment(cursor, comment_id):
     val = (comment_id,)
     cursor.execute(query, val)
     return cursor.fetchone()['username']
+
 
 # endregion
 
