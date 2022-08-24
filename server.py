@@ -6,6 +6,7 @@ from werkzeug.utils import secure_filename
 from bonus_questions import SAMPLE_QUESTIONS
 import connection
 import data_manager
+import util
 
 QUESTIONS_PATH = "./sample_data/question.csv"
 ANSWERS_PATH = "./sample_data/answer.csv"
@@ -322,6 +323,18 @@ def tags_page():
     filtered_questions = data_manager.get_questions_by_tag_id(searched_tag_id)
     return render_template("tags.html",tags=tags, questions=filtered_questions)
 
+
+
+@app.route('/registration', methods=["GET", "POST"])
+def add_applicants():
+    if request.method == "POST":
+        username = request.form.get("un")
+        email = request.form.get("em")
+        password = util.hash_password(request.form.get("pw"))
+        data_manager.register_new_user(
+            username, email, password)
+        return redirect("/")
+    return render_template('registration.html')
 
 
 if __name__ == "__main__":
