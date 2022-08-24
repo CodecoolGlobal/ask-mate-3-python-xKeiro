@@ -16,7 +16,7 @@
 </head>
 <body>
 	<div class="nav_bar">
-		<a class="active" href="/">Home</a>
+		<a href="/">Home</a>
 		<a href="/list">Questions</a>
 		<a href="/bonus-questions">Bonus Questions</a>
 		<a href="/add-question">Add new Question</a>
@@ -26,10 +26,13 @@
 				<input type="search" placeholder="Search..." id="search-question" name="search-question"
 				       value="{{ search_phrase if search_phrase is defined }}">
 				<button type="submit"> Submit</button>
+                <a href="/registration">Register</a>
 			</form>
 		</div>
 
+
 	</div>
+
 	<div class="header">
 		<h1>Food Questions & Answers</h1>
 	</div>

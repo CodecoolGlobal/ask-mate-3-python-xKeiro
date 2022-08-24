@@ -1,0 +1,21 @@
+{% extends "banner.html" %}
+
+{% block content %}
+
+    <div class="container">
+        <h2>User Registration</h2>
+        <form style="text-align: center" action="/registration" method="POST">
+            <label for="un">Username</label><br>
+            <input type="text" minlength="5" id="un" name="un" required><br><br>
+            <label for="em">E-mail</label><br>
+            <input type="text" minlength="5" id="em" name="em" required><br><br>
+            <label for="pw">Password</label><br>
+            <input type="password" minlength="5" id="pw" name="pw" required><br><br>
+
+            <button class="button button1" value ="Register">Register</button>
+        </form>
+    </div>
+
+
+    {% include 'footer.html' %}
+{% endblock %}

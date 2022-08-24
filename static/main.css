@@ -189,13 +189,13 @@ body {
     }
 }
 
-.text {
-    display: block;
-    width: 300px;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-}
+/*.text {*/
+/*    display: block;*/
+/*    !*width: 300px;*!*/
+/*    overflow: hidden;*/
+/*    white-space: nowrap;*/
+/*    text-overflow: ellipsis;*/
+/*}*/
 
 .button {
     border: none;
