@@ -347,6 +347,10 @@ def user_page(user_id):
         answer_id = data_manager.get_answer_id_from_comment(comment_id)
         question_id = data_manager.get_question_id_by_answer_id(answer_id)
 
+    # question_count= len(questions)
+    # answer_count=len(answers)
+    # comment_count=len(comments)
+
     return render_template('user-page.html', user=user, questions=questions, answers=answers, comments=comments,
                            question_id=question_id)
 

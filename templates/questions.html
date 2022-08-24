@@ -35,10 +35,11 @@
 		<div class="comment-box">
 			<div class="comment">
 				<div class="comment-info">
-					<p class="user-info">Answer by: {{ answer.username }}</p>
+
 					<p>Votes: {{ answer.vote_count }} • {{ answer.submission_time }}</p>
 				</div>
 				<p><strong> Answer {{ loop.index }}:</strong></p>
+                <p class="user-info">Answer by: {{ answer.username }}</p>
 				<div class="comment-body">
 					<p>{{ answer['message'] }}</p>
 				</div>
