@@ -134,6 +134,7 @@ def get_answers_by_question_id(cursor, question_id: int) -> list[dict]:
     cursor.execute(query, val)
     return cursor.fetchall()
 
+
 @database_common.connection_handler
 def get_answer_id_from_question_id(cursor, question_id: int) -> list[dict]:
     query = """
@@ -361,7 +362,6 @@ def get_question_ids_by_user(cursor, user_id):
     return cursor.fetchall()
 
 
-
 @database_common.connection_handler
 def get_answer_ids_by_user(cursor, user_id):
     cursor.execute("""
@@ -371,7 +371,6 @@ def get_answer_ids_by_user(cursor, user_id):
         WHERE id=%(user_id)s""",
                    {'user_id': user_id})
     return cursor.fetchall()
-
 
 
 @database_common.connection_handler
@@ -384,6 +383,7 @@ def get_comment_ids_by_user(cursor, user_id):
                    {'user_id': user_id})
     return cursor.fetchall()
 
+
 @database_common.connection_handler
 def get_user_id_from_question_id(cursor, question_id):
     cursor.execute("""
@@ -393,7 +393,6 @@ def get_user_id_from_question_id(cursor, question_id):
         WHERE id=%(question_id)s""",
                    {'question_id': question_id})
     return cursor.fetchone()
-
 
 
 @database_common.connection_handler
@@ -406,7 +405,6 @@ def user_name_from_user_id(cursor, user_id):
     return cursor.fetchone()
 
 
-
 @database_common.connection_handler
 def get_user_id_from_answer(cursor, answer_id):
     cursor.execute("""
@@ -416,3 +414,44 @@ def get_user_id_from_answer(cursor, answer_id):
         WHERE id=%(answer_id)s""",
                    {'answer_id': answer_id})
     return cursor.fetchone()
+
+
+@database_common.connection_handler
+def get_user_name_from_question(cursor, question_id):
+    query = """
+    SELECT username
+    FROM "user"
+    JOIN user_question ua ON "user".id = ua.user_id
+    WHERE ua.question_id = %s
+    """
+    val = (question_id,)
+    cursor.execute(query, val)
+    return cursor.fetchone()['username']
+
+
+@database_common.connection_handler
+def get_user_name_from_answer(cursor, answer_id):
+    query = """
+    SELECT username
+    FROM "user"
+    JOIN user_answer ua ON "user".id = ua.user_id
+    WHERE ua.answer_id = %s
+    """
+    val = (answer_id,)
+    cursor.execute(query, val)
+    return cursor.fetchone()['username']
+
+
+@database_common.connection_handler
+def get_user_name_from_comment(cursor, comment_id):
+    query = """
+    SELECT username
+    FROM "user"
+    JOIN user_comment ua ON "user".id = ua.user_id
+    WHERE ua.comment_id = %s
+    """
+    val = (comment_id,)
+    cursor.execute(query, val)
+    return cursor.fetchone()['username']
+
+# endregion

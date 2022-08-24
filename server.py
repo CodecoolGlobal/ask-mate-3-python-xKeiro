@@ -53,28 +53,15 @@ def get_question(question_id):
     answers = data_manager.get_answers_by_question_id(question_id)
     comments = data_manager.get_comments()
     tags = data_manager.get_tags_by_question_id(question_id)
-    # user to question
-    user_id_from_question = data_manager.get_user_id_from_question_id(question_id)
-    get_user_name_from_q = data_manager.user_name_from_user_id(user_id_from_question['user_id'])
-    user_name_q = get_user_name_from_q['username']
 
+    question['username'] = data_manager.get_user_name_from_question(question_id)
     # user to answer
-    # answer_ids = data_manager.get_answer_id_from_question_id(question_id)
-    # answer_ids_list=[]
-    # for item in answer_ids:
-    #     answer_ids_list.append(item['id'])
-    #     user_id_list=[]
-    # for element in answer_ids_list:
-    #     user_id_from_answer = data_manager.get_user_id_from_answer(element)
-    #     user_id_list.append(user_id_from_answer['user_id'])
-    # for item in user_id_list:
-    #     get_user_name_from_a = data_manager.user_name_from_user_id(item)
-    #     user_name_a = get_user_name_from_a['username']
-    #     print(user_name_a)
-
+    for i, answer in enumerate(answers):
+        answers[i]["username"] = data_manager.get_user_name_from_answer(answer['id'])
 
     # user to comment
-
+    for i, comment in enumerate(comments):
+        comments[i]["username"] = data_manager.get_user_name_from_comment(comment['id'])
 
     user_content = dict()
     if "user_id" in session:
@@ -83,7 +70,7 @@ def get_question(question_id):
         user_content["answer_ids"] = data_manager.get_answers_by_user_id(user_id)
         user_content["comment_ids"] = data_manager.get_comments_by_user_id(user_id)
     return render_template("questions.html", question=question, answers=answers, tags=tags, comments=comments,
-                           user_content=user_content, user_name_q=user_name_q, user_name_a=user_name_a)
+                           user_content=user_content)
 
 
 @app.route("/search", methods=['POST'])
