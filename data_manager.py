@@ -106,6 +106,19 @@ def get_questions_by_user_id(cursor, user_id: int):
     return question_ids
 
 
+@database_common.connection_handler
+def get_questions_by_tag_id(cursor,tag_id: int) -> list[dict]:
+    query = """
+        SELECT DISTINCT question.*
+        FROM question
+        LEFT JOIN question_tag ON tag_id = question_tag.tag_id
+        WHERE question_tag.tag_id = %s
+        """
+    val = (tag_id,)
+    cursor.execute(query, val)
+    return cursor.fetchall()
+
+
 # endregion
 
 # region ----------------ANSWER------------------

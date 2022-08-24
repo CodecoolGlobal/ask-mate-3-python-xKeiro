@@ -315,6 +315,14 @@ def delete_comment(comment_id):
 def bonus_questions():
     return render_template('bonus_questions.html', questions=SAMPLE_QUESTIONS)
 
+@app.route("/tags")
+def tags_page():
+    tags = data_manager.get_tags()
+    searched_tag_id = request.args.get('tag_id')
+    filtered_questions = data_manager.get_questions_by_tag_id(searched_tag_id)
+    return render_template("tags.html",tags=tags, questions=filtered_questions)
+
+
 
 if __name__ == "__main__":
     app.run(debug=True)

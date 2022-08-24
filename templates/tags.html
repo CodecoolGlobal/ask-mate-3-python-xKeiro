@@ -1,0 +1,18 @@
+{% extends "banner.html" %}
+{% block content %}
+    <div id="search-by-tags">
+        <form action="/tags" method="GET">
+            <select name="tag_id" id="tag_id">
+                {% for tag in tags %}
+                    <option value="{{ tag.id }}">{{ tag.name }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+    <div id="questions-by-tag-id">
+        {% for question in questions %}
+            <p> {{ question.submission_time }} <a href="/question/{{ question.id }}">{{ question.title }}</a> {{ question.message }} </p>
+        {% endfor %}
+    </div>
+{% endblock %}
