@@ -25,6 +25,8 @@ def allowed_file(filename):
 @app.route('/')
 def index():
     questions = data_manager.get_latest_questions()
+    for i, question in enumerate(questions):
+        questions[i]["username"] = data_manager.get_user_name_from_answer(question['id'])
     session['user_id'] = 1
     return render_template('index.html', questions=questions)
 
