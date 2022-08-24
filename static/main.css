@@ -361,6 +361,7 @@ textarea {
 .user-info{
     color: rgba(0, 0, 0, 1);
     text-align: left;
+    font-style: italic;
 }
 
 #accept{
