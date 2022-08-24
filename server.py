@@ -26,7 +26,7 @@ def allowed_file(filename):
 @app.route('/')
 def index():
     questions = data_manager.get_latest_questions()
-    session['user_id'] = 1
+    session['user_id'] = 2
     return render_template('index.html', questions=questions)
 
 

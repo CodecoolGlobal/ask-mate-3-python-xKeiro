@@ -33,13 +33,17 @@
 	<h2>Comments</h2>
 	{% for answer in answers %}
 		<div class="comment-box">
-			<div class="comment">
+            {% if answer['accepted'] == True %}
+			<div class="comment" id="accepted">
+            {% else %}
+            <div class="comment" id="not_accepted">
+            {% endif %}
 				<div class="comment-info">
                     {% if session['user_id'] == question['user_id'] %}
                     {% if answer['accepted'] == False %}
                         <form action="{{ url_for("accept_answer", answer_id = answer['id']) }}" method="POST">
                             <button type="submit" id="accept">
-                                Accept
+                                Accept answer
                             </button>
                         </form>
                     {% else %}
@@ -49,7 +53,9 @@
                         </button>
                     {% endif %}
                     {% endif %}
-
+                    {% if answer['accepted'] == True %}
+                        <button disabled class="accepted_answer">Accepted</button>
+                    {% endif %}
 					<p class="user-info">Answer by: {{ answer.username }}</p>
 					<p>Votes: {{ answer.vote_count }} • {{ answer.submission_time }}</p>
 				</div>

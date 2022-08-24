@@ -364,9 +364,40 @@ textarea {
 }
 
 #accept{
-    background-color: #8bba82;
+    background-color: #9bc493;
+    width: 200px;
+    height: 1.5em;
+    font-weight: bold;
     border: 1px solid black;
     border-radius: 3px;
-    box-shadow: 5px 5px 5px grey;
+    box-shadow: 2px 2px 2px grey;
+}
 
+#not_accept{
+    background-color: #9e6868;
+    width: 200px;
+    height: 1.5em;
+    font-weight: bold;
+    border: 1px solid black;
+    border-radius: 3px;
+    box-shadow: 2px 2px 2px grey;
+}
+
+#accepted{
+    background: linear-gradient(#9bc493, white);
+    padding: 8px;
+    border-radius: 5px;
+    box-shadow: 2px 2px 2px grey;
+}
+
+.accepted_answer{
+    background-color: #9bc493;
+    color: #3b7d2e;
+    width: 200px;
+    height: 1.5em;
+    font-weight: bold;
+    border: 1px solid black;
+    border-radius: 3px;
+    box-shadow: 2px 2px 2px grey;
+}
 }
