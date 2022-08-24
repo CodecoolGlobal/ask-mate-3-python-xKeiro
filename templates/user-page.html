@@ -1,0 +1,48 @@
+{% extends "banner.html" %}
+
+
+{% block content %}
+    <div class="wrapper">
+        <div class="user-box">
+            <h2>User Profile</h2>
+            <p>{{ user['username'] }}</p>
+            <p>{{ user['id'] }}</p>
+            <p>{{ user['email'] }}</p>
+            <p>here since:{{ user['registration_date'] }}</p>
+        </div>
+        <div class="reputation">
+            <p>Badge</p>
+            <p>{{ user['reputation'] }}</p>
+
+        </div>
+        <div class="user-question">
+            <h2> User's questions: {{ user['number_of_asked_questions'] }}</h2>
+            {% for question in questions %}
+                <a href="/question/{{ question['id'] }}">{{ question['title']}}</a>
+                <br>
+            {% endfor %}
+
+        </div>
+
+        <div class="user-answers">
+            <h2> User's answers: {{ user['number_of_answers'] }}</h2>
+            {% for answer in answers %}
+                <a href="/question/{{ answer['question_id'] }}">{{ answer['message']}}</a>
+                <br>
+            {% endfor %}
+        </div>
+
+        <div class="user-comments">
+            <h2> User's comments: {{ user['number_of_comments'] }}</h2>
+            {% for comment in comments %}
+                <a href="/question/{{ question_id }}">{{ comment['message']}}</a>
+                <br>
+            {% endfor %}
+        </div>
+
+    </div>
+
+
+
+    {% include 'footer.html' %}
+{% endblock %}

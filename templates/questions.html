@@ -3,7 +3,10 @@
 {% block content %}
 
 	<div class="question-box">
-		<p class="comment-info">Votes: {{ question['vote_count'] }} | {{ question['submission_time'] }}</p>
+		<p class="user-info">Question by: {{ question.username }}</p>
+		<p class="comment-info">Vote: {{ question['vote_count'] }} | {{ question['submission_time'] }}</p>
+
+
 		<h2>{{ question['title'] }}</h2>
 		<p> {{ question['message'] }}</p>
 
@@ -19,10 +22,11 @@
 			<a href="{{ url_for("question_vote_down", question_id=question["id"]) }}"><img
 					src="/static/dislike.png" width="30" height="30" alt="Dislike"></a>
 			{% if question['id'] in user_content["question_ids"] %}
-			<a href="/question/{{ question['id'] }}/edit"><img src="/static/edit.png" width="30" height="30" alt="Edit"></a>
-			<a href="/question/{{ question['id'] }}/delete"><img
-					src="/static/delete.png" width="30" height="30" alt="Delete"
-					onclick="return confirm('Do you really want to delete this answer?');"></a>
+				<a href="/question/{{ question['id'] }}/edit"><img src="/static/edit.png" width="30" height="30"
+				                                                   alt="Edit"></a>
+				<a href="/question/{{ question['id'] }}/delete"><img
+						src="/static/delete.png" width="30" height="30" alt="Delete"
+						onclick="return confirm('Do you really want to delete this answer?');"></a>
 			{% endif %}
 		</div>
 	</div>
@@ -31,6 +35,7 @@
 		<div class="comment-box">
 			<div class="comment">
 				<div class="comment-info">
+					<p class="user-info">Answer by: {{ answer.username }}</p>
 					<p>Votes: {{ answer.vote_count }} • {{ answer.submission_time }}</p>
 				</div>
 				<p><strong> Answer {{ loop.index }}:</strong></p>
@@ -62,6 +67,7 @@
 				{% if comment.parent_comment_id == None and comment.answer_id == answer['id'] %}
 					<div style="margin-left: 50px">
 						<div class="comment-info">
+							<p class="user-info">Comment by: {{ comment.username }}</p>
 							<p>Votes: {{ comment.vote_count }} • {{ comment.submission_time }}</p>
 						</div>
 						<div class="comment-body">
@@ -90,6 +96,7 @@
 						{% if comment1.parent_comment_id == comment.id %}
 							<div style="margin-left: 100px">
 								<div class="comment-info">
+									<p class="user-info">Comment by: {{ comment1.username }}</p>
 									<p>Votes: {{ comment1.vote_count }} • {{ comment1.submission_time }}</p>
 								</div>
 								<div class="comment-body">
@@ -117,6 +124,7 @@
 								{% if comment2.parent_comment_id == comment1.id %}
 									<div style="margin-left: 150px">
 										<div class="comment-info">
+											<p class="user-info">Comment by: {{ comment2.username }}</p>
 											<p>Votes: {{ comment2.vote_count }} • {{ comment2.submission_time }}</p>
 										</div>
 										<p>{{ comment2.message }}</p><br>
