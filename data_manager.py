@@ -134,6 +134,17 @@ def get_answers_by_question_id(cursor, question_id: int) -> list[dict]:
     cursor.execute(query, val)
     return cursor.fetchall()
 
+@database_common.connection_handler
+def get_answer_id_from_question_id(cursor, question_id: int) -> list[dict]:
+    query = """
+        SELECT id
+        FROM answer
+        WHERE question_id = %s
+        """
+    val = (question_id,)
+    cursor.execute(query, val)
+    return cursor.fetchall()
+
 
 @database_common.connection_handler
 def get_answer_by_id(cursor, id: int) -> dict:
@@ -372,3 +383,36 @@ def get_comment_ids_by_user(cursor, user_id):
         WHERE id=%(user_id)s""",
                    {'user_id': user_id})
     return cursor.fetchall()
+
+@database_common.connection_handler
+def get_user_id_from_question_id(cursor, question_id):
+    cursor.execute("""
+        SELECT user_id
+        FROM user_question
+        LEFT JOIN question ON question.id = user_question.question_id
+        WHERE id=%(question_id)s""",
+                   {'question_id': question_id})
+    return cursor.fetchone()
+
+
+
+@database_common.connection_handler
+def user_name_from_user_id(cursor, user_id):
+    cursor.execute("""
+        SELECT username
+        FROM "user"
+        WHERE id=%(user_id)s""",
+                   {'user_id': user_id})
+    return cursor.fetchone()
+
+
+
+@database_common.connection_handler
+def get_user_id_from_answer(cursor, answer_id):
+    cursor.execute("""
+        SELECT user_id
+        FROM user_answer
+        LEFT JOIN answer ON answer.id = user_answer.answer_id
+        WHERE id=%(answer_id)s""",
+                   {'answer_id': answer_id})
+    return cursor.fetchone()

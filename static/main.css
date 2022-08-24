@@ -357,3 +357,8 @@ textarea {
 .user-comments{
      width: 100%;
 }
+
+.user-info{
+    color: rgba(0, 0, 0, 1);
+    text-align: right;
+}

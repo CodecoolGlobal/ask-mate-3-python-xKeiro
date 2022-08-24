@@ -53,6 +53,29 @@ def get_question(question_id):
     answers = data_manager.get_answers_by_question_id(question_id)
     comments = data_manager.get_comments()
     tags = data_manager.get_tags_by_question_id(question_id)
+    # user to question
+    user_id_from_question = data_manager.get_user_id_from_question_id(question_id)
+    get_user_name_from_q = data_manager.user_name_from_user_id(user_id_from_question['user_id'])
+    user_name_q = get_user_name_from_q['username']
+
+    # user to answer
+    # answer_ids = data_manager.get_answer_id_from_question_id(question_id)
+    # answer_ids_list=[]
+    # for item in answer_ids:
+    #     answer_ids_list.append(item['id'])
+    #     user_id_list=[]
+    # for element in answer_ids_list:
+    #     user_id_from_answer = data_manager.get_user_id_from_answer(element)
+    #     user_id_list.append(user_id_from_answer['user_id'])
+    # for item in user_id_list:
+    #     get_user_name_from_a = data_manager.user_name_from_user_id(item)
+    #     user_name_a = get_user_name_from_a['username']
+    #     print(user_name_a)
+
+
+    # user to comment
+
+
     user_content = dict()
     if "user_id" in session:
         user_id = session["user_id"]
@@ -60,7 +83,7 @@ def get_question(question_id):
         user_content["answer_ids"] = data_manager.get_answers_by_user_id(user_id)
         user_content["comment_ids"] = data_manager.get_comments_by_user_id(user_id)
     return render_template("questions.html", question=question, answers=answers, tags=tags, comments=comments,
-                           user_content=user_content)
+                           user_content=user_content, user_name_q=user_name_q, user_name_a=user_name_a)
 
 
 @app.route("/search", methods=['POST'])
@@ -149,6 +172,7 @@ def post_answer(question_id):
             # # check if the post request has the file part
             # if 'image' not in request.files:
             #     flash('No file part')
+            #     return redirect(request.url)
             #     return redirect(request.url)
             file = request.files['image']
             # # if user does not select file, browser also
@@ -314,22 +338,22 @@ def delete_comment(comment_id):
 @app.route('/user/<user_id>')
 def user_page(user_id):
     user = data_manager.get_user_by_id(user_id)
-    user_question_ids= data_manager.get_question_ids_by_user(user_id)
-    questions=[]
+    user_question_ids = data_manager.get_question_ids_by_user(user_id)
+    questions = []
     for item in user_question_ids:
-        id= item['question_id']
+        id = item['question_id']
         questions.append(data_manager.get_question_by_id(id))
         print(item['question_id'])
 
-    user_answer_ids=data_manager.get_answer_ids_by_user(user_id)
-    answers=[]
+    user_answer_ids = data_manager.get_answer_ids_by_user(user_id)
+    answers = []
     for item in user_answer_ids:
-        answer_id= item['answer_id']
+        answer_id = item['answer_id']
         answers.append(data_manager.get_answer_by_id(answer_id))
 
-    user_comment_ids=data_manager.get_comment_ids_by_user(user_id)
-    comments=[]
-    answer_ids_by_comment=[]
+    user_comment_ids = data_manager.get_comment_ids_by_user(user_id)
+    comments = []
+    answer_ids_by_comment = []
     for item in user_comment_ids:
         comment_id = item['comment_id']
         comments.append(data_manager.get_comment_by_id(comment_id))
