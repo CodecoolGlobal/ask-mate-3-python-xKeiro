@@ -86,7 +86,8 @@ mark {
 .comment-info {
     color: rgba(0, 0, 0, 1);
     /*position: absolute;*/
-    text-align: right;
+    /*text-align: right;*/
+    float: right;
 
 }
 
@@ -349,7 +350,7 @@ textarea {
 .user-info {
     font-family: 'Ubuntu', cursive;
     font-style: italic;
-    font-size: 28px;
+    font-size: 16px;
 }
 
 .user-question {
@@ -366,7 +367,8 @@ textarea {
 
 .user-info {
     color: rgba(0, 0, 0, 1);
-    text-align: left;
+    /*text-align: left;*/
+    float:left;
     font-style: italic;
 }
 
