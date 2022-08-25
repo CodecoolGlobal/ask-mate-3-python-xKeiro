@@ -116,7 +116,9 @@ def get_questions_by_user_id(cursor, user_id: int):
     question_dictionaries_in_list = cursor.fetchall()
     if question_dictionaries_in_list != []:
         question_ids = [question['question_id'] for question in question_dictionaries_in_list]
-    return question_ids
+        return question_ids
+    else:
+        return []
 
 
 @database_common.connection_handler
@@ -235,8 +237,9 @@ def get_answers_by_user_id(cursor, user_id: int):
     answer_dictionaries_in_list = cursor.fetchall()
     if answer_dictionaries_in_list != []:
         answer_ids = [answer['answer_id'] for answer in answer_dictionaries_in_list]
-    return answer_ids
-
+        return answer_ids
+    else:
+        return []
 
 @database_common.connection_handler
 def change_accept_state(cursor, answer_id):
@@ -309,7 +312,9 @@ def get_comments_by_user_id(cursor, user_id: int):
     comment_dictionaries_in_list = cursor.fetchall()
     if comment_dictionaries_in_list != []:
         comment_ids = [comment['comment_id'] for comment in comment_dictionaries_in_list]
-    return comment_ids
+        return comment_ids
+    else:
+        return []
 
 
 # endregion
@@ -557,3 +562,16 @@ def get_question_count_from_user(cursor, user_id):
     return cursor.fetchall()
 
 # endregion
+
+
+@database_common.connection_handler
+def user_login(cursor, username):
+    query = f"""
+            SELECT id, username, password
+            FROM "user"
+            WHERE username = '{username}' 
+            """
+    cursor.execute(query)
+    return cursor.fetchone()
+
+
