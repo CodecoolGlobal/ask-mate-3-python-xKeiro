@@ -23,6 +23,7 @@
 	</div>
 	<div class="question-box">
 		{% for question in questions %}
+            <p class="user-info">Question by: {{ question.username }}</p>
 			<p class="comment-info">Vote: {{ question['vote_count'] }} | {{ question['submission_time'] }}</p>
 			<h2>{{ question['title'] }}</h2>
 			<p class="{{ "text" if search_phrase is not defined }} search-in"> {{ question['message'] }}</p>

@@ -43,6 +43,9 @@ def list():
         order_by = args.get('order_by')
         order_direction = args.get('order_direction')
         questions = data_manager.get_sorted_questions(order_by, order_direction)
+        for i, question in enumerate(questions):
+            questions[i]["username"] = data_manager.get_user_name_from_answer(question['id'])
+        session['user_id'] = 1
         return render_template('list.html', questions=questions, order_by=order_by,
                                order_direction=order_direction)
 
@@ -347,8 +350,7 @@ def user_list():
     if 'user_id' in session:
         users = data_manager.get_users()
         return render_template('users.html', users=users)
-# The page is linked on the front page when logged in.
-# The page is not accessible without logging in.
+
 
 @app.route('/user/<user_id>')
 def user_page(user_id):
