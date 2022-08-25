@@ -26,7 +26,12 @@
 				<input type="search" placeholder="Search..." id="search-question" name="search-question"
 				       value="{{ search_phrase if search_phrase is defined }}">
 				<button type="submit"> Submit</button>
-                <a href="/registration">Register</a>
+                {% if session['user_id'] %}
+                    <a href="/user/<user_id>">{{ session['username'] }}</a>
+                    <a href="/logout">Logout</a>
+                {% else %}
+                    <a href="/login">Login</a>
+                {% endif %}
 			</form>
 		</div>
 

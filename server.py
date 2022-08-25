@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, request, render_template, redirect, session
+from flask import Flask, request, render_template, redirect, session, url_for
 from werkzeug.utils import secure_filename
 
 from bonus_questions import SAMPLE_QUESTIONS
@@ -26,7 +26,7 @@ def allowed_file(filename):
 @app.route('/')
 def index():
     questions = data_manager.get_latest_questions()
-    session['user_id'] = 1
+    # session['user_id'] = 1
     return render_template('index.html', questions=questions)
 
 
@@ -139,7 +139,7 @@ def add_question():
         else:
             all_tags = data_manager.get_tags()
             return render_template('add-question.html', question={}, all_tags=all_tags)
-    redirect(request.referrer)
+    return redirect(url_for('login'))
 
 
 @app.route('/question/<question_id>/new-answer', methods=["GET", "POST"])
@@ -316,13 +316,13 @@ def delete_comment(comment_id):
 def bonus_questions():
     return render_template('bonus_questions.html', questions=SAMPLE_QUESTIONS)
 
+
 @app.route("/tags")
 def tags_page():
     tags = data_manager.get_tags()
     searched_tag_id = request.args.get('tag_id')
     filtered_questions = data_manager.get_questions_by_tag_id(searched_tag_id)
-    return render_template("tags.html",tags=tags, questions=filtered_questions)
-
+    return render_template("tags.html", tags=tags, questions=filtered_questions)
 
 
 @app.route('/registration', methods=["GET", "POST"])
@@ -335,6 +335,35 @@ def add_applicants():
             username, email, password)
         return redirect("/")
     return render_template('registration.html')
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    error = None
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+
+        user_details = data_manager.user_login(username)
+        if user_details:
+            username_login = user_details.get('username')
+            username_password = user_details.get('password')
+            user_id = int(user_details.get('id'))
+            if username_login != username or util.verify_password(password, username_password) is False:
+                error = 'Invalid username/password. Please try again.'
+            else:
+                session['user_id'] = user_id
+                session['username'] = username
+                return redirect(url_for('index'))
+
+    return render_template('login.html', error=error)
+
+
+@app.route('/logout')
+def logout():
+    session.pop('user_id', None)
+    session.pop('username', None)
+    return redirect(url_for('index'))
 
 
 if __name__ == "__main__":

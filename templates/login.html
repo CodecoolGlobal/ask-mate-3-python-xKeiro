@@ -1,0 +1,24 @@
+{% extends "banner.html" %}
+
+{% block content %}
+
+<div class="container">
+    <h2>Login</h2>
+    <form style="text-align: center" method="post">
+        <label for="username"><b>Username</b><br>
+            <input type="text" placeholder="Enter Username" name="username" required>
+        </label><br><br>
+        <label for="password"><b>Password</b><br>
+            <input type="password" placeholder="Enter Password" name="password" required>
+        </label><br><br>
+        <button class="button button1" type="submit">Login</button>
+        <p>If you don't have an account yet...</p>
+        <a href="/registration">Click here to Register</a>
+    </form>
+  {% if error %}
+      <p class="error"><strong>Error:</strong> {{ error }}</p>
+  {% endif %}
+</div>
+
+    {% include 'footer.html' %}
+{% endblock %}
