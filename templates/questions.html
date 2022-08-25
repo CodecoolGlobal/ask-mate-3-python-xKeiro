@@ -95,7 +95,7 @@
         {% if comment.parent_comment_id == None and comment.answer_id == answer['id'] %}
             <div style="margin-left: 50px">
                 <div class="comment-info">
-                    <p class="user-info">Comment by: {{ comment.username }} {% if comment.reputation> 4 %} <br>
+                    <p class="user-info">Comment by: {{ comment.username }} {% if comment.reputation> 4 %}
                         <img src="/static/MasterChef.png" width="20" height="20" alt="MasterChef"></p>
                     {% endif %}
                     <p>Votes: {{ comment.vote_count }} • {{ comment.submission_time }}</p>
@@ -127,7 +127,7 @@
                     <div style="margin-left: 100px">
                         <div class="comment-info">
                             <p class="user-info">Comment by: {{ comment1.username }}
-                                {% if comment.reputation > 4 %}
+                                {% if comment1.reputation > 4 %}
                                     <img src="/static/MasterChef.png" width="15" height="15"
                                          alt="MasterChef"></p>
                                 {% endif %}

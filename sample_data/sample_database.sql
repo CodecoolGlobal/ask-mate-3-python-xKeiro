@@ -115,11 +115,11 @@ CREATE TABLE user_comment
     PRIMARY KEY (user_id, comment_id)
 );
 
-INSERT INTO "user"(username, email, password, registration_date)
-VALUES ('Johny', 'john@mail.com', 'apple', '2022-08-14 15:14:55'),
-       ('Harry', 'harry@mail.com', 'banana', '2022-08-14 15:14:55'),
-       ('asdasd', 'asd@asd.com', 'asdasd', '2022-08-15 15:14:55'),
-       ('Elizabeth', 'bella@mail.com', 'broccoli', '2022-08-14 15:14:55');
+INSERT INTO "user"(username, email, password, registration_date,reputation)
+VALUES ('Johny', 'john@mail.com', 'apple', '2022-08-14 15:14:55',5),
+       ('Harry', 'harry@mail.com', 'banana', '2022-08-14 15:14:55',0),
+       ('asdasd', 'asd@asd.com', 'asdasd', '2022-08-15 15:14:55',0),
+       ('Elizabeth', 'bella@mail.com', 'broccoli', '2022-08-14 15:14:55',0);
 
 INSERT INTO question(submission_time, view_count, vote_count, title, message, image, edit_count, user_id)
 VALUES ('2022-08-11 15:15:55', 4, 0, 'Miből van a kenyér hélya? :D', 'Kenyírt szeretnékap stüni! Tudnátaok segíni?',
