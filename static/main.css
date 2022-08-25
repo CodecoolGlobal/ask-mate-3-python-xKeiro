@@ -189,13 +189,13 @@ body {
     }
 }
 
-/*.text {*/
-/*    display: block;*/
-/*    !*width: 300px;*!*/
-/*    overflow: hidden;*/
-/*    white-space: nowrap;*/
-/*    text-overflow: ellipsis;*/
-/*}*/
+.text {
+    display: block;
+    width: 300px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
 
 .button {
     border: none;
@@ -401,4 +401,46 @@ textarea {
     border-radius: 3px;
     box-shadow: 2px 2px 2px grey;
 }
+}
+
+
+.users{
+    display: flex;
+    justify-content: center;
+}
+.user-table{
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 0.9em;
+    font-family: 'Ubuntu', cursive;
+    minimum-width: 800px;
+    border-radius: 5px;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(0,0,0,0.15);
+}
+
+.user-table thead tr{
+    background-color: #4a4a4a;
+    color: white;
+    text-align: left;
+    font-weight: bold;
+}
+
+.user-table th,
+.user-table td{
+    padding: 12px 15px;
+}
+
+.user-table tbody tr{
+    border-bottom: 1px solid #4a4a4a;
+    text-align: center;
+}
+
+.user-table tbody tr:nth-of-type(odd){
+    background-color: #f3f3f3;
+}
+
+.user-table tbody tr:nth-last-of-type{
+    border-bottom: 2px solid #4a4a4a;
+
 }

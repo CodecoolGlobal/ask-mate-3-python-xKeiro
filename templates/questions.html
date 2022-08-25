@@ -11,6 +11,7 @@
 		<p> {{ question['message'] }}</p>
 
 		<img class="image" src="{{ question["image"] if question["image"] }}"><br>
+        Edited: {{ question.edit_count }} times <br>
 		{% for tag in tags %}
 			<button class="tag button1">{{ tag["name"] }}</button>
 		{% endfor %}

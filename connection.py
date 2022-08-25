@@ -51,6 +51,14 @@ def update_question_vote(cursor, id: int, vote_count: int) -> None:
     cursor.execute(query, val)
 
 
+@database_common.connection_handler
+def update_question_edit_count(cursor, id, edit_count):
+    cursor.execute("""
+    UPDATE question SET edit_count= edit_count+1
+    WHERE id = %(id)s""",
+                   {'id': id, 'edit_count': edit_count})
+
+# ----------------ANSWER------------------
 # endregion
 
 # region ----------------ANSWER------------------

@@ -93,6 +93,19 @@ def get_search_question(cursor, search_phrase):
 
 
 @database_common.connection_handler
+def get_question_edit_count_by_id(cursor, id):
+    query = """
+        SELECT edit_count
+        FROM question
+        WHERE id = %s
+        """
+    val = (id,)
+    cursor.execute(query, val)
+    return cursor.fetchall()[0]['edit_count']
+
+
+# ----------------ANSWER------------------
+@database_common.connection_handler
 def get_questions_by_user_id(cursor, user_id: int):
     query = """
     SELECT question_id FROM user_question
@@ -477,8 +490,6 @@ def get_user_name_from_comment(cursor, comment_id):
     return cursor.fetchone()['username']
 
 
-# endregion
-
 @database_common.connection_handler
 def register_new_user(cursor, username, email, password):
     query = f"""
@@ -486,3 +497,16 @@ def register_new_user(cursor, username, email, password):
             VALUES ('{username}', '{email}', '{password}');
             """
     cursor.execute(query)
+
+
+@database_common.connection_handler
+def get_users(cursor):
+    query = """
+        SELECT username, email, registration_date, number_of_asked_questions, number_of_answers, number_of_comments, reputation
+        FROM "user"
+        ORDER BY registration_date ASC
+        """
+    cursor.execute(query)
+    return cursor.fetchall()
+
+# endregion

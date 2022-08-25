@@ -94,6 +94,8 @@ def edit_question(question_id):
             if request.method == 'POST':
                 question = request.form.to_dict()
                 tags = None
+                question_edit_count = data_manager.get_question_edit_count_by_id(question_id)
+                connection.update_question_edit_count(question_id, question_edit_count)
                 if "tags" in question:
                     question.pop("tags")
                     tags = request.form.getlist("tags")
@@ -322,6 +324,14 @@ def delete_comment(comment_id):
     connection.delete_comment_by_id(comment_id)
     return redirect(request.referrer)
 
+
+@app.route('/users')
+def user_list():
+    if 'user_id' in session:
+        users = data_manager.get_users()
+        return render_template('users.html', users=users)
+# The page is linked on the front page when logged in.
+# The page is not accessible without logging in.
 
 @app.route('/user/<user_id>')
 def user_page(user_id):
