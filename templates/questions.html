@@ -4,7 +4,7 @@
 
     <div class="question-box">
         <p class="user-info">Question by: {{ question.username }}{% if question.reputation> 4 %}
-            <img src="/static/MasterChef.png" width="30" height="30" alt="MasterChef"> </p>
+            <img src="/static/MasterChef.png" width="15" height="15" alt="MasterChef"> </p>
         {% endif %}
         <p class="comment-info">Vote: {{ question['vote_count'] }} | {{ question['submission_time'] }}</p>
 
@@ -51,140 +51,142 @@
                 </form>
             {% else %}
                 <form action="{{ url_for("accept_answer", answer_id = answer['id']) }}" method="POST">
-                <button type="submit" id="not_accept">
-                    Withdraw accept
-                </button>
+                    <button type="submit" id="not_accept">
+                        Withdraw accept
+                    </button>
+                </form>
             {% endif %}
         {% endif %}
         {% if answer['accepted'] == True %}
             <button disabled class="accepted_answer">Accepted</button>
         {% endif %}
         <p>Votes: {{ answer.vote_count }} • {{ answer.submission_time }}</p>
+
     </div>
     <p><strong> Answer {{ loop.index }}:</strong></p>
     <p class="user-info">Answer by: {{ answer.username }}             {% if answer.reputation> 4 %}
-        <img src="/static/MasterChef.png" width="30" height="30" alt="MasterChef"></p>
+        <img src="/static/MasterChef.png" width="15" height="15" alt="MasterChef"></p>
     {% endif %}
     <div class="comment-body">
         <p>{{ answer['message'] }}</p>
     </div>
 
-                <img class="image" src="{{ answer["image"] if answer["image"] }}">
-                Edited: {{ answer.edit_count }} times <br>
+    <img class="image" src="{{ answer["image"] if answer["image"] }}">
+    Edited: {{ answer.edit_count }} times <br>
+    <div class="right">
+        <a style="float: left" href="/answer/{{ answer['id'] }}/new-comment"><img
+                src="/static/reply.png" width="30" height="30" alt="Reply"></a>
+        <a href="{{ url_for("answer_vote_up", answer_id=answer["id"]) }}"><img
+                src="/static/like.png" width="30" height="30" alt="Like"></a>
+        <a href="{{ url_for("answer_vote_down", answer_id=answer["id"]) }}"><img
+                src="/static/dislike.png" width="30" height="30" alt="Dislike"></a>
+        {% if answer['id'] in user_content["answer_ids"] %}
+            <a href="/answer/{{ answer['id'] }}/edit"><img
+                    src="/static/edit.png" width="30" height="30" alt="Edit"></a>
+            <a href="/answer/{{ answer['id'] }}/delete"><img
+                    src="/static/delete.png" width="30" height="30" alt="Delete"
+                    onclick="return confirm('Do you really want to delete this answer?');"></a>
+        {% endif %}
+    </div>
+    <hr>
+    </div>
+
+    {% for comment in comments %}
+        {% if comment.parent_comment_id == None and comment.answer_id == answer['id'] %}
+            <div style="margin-left: 50px">
+                <div class="comment-info">
+                    <p class="user-info">Comment by: {{ comment.username }} {% if comment.reputation> 4 %} <br>
+                        <img src="/static/MasterChef.png" width="15" height="15" alt="MasterChef"></p>
+                    {% endif %}
+                    <p>Votes: {{ comment.vote_count }} • {{ comment.submission_time }}</p>
+                </div>
+                <div class="comment-body">
+                    <p>{{ comment.message }}</p>
+                </div>
+                <br>
+                Edited: {{ comment.edit_count }} times <br>
                 <div class="right">
-                    <a style="float: left" href="/answer/{{ answer['id'] }}/new-comment"><img
-                            src="/static/reply.png" width="30" height="30" alt="Reply"></a>
-                    <a href="{{ url_for("answer_vote_up", answer_id=answer["id"]) }}"><img
+                    <a style="float: left" href="/answer/{{ answer.id }}/{{ comment.id }}"><img
+                            src="/static/reply.png" width="20" height="20" alt="Reply"></a>
+                    <a href="{{ url_for("comment_vote_up", comment_id=comment["id"]) }}"><img
                             src="/static/like.png" width="30" height="30" alt="Like"></a>
-                    <a href="{{ url_for("answer_vote_down", answer_id=answer["id"]) }}"><img
+                    <a href="{{ url_for("comment_vote_down", comment_id=comment["id"]) }}"><img
                             src="/static/dislike.png" width="30" height="30" alt="Dislike"></a>
-                    {% if answer['id'] in user_content["answer_ids"] %}
-                        <a href="/answer/{{ answer['id'] }}/edit"><img
+                    {% if comment['id'] in user_content["comment_ids"] %}
+                        <a href="/comment/{{ comment['id'] }}/edit"><img
                                 src="/static/edit.png" width="30" height="30" alt="Edit"></a>
-                        <a href="/answer/{{ answer['id'] }}/delete"><img
+                        <a href="/comments/{{ comment['id'] }}/delete"><img
                                 src="/static/delete.png" width="30" height="30" alt="Delete"
-                                onclick="return confirm('Do you really want to delete this answer?');"></a>
+                                onclick="return confirm('Do you really want to delete this comment?');"></a>
                     {% endif %}
                 </div>
                 <hr>
             </div>
-
-            {% for comment in comments %}
-                {% if comment.parent_comment_id == None and comment.answer_id == answer['id'] %}
-                    <div style="margin-left: 50px">
+            {% for comment1 in comments %}
+                {% if comment1.parent_comment_id == comment.id %}
+                    <div style="margin-left: 100px">
                         <div class="comment-info">
-                            <p class="user-info">Comment by: {{ comment.username }} {% if comment.reputation> 4 %}
-                                <img src="/static/MasterChef.png" width="30" height="30" alt="MasterChef"></p>
-                            {% endif %}
-                            <p>Votes: {{ comment.vote_count }} • {{ comment.submission_time }}</p>
+                            <p class="user-info">Comment by: {{ comment1.username }}</p>
+                            <p>Votes: {{ comment1.vote_count }} • {{ comment1.submission_time }}</p>
                         </div>
                         <div class="comment-body">
-                            <p>{{ comment.message }}</p>
+                            <p>{{ comment1.message }}</p><br>
                         </div>
-                        <br>
-                        Edited: {{ comment.edit_count }} times <br>
+                        Edited: {{ comment1.edit_count }} times <br>
                         <div class="right">
-                            <a style="float: left" href="/answer/{{ answer.id }}/{{ comment.id }}"><img
+                            <a style="float: left" href="/answer/{{ answer.id }}/{{ comment1.id }}"><img
                                     src="/static/reply.png" width="20" height="20" alt="Reply"></a>
-                            <a href="{{ url_for("comment_vote_up", comment_id=comment["id"]) }}"><img
+                            <a href="{{ url_for("comment_vote_up", comment_id=comment1["id"]) }}"><img
                                     src="/static/like.png" width="30" height="30" alt="Like"></a>
-                            <a href="{{ url_for("comment_vote_down", comment_id=comment["id"]) }}"><img
+                            <a href="{{ url_for("comment_vote_down", comment_id=comment1["id"]) }}"><img
                                     src="/static/dislike.png" width="30" height="30" alt="Dislike"></a>
-                            {% if comment['id'] in user_content["comment_ids"] %}
-                                <a href="/comment/{{ comment['id'] }}/edit"><img
+                            {% if comment1['id'] in user_content["comment_ids"] %}
+                                <a href="/comment/{{ comment1['id'] }}/edit"><img
                                         src="/static/edit.png" width="30" height="30" alt="Edit"></a>
-                                <a href="/comments/{{ comment['id'] }}/delete"><img
+                                <a href="/comments/{{ comment1['id'] }}/delete"><img
                                         src="/static/delete.png" width="30" height="30" alt="Delete"
                                         onclick="return confirm('Do you really want to delete this comment?');"></a>
                             {% endif %}
                         </div>
                         <hr>
                     </div>
-                    {% for comment1 in comments %}
-                        {% if comment1.parent_comment_id == comment.id %}
-                            <div style="margin-left: 100px">
+                    {% for comment2 in comments %}
+                        {% if comment2.parent_comment_id == comment1.id %}
+                            <div style="margin-left: 150px">
                                 <div class="comment-info">
-                                    <p class="user-info">Comment by: {{ comment1.username }}</p>
-                                    <p>Votes: {{ comment1.vote_count }} • {{ comment1.submission_time }}</p>
+                                    <p class="user-info">Comment by: {{ comment2.username }}
+                                        {% if comment2.reputation > 4 %}
+                                            <img src="/static/MasterChef.png" width="15" height="15"
+                                                 alt="MasterChef"></p>
+                                        {% endif %}
+                                    <p>Votes: {{ comment2.vote_count }} • {{ comment2.submission_time }}</p>
                                 </div>
+                                <p>{{ comment2.message }}</p><br>
                                 <div class="comment-body">
-                                    <p>{{ comment1.message }}</p><br>
+                                    Edited: {{ comment2.edit_count }} times <br>
                                 </div>
-                                Edited: {{ comment1.edit_count }} times <br>
                                 <div class="right">
-                                    <a style="float: left" href="/answer/{{ answer.id }}/{{ comment1.id }}"><img
-                                            src="/static/reply.png" width="20" height="20" alt="Reply"></a>
-                                    <a href="{{ url_for("comment_vote_up", comment_id=comment1["id"]) }}"><img
+                                    <a href="{{ url_for("comment_vote_up", comment_id=comment2["id"]) }}"><img
                                             src="/static/like.png" width="30" height="30" alt="Like"></a>
-                                    <a href="{{ url_for("comment_vote_down", comment_id=comment1["id"]) }}"><img
+                                    <a href="{{ url_for("comment_vote_down", comment_id=comment2["id"]) }}"><img
                                             src="/static/dislike.png" width="30" height="30" alt="Dislike"></a>
-                                    {% if comment1['id'] in user_content["comment_ids"] %}
-                                        <a href="/comment/{{ comment1['id'] }}/edit"><img
+                                    {% if comment2['id'] in user_content["comment_ids"] %}
+                                        <a href="/comment/{{ comment2['id'] }}/edit"><img
                                                 src="/static/edit.png" width="30" height="30" alt="Edit"></a>
-                                        <a href="/comments/{{ comment1['id'] }}/delete"><img
+                                        <a href="/comments/{{ comment2['id'] }}/delete"><img
                                                 src="/static/delete.png" width="30" height="30" alt="Delete"
                                                 onclick="return confirm('Do you really want to delete this comment?');"></a>
                                     {% endif %}
                                 </div>
                                 <hr>
                             </div>
-                            {% for comment2 in comments %}
-                                {% if comment2.parent_comment_id == comment1.id %}
-                                    <div style="margin-left: 150px">
-                                        <div class="comment-info">
-                                            <p class="user-info">Comment by: {{ comment2.username }}
-                                                {% if comment2.reputation > 4 %}
-                                                    <img src="/static/MasterChef.png" width="30" height="30"
-                                                         alt="MasterChef"></p>
-                                                {% endif %}
-                                            <p>Votes: {{ comment2.vote_count }} • {{ comment2.submission_time }}</p>
-                                        </div>
-                                        <p>{{ comment2.message }}</p><br>
-                                        <div class="comment-body">
-                                            Edited: {{ comment2.edit_count }} times <br>
-                                        </div>
-                                        <div class="right">
-                                            <a href="{{ url_for("comment_vote_up", comment_id=comment2["id"]) }}"><img
-                                                    src="/static/like.png" width="30" height="30" alt="Like"></a>
-                                            <a href="{{ url_for("comment_vote_down", comment_id=comment2["id"]) }}"><img
-                                                    src="/static/dislike.png" width="30" height="30" alt="Dislike"></a>
-                                            {% if comment2['id'] in user_content["comment_ids"] %}
-                                                <a href="/comment/{{ comment2['id'] }}/edit"><img
-                                                        src="/static/edit.png" width="30" height="30" alt="Edit"></a>
-                                                <a href="/comments/{{ comment2['id'] }}/delete"><img
-                                                        src="/static/delete.png" width="30" height="30" alt="Delete"
-                                                        onclick="return confirm('Do you really want to delete this comment?');"></a>
-                                            {% endif %}
-                                        </div>
-                                        <hr>
-                                    </div>
-                                {% endif %}
-                            {% endfor %}
                         {% endif %}
                     {% endfor %}
                 {% endif %}
             {% endfor %}
-        </div>
+        {% endif %}
+    {% endfor %}
+    </div>
 
     {% endfor %}
 
