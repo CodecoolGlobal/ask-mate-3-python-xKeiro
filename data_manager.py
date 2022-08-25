@@ -346,15 +346,6 @@ def get_edit_count_by_comment_id(cursor, id):
 
 # region ----------------USERS------------------
 @database_common.connection_handler
-def get_all_users_reputation(cursor):
-    cursor.execute("""
-    SELECT reputation
-    FROM "user"
-    """)
-    return cursor.fetchall()
-
-
-@database_common.connection_handler
 def get_user_by_id(cursor, user_id):
     cursor.execute("""
         SELECT id,
@@ -474,6 +465,36 @@ def get_user_name_from_comment(cursor, comment_id):
     val = (comment_id,)
     cursor.execute(query, val)
     return cursor.fetchone()['username']
+
+
+@database_common.connection_handler
+def get_reputation_from_question_username(cursor, question_username):
+    cursor.execute("""
+    SELECT reputation 
+    FROM "user"
+    WHERE username LIKE %(question_username)s;
+    """, {'question_username': question_username})
+    return cursor.fetchone()['reputation']
+
+
+@database_common.connection_handler
+def get_reputation_from_answer_username(cursor, answer_username):
+    cursor.execute("""
+    SELECT reputation 
+    FROM "user"
+    WHERE username LIKE %(answer_username)s;
+    """, {'answer_username': answer_username})
+    return cursor.fetchone()['reputation']
+
+
+@database_common.connection_handler
+def get_reputation_from_comments_username(cursor, comment_username):
+    cursor.execute("""
+    SELECT reputation 
+    FROM "user"
+    WHERE username LIKE %(comment_username)s;
+    """, {"comment_username": comment_username})
+    return cursor.fetchone()['reputation']
 
 
 # endregion

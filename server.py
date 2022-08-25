@@ -56,13 +56,16 @@ def get_question(question_id):
     tags = data_manager.get_tags_by_question_id(question_id)
 
     question['username'] = data_manager.get_user_name_from_question(question_id)
+    question['reputation'] = data_manager.get_reputation_from_question_username(question['username'])
     # user to answer
     for i, answer in enumerate(answers):
         answers[i]["username"] = data_manager.get_user_name_from_answer(answer['id'])
+        answers[i]['reputation'] = data_manager.get_reputation_from_answer_username(answer["username"])
 
     # user to comment
     for i, comment in enumerate(comments):
         comments[i]["username"] = data_manager.get_user_name_from_comment(comment['id'])
+        comments[i]["reputation"] = data_manager.get_reputation_from_comments_username(comment["username"])
 
     user_content = dict()
     if "user_id" in session:
@@ -113,9 +116,8 @@ def edit_question(question_id):
                 question = data_manager.get_question_by_id(int(question_id))
                 ids_of_selected_tags = [tag["id"] for tag in data_manager.get_tags_by_question_id(question_id)]
                 all_tags = data_manager.get_tags()
-                user = data_manager.get_all_users_reputation()
                 return render_template('add-question.html', question=question, all_tags=all_tags,
-                                       ids_of_selected_tags=ids_of_selected_tags, user=user)
+                                       ids_of_selected_tags=ids_of_selected_tags)
     return redirect(request.referrer)
 
 

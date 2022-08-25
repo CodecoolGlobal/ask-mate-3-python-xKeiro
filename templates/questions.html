@@ -3,7 +3,7 @@
 {% block content %}
 
     <div class="question-box">
-        <p class="user-info">Question by: {{ question.username }}{% if user['reputation']> 5 %}
+        <p class="user-info">Question by: {{ question.username }}{% if question.reputation> 4 %}
             <img src="/static/MasterChef.png" width="30" height="30" alt="MasterChef"> </p>
         {% endif %}
         <p class="comment-info">Vote: {{ question['vote_count'] }} | {{ question['submission_time'] }}</p>
@@ -37,7 +37,7 @@
         <div class="comment-box">
             <div class="comment">
                 <div class="comment-info">
-                    <p class="user-info">Answer by: {{ answer.username }}             {% if user['reputation']> 5 %}
+                    <p class="user-info">Answer by: {{ answer.username }}             {% if answer.reputation> 4 %}
                         <img src="/static/MasterChef.png" width="30" height="30" alt="MasterChef"></p>
                     {% endif %}
                     <p>Votes: {{ answer.vote_count }} • {{ answer.submission_time }}</p>
@@ -71,7 +71,7 @@
                 {% if comment.parent_comment_id == None and comment.answer_id == answer['id'] %}
                     <div style="margin-left: 50px">
                         <div class="comment-info">
-                            <p class="user-info">Comment by: {{ comment.username }} {% if user['reputation']> 5 %}
+                            <p class="user-info">Comment by: {{ comment.username }} {% if comment.reputation> 4 %}
                                 <img src="/static/MasterChef.png" width="30" height="30" alt="MasterChef"></p>
                             {% endif %}
                             <p>Votes: {{ comment.vote_count }} • {{ comment.submission_time }}</p>
@@ -131,7 +131,7 @@
                                     <div style="margin-left: 150px">
                                         <div class="comment-info">
                                             <p class="user-info">Comment by: {{ comment2.username }}
-                                                {% if user['reputation']> 5 %}
+                                                {% if comment2.reputation > 4 %}
                                                     <img src="/static/MasterChef.png" width="30" height="30"
                                                          alt="MasterChef"></p>
                                                 {% endif %}
