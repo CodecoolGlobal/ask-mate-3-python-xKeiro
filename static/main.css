@@ -86,9 +86,16 @@ mark {
 .comment-info {
     color: rgba(0, 0, 0, 1);
     /*position: absolute;*/
+    text-align: right;
+    /*float: right;*/
+
+}
+
+.comment-info-right {
+    color: rgba(0, 0, 0, 1);
+    /*position: absolute;*/
     /*text-align: right;*/
     float: right;
-
 }
 
 .reply-box {
@@ -367,14 +374,14 @@ textarea {
 
 .user-info {
     color: rgba(0, 0, 0, 1);
-    /*text-align: left;*/
-    float:left;
+    text-align: left;
+    /*float:left;*/
     font-style: italic;
 }
 
 .user-details{
     color: rgba(0, 0, 0, 1);
-    text-align: left;
+    float: left;
     font-style: italic;
 }
 

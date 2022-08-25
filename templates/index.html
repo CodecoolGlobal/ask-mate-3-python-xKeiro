@@ -4,8 +4,8 @@
 	<h2> 5 latest questions </h2>
 	<div class="question-box">
 		{% for question in questions %}
-            <p class="user-info">Question by: {{ question.username }}</p>
-			<p class="comment-info">Vote: {{ question['vote_count'] }} | {{ question['submission_time'] }}</p>
+            <p class="user-details">Question by: {{ question.username }}</p>
+			<p class="comment-info-right">Vote: {{ question['vote_count'] }} | {{ question['submission_time'] }}</p>
 			<h2>{{ question['title'] }}</h2>
 			<p class="text"> {{ question['message'] }}</p>
 			<div class="right">
