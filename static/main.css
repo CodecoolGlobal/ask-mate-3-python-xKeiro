@@ -22,10 +22,10 @@ body {
     background: linear-gradient(135deg, rgba(209, 209, 209, 1) 0%, rgb(255, 255, 255) 200%);
 }
 
- mark {
-            padding: 5px;
-            background: coral;
-        }
+mark {
+    padding: 5px;
+    background: coral;
+}
 
 .header {
     margin-top: 0;
@@ -321,10 +321,8 @@ textarea {
 }
 
 /* user-page css */
-.wrapper{
-    display:flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
+.wrapper {
+
     width: 1000px;
     max-width: 100%;
     margin: auto;
@@ -334,37 +332,70 @@ textarea {
     font-family: 'Ubuntu', cursive;
 }
 
-.user-box{
-    width: 48%;
-    height: 300px;
-    margin-bottom: 2%;
+.user-box {
+    background-color: #f3f3f3;
+    padding-left: 50px;
+    padding-bottom: 10px;
+    padding-top: 5px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    border-radius: 3px;
 }
 
-.reputation{
-    width: 48%;
-    height: 300px;
-    margin-bottom: 2%;
+#username {
+    font-family: 'Oleo Script Swash Caps', cursive;
+    font-size: 40px;
 }
 
-.user-question{
-     width: 100%;
+.user-info {
+    font-family: 'Ubuntu', cursive;
+    font-style: italic;
+    font-size: 28px;
 }
 
-.user-answers{
-     width: 100%;
+.user-question {
+    width: 100%;
 }
 
-.user-comments{
-     width: 100%;
+.user-answers {
+    width: 100%;
 }
 
-.user-info{
+.user-comments {
+    width: 100%;
+}
+
+.user-info {
     color: rgba(0, 0, 0, 1);
     text-align: left;
     font-style: italic;
 }
 
-#accept{
+#user_question {
+    padding-bottom: 0;
+}
+
+.userpage_table {
+    border-collapse: collapse;
+    background-color: #f3f3f3;
+    margin: 25px 0;
+    font-size: 0.9em;
+    font-family: 'Ubuntu', cursive;
+    minimum-width: 800px;
+    border-radius: 5px;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    alignment: center;
+    width: 100%;
+    height: 2em;
+}
+
+.userpage_table td {
+    padding-left: 40px;
+    alignment: center;
+}
+
+/*accept answer CSS*/
+#accept {
     background-color: #9bc493;
     width: 200px;
     height: 1.5em;
@@ -374,7 +405,7 @@ textarea {
     box-shadow: 2px 2px 2px grey;
 }
 
-#not_accept{
+#not_accept {
     background-color: #9e6868;
     width: 200px;
     height: 1.5em;
@@ -384,14 +415,14 @@ textarea {
     box-shadow: 2px 2px 2px grey;
 }
 
-#accepted{
+#accepted {
     background: linear-gradient(#9bc493, white);
     padding: 8px;
     border-radius: 5px;
     box-shadow: 2px 2px 2px grey;
 }
 
-.accepted_answer{
+.accepted_answer {
     background-color: #9bc493;
     color: #3b7d2e;
     width: 200px;
@@ -403,11 +434,12 @@ textarea {
 }
 
 
-.users{
+.users {
     display: flex;
     justify-content: center;
 }
-.user-table{
+
+.user-table {
     border-collapse: collapse;
     margin: 25px 0;
     font-size: 0.9em;
@@ -415,11 +447,11 @@ textarea {
     minimum-width: 800px;
     border-radius: 5px;
     overflow: hidden;
-    box-shadow: 0 0 20px rgba(0,0,0,0.15);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
     alignment: center;
 }
 
-.user-table thead tr{
+.user-table thead tr {
     background-color: #4a4a4a;
     color: white;
     text-align: left;
@@ -427,20 +459,22 @@ textarea {
 }
 
 .user-table th,
-.user-table td{
+.user-table td {
     padding: 12px 15px;
 }
 
-.user-table tbody tr{
+.user-table tbody tr {
     border-bottom: 1px solid #4a4a4a;
     text-align: center;
 }
 
-.user-table tbody tr:nth-of-type(odd){
+.user-table tbody tr:nth-of-type(odd) {
     background-color: #f3f3f3;
 }
 
-.user-table tbody tr:nth-last-of-type{
+.user-table tbody tr:nth-last-of-type {
     border-bottom: 2px solid #4a4a4a;
 
 }
+
+
