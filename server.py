@@ -397,14 +397,14 @@ def tags_page():
 
 
 @app.route('/registration', methods=["GET", "POST"])
-def add_applicants():
+def registration():
     if request.method == "POST":
         username = request.form.get("un")
         email = request.form.get("em")
         password = util.hash_password(request.form.get("pw"))
         data_manager.register_new_user(
             username, email, password)
-        return redirect("/")
+        return redirect(url_for('login'))
     return render_template('registration.html')
 
 
