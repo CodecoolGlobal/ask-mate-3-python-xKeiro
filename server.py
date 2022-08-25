@@ -150,11 +150,12 @@ def add_question():
                 filename = secure_filename(file.filename)
                 file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
                 new_question["image"] = str(os.path.join(app.config['UPLOAD_FOLDER'], filename))[1:]
-            question_id = connection.write_question_and_return_new_id(new_question, int(session['id']))
+            new_question['user_id'] = session['user_id']
+            question_id = connection.write_question_and_return_new_id(new_question, int(session['user_id']))
             if tags != None:
                 tags = [{"question_id": question_id, "tag_id": tag_id} for tag_id in tags]
                 connection.attach_tags(tags)
-                return redirect(f'/question/{question_id}')
+            return redirect(f'/question/{question_id}')
         else:
             all_tags = data_manager.get_tags()
             return render_template('add-question.html', question={}, all_tags=all_tags)
@@ -182,6 +183,7 @@ def post_answer(question_id):
                 file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
                 new_answer["image"] = str(os.path.join(app.config['UPLOAD_FOLDER'], filename))[1:]
             new_answer['question_id'] = question_id
+            new_answer['user_id'] = session['user_id']
             connection.write_answer(new_answer, int(session['user_id']))
             return redirect(f'/question/{question_id}')
         return render_template('new-answer.html', id=question_id, answer={})
@@ -346,9 +348,8 @@ def delete_comment(comment_id):
 
 @app.route('/users')
 def user_list():
-    if 'user_id' in session:
-        users = data_manager.get_users()
-        return render_template('users.html', users=users)
+    users = data_manager.get_users()
+    return render_template('users.html', users=users)
 
 
 @app.route('/user/<user_id>')
@@ -369,11 +370,14 @@ def user_page(user_id):
     user_comment_ids = data_manager.get_comment_ids_by_user(user_id)
     comments = []
     answer_ids_by_comment = []
-    for item in user_comment_ids:
-        comment_id = item['comment_id']
-        comments.append(data_manager.get_comment_by_id(comment_id))
-        answer_id = data_manager.get_answer_id_from_comment(comment_id)
-        question_id = data_manager.get_question_id_by_answer_id(answer_id)
+    if user_comment_ids:
+        for item in user_comment_ids:
+            comment_id = item['comment_id']
+            comments.append(data_manager.get_comment_by_id(comment_id))
+            answer_id = data_manager.get_answer_id_from_comment(comment_id)
+            question_id = data_manager.get_question_id_by_answer_id(answer_id)
+    else:
+        question_id = ''
 
     return render_template('user-page.html', user=user, questions=questions, answers=answers, comments=comments,
                            question_id=question_id)
@@ -383,13 +387,13 @@ def user_page(user_id):
 def bonus_questions():
     return render_template('bonus_questions.html', questions=SAMPLE_QUESTIONS)
 
+
 @app.route("/tags")
 def tags_page():
     tags = data_manager.get_tags()
     searched_tag_id = request.args.get('tag_id')
     filtered_questions = data_manager.get_questions_by_tag_id(searched_tag_id)
-    return render_template("tags.html",tags=tags, questions=filtered_questions)
-
+    return render_template("tags.html", tags=tags, questions=filtered_questions)
 
 
 @app.route('/registration', methods=["GET", "POST"])
@@ -407,7 +411,7 @@ def add_applicants():
 @app.route('/accept/<answer_id>', methods=["POST"])
 def accept_answer(answer_id):
     question = data_manager.get_question_id_by_answer_id(answer_id)
-    answer=data_manager.get_answer_by_id(answer_id)
+    answer = data_manager.get_answer_by_id(answer_id)
     data_manager.change_accept_state(answer_id)
     return redirect(request.referrer)
 
@@ -439,9 +443,6 @@ def logout():
     session.pop('user_id', None)
     session.pop('username', None)
     return redirect(url_for('index'))
-
-
-
 
 
 if __name__ == "__main__":

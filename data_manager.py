@@ -474,8 +474,8 @@ def get_user_name_from_answer(cursor, answer_id):
     query = """
     SELECT username
     FROM "user"
-    JOIN user_answer ua ON "user".id = ua.user_id
-    WHERE ua.answer_id = %s
+    JOIN answer a ON "user".id = a.user_id
+    WHERE a.id = %s
     """
     val = (answer_id,)
     cursor.execute(query, val)
@@ -487,8 +487,8 @@ def get_user_name_from_comment(cursor, comment_id):
     query = """
     SELECT username
     FROM "user"
-    JOIN user_comment ua ON "user".id = ua.user_id
-    WHERE ua.comment_id = %s
+    JOIN comment c ON "user".id = c.user_id
+    WHERE c.id = %s
     """
     val = (comment_id,)
     cursor.execute(query, val)

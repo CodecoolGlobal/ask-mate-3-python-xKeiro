@@ -29,7 +29,7 @@
 				       value="{{ search_phrase if search_phrase is defined }}">
 				<button type="submit"> Submit</button>
                 {% if session['user_id'] %}
-                    <a href="/user/<user_id>">{{ session['username'] }}</a>
+                    <a href="/user/{{ session['user_id'] }}">{{ session['username'] }}</a>
                     <a href="/logout">Logout</a>
                 {% else %}
                     <a href="/login">Login</a>

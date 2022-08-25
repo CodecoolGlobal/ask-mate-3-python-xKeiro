@@ -69,7 +69,7 @@ def write_answer(cursor, fields: dict, user_id: int) -> int:
     query = "INSERT INTO answer(" + ", ".join(fields.keys()) + ") VALUES ("
     for value in fields.values():
         query += "%s, "
-    query = query[:-2] + ")"
+    query = query[:-2] + ") RETURNING id"
     val = tuple([field for field in fields.values()])
     cursor.execute(sql.SQL(query), val)
     id_of_new_row = cursor.fetchone()["id"]
@@ -132,9 +132,9 @@ def update_answer_edit_count(cursor, id, edit_count):
 @database_common.connection_handler
 def write_comment_by_answer_id(cursor, answer_id, new_comment, user_id):
     cursor.execute(""" 
-    INSERT INTO comment (answer_id, message) 
-    VALUES (%(a_s)s, %(n_c)s);
-    """, {'a_s': int(answer_id), 'n_c': new_comment})
+    INSERT INTO comment (answer_id, message, user_id) 
+    VALUES (%(a_s)s, %(n_c)s, %(u_i)s) RETURNING id;
+    """, {'a_s': int(answer_id), 'n_c': new_comment, 'u_i': user_id})
     id_of_new_row = cursor.fetchone()["id"]
     write_user_comment(user_id, id_of_new_row)
 
@@ -142,7 +142,7 @@ def write_comment_by_answer_id(cursor, answer_id, new_comment, user_id):
 @database_common.connection_handler
 def write_user_comment(cursor, user_id: int, comment_id: int) -> None:
     query = """
-    INSERT INTO user_comment(user_id, question_id)
+    INSERT INTO user_comment(user_id, comment_id)
     VALUES (%s,%s)
     """
     val = user_id, comment_id
@@ -181,9 +181,9 @@ def update_comment_submission_time(cursor, id):
 @database_common.connection_handler
 def write_comment_to_comment(cursor, parent_comment_id, answer_id, new_comment, user_id):
     cursor.execute("""
-    INSERT INTO comment (parent_comment_id, answer_id, message)
-     VALUES (%(p_cid)s, %(a_s)s, %(n_c)s); 
-     """, {'p_cid': parent_comment_id, 'a_s': answer_id, 'n_c': new_comment})
+    INSERT INTO comment (parent_comment_id, answer_id, message, user_id)
+     VALUES (%(p_cid)s, %(a_s)s, %(n_c)s, %(u_i)s) RETURNING id;
+     """, {'p_cid': parent_comment_id, 'a_s': answer_id, 'n_c': new_comment, 'u_i': user_id})
     id_of_new_row = cursor.fetchone()["id"]
     write_user_comment(user_id, id_of_new_row)
 
