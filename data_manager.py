@@ -491,6 +491,36 @@ def get_user_name_from_comment(cursor, comment_id):
 
 
 @database_common.connection_handler
+def get_reputation_from_question_username(cursor, question_username):
+    cursor.execute("""
+    SELECT reputation 
+    FROM "user"
+    WHERE username LIKE %(question_username)s;
+    """, {'question_username': question_username})
+    return cursor.fetchone()['reputation']
+
+
+@database_common.connection_handler
+def get_reputation_from_answer_username(cursor, answer_username):
+    cursor.execute("""
+    SELECT reputation 
+    FROM "user"
+    WHERE username LIKE %(answer_username)s;
+    """, {'answer_username': answer_username})
+    return cursor.fetchone()['reputation']
+
+
+@database_common.connection_handler
+def get_reputation_from_comments_username(cursor, comment_username):
+    cursor.execute("""
+    SELECT reputation 
+    FROM "user"
+    WHERE username LIKE %(comment_username)s;
+    """, {"comment_username": comment_username})
+    return cursor.fetchone()['reputation']
+
+
+@database_common.connection_handler
 def register_new_user(cursor, username, email, password):
     query = f"""
             INSERT INTO "user" (username, email, password)

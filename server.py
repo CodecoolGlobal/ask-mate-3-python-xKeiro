@@ -58,13 +58,16 @@ def get_question(question_id):
     tags = data_manager.get_tags_by_question_id(question_id)
 
     question['username'] = data_manager.get_user_name_from_question(question_id)
+    question['reputation'] = data_manager.get_reputation_from_question_username(question['username'])
     # user to answer
     for i, answer in enumerate(answers):
         answers[i]["username"] = data_manager.get_user_name_from_answer(answer['id'])
+        answers[i]['reputation'] = data_manager.get_reputation_from_answer_username(answer["username"])
 
     # user to comment
     for i, comment in enumerate(comments):
         comments[i]["username"] = data_manager.get_user_name_from_comment(comment['id'])
+        comments[i]["reputation"] = data_manager.get_reputation_from_comments_username(comment["username"])
 
     user_content = dict()
     if "user_id" in session:
@@ -230,6 +233,8 @@ def question_vote_up(question_id):
     question = data_manager.get_question_by_id(question_id)
     question["vote_count"] += 1
     connection.update_question_by_id(question_id, question)
+    user_name = data_manager.get_user_name_from_question(question_id)
+    connection.update_add_reputation_by_username(user_name)
     return redirect(request.referrer)
 
 
@@ -238,6 +243,8 @@ def question_vote_down(question_id):
     question = data_manager.get_question_by_id(question_id)
     question["vote_count"] -= 1
     connection.update_question_by_id(question_id, question)
+    user_name = data_manager.get_user_name_from_question(question_id)
+    connection.update_decrease_reputation_by_username(user_name)
     return redirect(request.referrer)
 
 
@@ -246,6 +253,8 @@ def comment_vote_up(comment_id):
     comment = data_manager.get_comment_by_id(comment_id)
     comment["vote_count"] += 1
     connection.update_comment_by_id(comment_id, comment)
+    user_name = data_manager.get_user_name_from_comment(comment_id)
+    connection.update_add_reputation_by_username(user_name)
     return redirect(request.referrer)
 
 
@@ -254,6 +263,8 @@ def comment_vote_down(comment_id):
     comment = data_manager.get_comment_by_id(comment_id)
     comment["vote_count"] -= 1
     connection.update_comment_by_id(comment_id, comment)
+    user_name = data_manager.get_user_name_from_comment(comment_id)
+    connection.update_decrease_reputation_by_username(user_name)
     return redirect(request.referrer)
 
 
@@ -262,6 +273,8 @@ def answer_vote_up(answer_id):
     answer = data_manager.get_answer_by_id(answer_id)
     answer["vote_count"] += 1
     connection.update_answer_by_id(answer_id, answer)
+    user_name = data_manager.get_user_name_from_answer(answer_id)
+    connection.update_add_reputation_by_username(user_name)
     return redirect(request.referrer)
 
 
@@ -270,6 +283,8 @@ def answer_vote_down(answer_id):
     answer = data_manager.get_answer_by_id(answer_id)
     answer["vote_count"] -= 1
     connection.update_answer_by_id(answer_id, answer)
+    user_name = data_manager.get_user_name_from_answer(answer_id)
+    connection.update_decrease_reputation_by_username(user_name)
     return redirect(request.referrer)
 
 
@@ -343,7 +358,6 @@ def user_page(user_id):
     for item in user_question_ids:
         id = item['question_id']
         questions.append(data_manager.get_question_by_id(id))
-        print(item['question_id'])
 
     user_answer_ids = data_manager.get_answer_ids_by_user(user_id)
     answers = []

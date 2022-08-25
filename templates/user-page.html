@@ -10,14 +10,16 @@
             <p>here since:{{ user['registration_date'] }}</p>
         </div>
         <div class="reputation">
-            <p>Badge</p>
+            {% if user['reputation']> 4 %}
+                <p><img src="/static/MasterChef.png" width="30" height="30" alt="MasterChef"></p>
+            {% endif %}
             <p>{{ user['reputation'] }}</p>
 
         </div>
         <div class="user-question">
             <h2> User's questions: {{ user['number_of_asked_questions']  }}</h2>
             {% for question in questions %}
-                <a href="/question/{{ question['id'] }}">{{ question['title']}}</a>
+                <a href="/question/{{ question['id'] }}">{{ question['title'] }}</a>
                 <br>
             {% endfor %}
 
@@ -26,7 +28,7 @@
         <div class="user-answers">
             <h2> User's answers: {{ user['number_of_answers']  }}</h2>
             {% for answer in answers %}
-                <a href="/question/{{ answer['question_id'] }}">{{ answer['message']}}</a>
+                <a href="/question/{{ answer['question_id'] }}">{{ answer['message'] }}</a>
                 <br>
             {% endfor %}
         </div>
@@ -34,7 +36,7 @@
         <div class="user-comments">
             <h2> User's comments: {{ user['number_of_comments'] }}</h2>
             {% for comment in comments %}
-                <a href="/question/{{ question_id }}">{{ comment['message']}}</a>
+                <a href="/question/{{ question_id }}">{{ comment['message'] }}</a>
                 <br>
             {% endfor %}
         </div>

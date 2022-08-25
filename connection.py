@@ -65,7 +65,7 @@ def update_question_edit_count(cursor, id, edit_count):
 
 
 @database_common.connection_handler
-def write_answer(cursor, fields: dict, user_id:int) -> int:
+def write_answer(cursor, fields: dict, user_id: int) -> int:
     query = "INSERT INTO answer(" + ", ".join(fields.keys()) + ") VALUES ("
     for value in fields.values():
         query += "%s, "
@@ -84,7 +84,6 @@ def write_user_answer(cursor, user_id: int, answer_id: int) -> None:
     """
     val = user_id, answer_id
     cursor.execute(query, val)
-
 
 
 @database_common.connection_handler
@@ -127,7 +126,7 @@ def update_answer_edit_count(cursor, id, edit_count):
 
 # endregion
 
-#region ----------------COMMENT------------------
+# region ----------------COMMENT------------------
 
 
 @database_common.connection_handler
@@ -137,7 +136,8 @@ def write_comment_by_answer_id(cursor, answer_id, new_comment, user_id):
     VALUES (%(a_s)s, %(n_c)s);
     """, {'a_s': int(answer_id), 'n_c': new_comment})
     id_of_new_row = cursor.fetchone()["id"]
-    write_user_comment(user_id,id_of_new_row)
+    write_user_comment(user_id, id_of_new_row)
+
 
 @database_common.connection_handler
 def write_user_comment(cursor, user_id: int, comment_id: int) -> None:
@@ -226,6 +226,20 @@ def del_tag_by_question_id(cursor, question_id: int) -> None:
 # endregion
 
 # region ----------------USER------------------
+@database_common.connection_handler
+def update_add_reputation_by_username(cursor, username):
+    cursor.execute("""
+    UPDATE "user"
+    SET reputation = reputation + 1 
+    WHERE "user".username LIKE %(username)s; 
+    """, {'username': username})
 
 
+@database_common.connection_handler
+def update_decrease_reputation_by_username(cursor, username):
+    cursor.execute("""
+    UPDATE "user"
+    SET reputation = reputation - 1 
+    WHERE "user".username LIKE %(username)s; 
+    """, {'username': username})
 # endregion
