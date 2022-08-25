@@ -4,7 +4,7 @@
 
     <div class="question-box">
         <p class="user-info">Question by: {{ question.username }}{% if question.reputation> 4 %}
-            <img src="/static/MasterChef.png" width="15" height="15" alt="MasterChef"> </p>
+            <img src="/static/MasterChef.png" width="20" height="20" alt="MasterChef"> </p>
         {% endif %}
         <p class="comment-info">Vote: {{ question['vote_count'] }} | {{ question['submission_time'] }}</p>
 
@@ -65,7 +65,7 @@
     </div>
     <p><strong> Answer {{ loop.index }}:</strong></p>
     <p class="user-info">Answer by: {{ answer.username }}             {% if answer.reputation> 4 %}
-        <img src="/static/MasterChef.png" width="15" height="15" alt="MasterChef"></p>
+        <img src="/static/MasterChef.png" width="20" height="20" alt="MasterChef"></p>
     {% endif %}
     <div class="comment-body">
         <p>{{ answer['message'] }}</p>
@@ -96,7 +96,7 @@
             <div style="margin-left: 50px">
                 <div class="comment-info">
                     <p class="user-info">Comment by: {{ comment.username }} {% if comment.reputation> 4 %} <br>
-                        <img src="/static/MasterChef.png" width="15" height="15" alt="MasterChef"></p>
+                        <img src="/static/MasterChef.png" width="20" height="20" alt="MasterChef"></p>
                     {% endif %}
                     <p>Votes: {{ comment.vote_count }} • {{ comment.submission_time }}</p>
                 </div>
@@ -126,7 +126,12 @@
                 {% if comment1.parent_comment_id == comment.id %}
                     <div style="margin-left: 100px">
                         <div class="comment-info">
-                            <p class="user-info">Comment by: {{ comment1.username }}</p>
+                            <p class="user-info">Comment by: {{ comment1.username }}
+                                {% if comment.reputation > 4 %}
+                                    <img src="/static/MasterChef.png" width="15" height="15"
+                                         alt="MasterChef"></p>
+                                {% endif %}
+                            </p>
                             <p>Votes: {{ comment1.vote_count }} • {{ comment1.submission_time }}</p>
                         </div>
                         <div class="comment-body">
