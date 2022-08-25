@@ -35,7 +35,7 @@ function getSortedItems(items, sortField, sortDirection) {
                 return b[sortField] - a[sortField];
             });
         }
-    } else {
+    } else if (sortField === "Title" || sortField === "Description") {
         if (sortDirection === "asc") {
             items.sort(function (a, b) {
                 return a[sortField].localeCompare(b[sortField]);
@@ -45,8 +45,9 @@ function getSortedItems(items, sortField, sortDirection) {
                 return b[sortField].localeCompare(a[sortField]);
             });
         }
-
     }
+
+    setTimeout(highlight,50);
     return items;
 }
 
@@ -152,3 +153,17 @@ function decreaseFont() {
     var size = parseFloat(sz) / (1.2) + "px";
     document.getElementById("content").style.fontSize = size;
 }
+
+			function highlight() {
+                'use strict';
+            // Select the whole paragraph
+            var ob = new Mark(document.querySelector(".searchHere"));
+            console.log(document.querySelector(".searchHere"));
+
+            // First unmark the highlighted word or letter
+            ob.unmark();
+            // Highlight letter or word
+            ob.mark(
+                document.getElementById("doNotModifyThisId_QuestionsFilter").value, {"separateWordSearch": false});
+            console.log(document.getElementById("doNotModifyThisId_QuestionsFilter").value);
+        }

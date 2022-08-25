@@ -14,7 +14,9 @@
 				style="width: 500px; height: 40px; border-color: #02b9b9; border-style: solid; background-color: #cccccc; margin: 5px"
 				id="doNotModifyThisId_QuestionsFilter"
 				type="text"
-				placeholder="Filter questions by keywords">
+				placeholder="Filter questions by keywords"
+{#				oninput="highlight()"#}
+		>
 		</div>
 		<table id="table">
 			<thead id="doNotModifyThisId_QuestionsTableHeader">
@@ -25,20 +27,39 @@
 					<th style="padding: 5px">View Number</th>
 				</tr>
 			</thead>
-			<tbody id="doNotModifyThisId_QuestionsTableBody">
+			<tbody id="doNotModifyThisId_QuestionsTableBody" class="searchHere">
 				{% for question in questions %}
 					<tr>
-						<td style="padding: 5px">{{ question['title'] }}</td>
-						<td style="padding: 5px">{{ question['description'] }}</td>
-						<td style="padding: 5px">{{ question['vote_number'] }}</td>
-						<td style="padding: 5px">{{ question['view_number'] }}</td>
+						<td style="padding: 5px;">{{ question['title'] }}</td>
+						<td style="padding: 5px;">{{ question['description'] }}</td>
+						<td style="padding: 5px;">{{ question['vote_number'] }}</td>
+						<td style="padding: 5px;">{{ question['view_number'] }}</td>
 					</tr>
 				{% endfor %}
 			</tbody>
 		</table>
+		<br>
+		<br>
+		<br>
 
 		<script type="text/javascript" src="{{ url_for('static', filename='js/bonusQuestions.js') }}" defer></script>
 		<script type="text/javascript" src="{{ url_for('static', filename='js/doNotModifyThisFile.js') }}"
 		        defer></script>
+{#		<script>#}
+{#			function highlight() {#}
+{#                'use strict';#}
+{#            // Select the whole paragraph#}
+{#            var ob = new Mark(document.querySelector(".searchHere"));#}
+{#            console.log(document.querySelector(".searchHere"));#}
+{##}
+{#            // First unmark the highlighted word or letter#}
+{#            ob.unmark();#}
+{#            // Highlight letter or word#}
+{#            ob.mark(#}
+{#                document.getElementById("doNotModifyThisId_QuestionsFilter").value#}
+{#            );#}
+{#            console.log(document.getElementById("doNotModifyThisId_QuestionsFilter").value)#}
+{#        }#}
+{#		</script>#}
 	</div>
 {% endblock %}
