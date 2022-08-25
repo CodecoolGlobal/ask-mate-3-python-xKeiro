@@ -2,64 +2,65 @@
 
 
 {% block content %}
-    <div class="wrapper">
-        <h2>User Profile</h2>
-        <div class="user-box">
-            <p id="username">{{ user['username'] }} <img src="/static/MasterChef.png" width="30" height="30"
-                                                         alt="MasterChef"></p>
-            {% if user['reputation']> 4 %}
+	<div class="wrapper">
+		<h2>User Profile</h2>
+		<div class="user-box">
+			<p id="username">{{ user['username'] }}
+				{% if user['reputation']> 4 %}
+					<img src="/static/MasterChef.png" width="30" height="30"
+					     alt="MasterChef">
+				{% endif %}
+			</p>
+			<p class="user-info">Email: {{ user['email'] }}</p>
+			<p class="user-info">Registered: {{ user['registration_date'] }}</p>
+		</div>
 
-            {% endif %}
-            <p class="user-info">Email: {{ user['email'] }}</p>
-            <p class="user-info">Registered: {{ user['registration_date'] }}</p>
-        </div>
-
-        <div class="user-question">
-            <h2 id="user_question"> User's questions: {{ user['number_of_asked_questions'] }}</h2>
-            {% for question in questions %}
-                <table class="userpage_table">
-                    <tr>
-                        <td><a href="/question/{{ question['id'] }}">{{ question['title'] }}</a></td>
-                    </tr>
-                </table>
-            {% endfor %}
-
-
-        </div>
-
-        <div class="user-answers">
-            <h2> User's answers: {{ user['number_of_answers'] }}</h2>
-            {% for answer in answers %}
-                <table class="userpage_table">
-                    <tr>
-                        <td><a href="/question/{{ answer['question_id'] }}">{{ answer['message'] }}</a></td>
-                    </tr>
-                </table>
-
-            {% endfor %}
-
-        </div>
-
-        <div class="user-comments">
-            <h2> User's comments: {{ user['number_of_comments'] }}</h2>
-
-            {% for comment in comments %}
-                <table class="userpage_table">
-                    <tr>
+		<div class="user-question">
+			<h2 id="user_question"> User's questions: {{ user['number_of_asked_questions'] }}</h2>
+			{% for question in questions %}
+				<table class="userpage_table">
+					<tr>
+						<td><a href="/question/{{ question['id'] }}">{{ question['title'] }}</a></td>
+					</tr>
+				</table>
+			{% endfor %}
 
 
-                        <td><a href="/question/{{ question_id }}">{{ comment['message'] }}</a></td>
-                    </tr>
-                </table>
+		</div>
 
-            {% endfor %}
+		<div class="user-answers">
+			<h2> User's answers: {{ user['number_of_answers'] }}</h2>
+			{% for answer in answers %}
+				<table class="userpage_table">
+					<tr>
+						<td><a href="/question/{{ answer['question_id'] }}">{{ answer['message'] }}</a></td>
+					</tr>
+				</table>
+
+			{% endfor %}
+
+		</div>
+
+		<div class="user-comments">
+			<h2> User's comments: {{ user['number_of_comments'] }}</h2>
+
+			{% for comment in comments %}
+				<table class="userpage_table">
+					<tr>
 
 
-        </div>
+						<td><a href="/question/{{ question_id }}">{{ comment['message'] }}</a></td>
+					</tr>
+				</table>
 
-    </div>
+			{% endfor %}
+
+
+		</div>
+
+	</div>
 
 
 
-    {% include 'footer.html' %}
+	{% include 'footer.html' %}
 {% endblock %}

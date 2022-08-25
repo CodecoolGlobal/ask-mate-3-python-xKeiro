@@ -126,7 +126,7 @@ def get_questions_by_tag_id(cursor, tag_id: int) -> list[dict]:
     query = """
         SELECT DISTINCT question.*
         FROM question
-        LEFT JOIN question_tag ON tag_id = question_tag.tag_id
+        LEFT JOIN question_tag ON id = question_tag.question_id
         WHERE question_tag.tag_id = %s
         """
     val = (tag_id,)
@@ -573,5 +573,3 @@ def user_login(cursor, username):
             """
     cursor.execute(query)
     return cursor.fetchone()
-
-

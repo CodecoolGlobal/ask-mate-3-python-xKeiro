@@ -2,9 +2,9 @@
 {% block content %}
     <br>
     <h2> Questions by Tag</h2>
-    <div class="question-box">
+    <div class="question-box" style="text-align: center">
         <form action="/tags" method="GET">
-            <select class="minimal" name="tag_id" id="tag_id">
+            <select class="minimal" name="tag_id" id="tag_id" style="width: 300px">
                 {% for tag in tags %}
                     <option value="{{ tag.id }}">{{ tag.name }}</option>
                 {% endfor %}
