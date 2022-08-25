@@ -375,9 +375,9 @@ def get_user_by_id(cursor, user_id):
         username,
         email,
         registration_date,
-        number_of_asked_questions,
-        number_of_answers,
-        number_of_comments,
+        (select count(*) from question where user_id = "user".id) as number_of_asked_questions,
+        (select count(*) from answer where user_id = "user".id) as number_of_answers,
+        (select count(*) from comment where user_id = "user".id) as number_of_comments,
         reputation
         FROM "user"
         WHERE id=%(user_id)s""",
@@ -507,6 +507,16 @@ def get_users(cursor):
         ORDER BY registration_date ASC
         """
     cursor.execute(query)
+    return cursor.fetchall()
+
+
+@database_common.connection_handler
+def get_question_count_from_user(cursor, user_id):
+    cursor.execute = ("""
+    SELECT sum(question_id)
+    FROM user_question
+    GROUP BY %(user_id)s""",
+                      {'user_id': user_id})
     return cursor.fetchall()
 
 # endregion
