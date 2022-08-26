@@ -130,20 +130,20 @@ VALUES ('2022-08-11 15:15:55', 4, 0, 'Pesto for pasta', 'Which kind of pesto sho
         'How can I make a chocolate cake like this?',
         '/static/upload\chocolate_cake.jpg', 0, 4);
 
-INSERT INTO answer(submission_time, vote_count, question_id, message, image, user_id)
+INSERT INTO answer(submission_time, vote_count, question_id, message, image, accepted, user_id)
 VALUES ('2022-08-11 15:14:55', 0, 2, 'Yes, you can! I made these:',
-        '/static/upload\burrito.jpg', 1),
+        '/static/upload\burrito.jpg', False, 1),
        ('2022-08-11 15:15:01', 1, 2, 'Burrito at home? Just go to a mexican restaurant! ',
-        '/static/upload\areyouserious.jpg', 2),
+        '/static/upload\areyouserious.jpg', False, 2),
        ('2022-08-11 15:18:23', 3, 3, 'Good! Try to make at home or travel to Hungary to taste it!',
-        '/static/upload\paprikas-krumpli2.jpg', 3),
-       ('2022-08-11 16:25:29', 4, 3, 'Yes, very tasty! ', NULL, 4),
-       ('2022-08-11 17:48:39', 5, 4, 'Try this filling: whisk together sugar, flour, salt, half & half and egg yolks until smooth.', NULL, 1),
+        '/static/upload\paprikas-krumpli2.jpg',True, 3),
+       ('2022-08-11 16:25:29', 4, 3, 'Yes, very tasty! ', NULL, False, 4),
+       ('2022-08-11 17:48:39', 5, 4, 'Try this filling: whisk together sugar, flour, salt, half & half and egg yolks until smooth.', NULL, True, 1),
        ('2022-08-11 19:25:48', 4, 4, 'It is similar to mine cake, do you want the recipe ? ',
-        '/static/upload\cake.jpg', 2),
-       (' 2022-08-11 20:15:45', 2, 1, 'Try green basil pesto : basil, olive oil, Parmesan cheese, some nuts.', NULL, 3),
-       (' 2022-08-11 21:14:32', 1, 1, 'Red pesto is sweeter ! The main ingredient is dried tomato.', NULL, 4),
-       (' 2022-08-11 22:22:22', 0, 1, 'For a healthy option broccoli pesto is also a good one.', NULL, 1);
+        '/static/upload\cake.jpg', False, 2),
+       (' 2022-08-11 20:15:45', 2, 1, 'Try green basil pesto: basil, olive oil, Parmesan cheese, some nuts.', NULL, False, 3),
+       (' 2022-08-11 21:14:32', 1, 1, 'Red pesto is sweeter ! The main ingredient is dried tomato.', NULL, False, 4),
+       (' 2022-08-11 22:22:22', 0, 1, 'For a healthy option broccoli pesto is also a good one.', NULL, False, 1);
 
 INSERT INTO comment (parent_comment_id, answer_id, message, submission_time, edit_count, user_id)
 VALUES (NULL, 1, 'Looks delicious, please give me the recipe! ', '2022-08-12 14:11:25', 0, 1),
