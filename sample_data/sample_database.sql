@@ -114,7 +114,7 @@ CREATE TABLE user_comment
 
 INSERT INTO "user"(username, email, password, registration_date, reputation)
 VALUES ('JohnyChef', 'john@mail.com', 'apple', '2022-08-14 15:14:55', 5),
-       ('Harry', 'harry@mail.com', 'banana', '2022-08-14 15:14:55', 0),
+       ('Harry', 'harry@mail.com', 'banana', '2022-08-14 15:14:55', 4),
        ('BestCook50', 'emil_s@mail.com', 'asdasd', '2022-08-15 15:14:55', 0),
        ('Elizabeth', 'bella@mail.com', 'broccoli', '2022-08-14 15:14:55', 0);
 
