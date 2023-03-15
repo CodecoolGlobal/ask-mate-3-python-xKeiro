@@ -58,6 +58,7 @@ def update_question_edit_count(cursor, id, edit_count):
     WHERE id = %(id)s""",
                    {'id': id, 'edit_count': edit_count})
 
+
 # ----------------ANSWER------------------
 # endregion
 

@@ -241,6 +241,7 @@ def get_answers_by_user_id(cursor, user_id: int):
     else:
         return []
 
+
 @database_common.connection_handler
 def change_accept_state(cursor, answer_id):
     cursor.execute("""
@@ -560,6 +561,7 @@ def get_question_count_from_user(cursor, user_id):
     GROUP BY %(user_id)s""",
                       {'user_id': user_id})
     return cursor.fetchall()
+
 
 # endregion
 
